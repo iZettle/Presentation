@@ -48,6 +48,7 @@ case "$COMMAND" in
   ;;
 
   "examples" | "")
+    pod repo update
     for example in examples/*/; do
       echo "Building $example."
       pod install --project-directory=$example
