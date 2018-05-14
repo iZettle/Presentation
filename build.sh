@@ -16,7 +16,7 @@ Usage: sh $0 command
   [Building]
 
   iOS           Build iOS framework
-  native		Build using `swift build`
+  examples		Build examples
   clean         Clean up all un-neccesary files
 
   [Testing]
@@ -43,11 +43,6 @@ case "$COMMAND" in
     -configuration Debug ONLY_ACTIVE_ARCH=YES \
     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO \
     build | xcpretty -c
-    exit 0;
-  ;;
-
-  "native" | "")
-    swift build
     exit 0;
   ;;
 
