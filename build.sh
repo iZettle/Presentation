@@ -8,7 +8,7 @@ PROJECT="Presentation.xcodeproj"
 SCHEME="Presentation"
 
 IOS_SDK="iphonesimulator11.3"
-IOS_DESTINATION="OS=11.3,name=iPhone 8"
+IOS_DESTINATION="OS=11.3,name=iPhone X"
 
 usage() {
 cat << EOF
@@ -35,6 +35,7 @@ case "$COMMAND" in
   ;;
 
    "iOS" | "ios")
+   carthage update Flow --cache-builds
     xcodebuild clean \
     -project $PROJECT \
     -scheme "${SCHEME}" \
@@ -47,6 +48,7 @@ case "$COMMAND" in
   ;;
 
   "examples" | "")
+    pod repo update
     for example in examples/*/; do
       echo "Building $example."
       pod install --project-directory=$example
@@ -61,12 +63,13 @@ case "$COMMAND" in
   ;;
 
    "test-iOS" | "test-ios")
+   carthage update Flow --cache-builds
     xcodebuild clean \
     -project $PROJECT \
     -scheme "${SCHEME}" \
     -sdk "${IOS_SDK}" \
     -destination "${IOS_DESTINATION}" \
-    -configuration Release \
+    -configuration Debug \
     ONLY_ACTIVE_ARCH=YES \
     CODE_SIGNING_REQUIRED=NO \
     ENABLE_TESTABILITY=YES \
