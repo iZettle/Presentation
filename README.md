@@ -1,4 +1,4 @@
-<img src="https://github.com/iZettle/Presentation/blob/master/presentation-logo.png?raw=true" height="140px" />
+<img src="https://github.com/iZettle/Presentation/blob/master/presentation-logo.png?raw=true"/>
 
 [![Build Status](https://travis-ci.org/iZettle/Presentation.svg?branch=master)](https://travis-ci.org/iZettle/Presentation)
 [![Platforms](https://img.shields.io/badge/platform-%20iOS%20-gray.svg)](https://img.shields.io/badge/platform-%20iOS%20-gray.svg)
