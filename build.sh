@@ -50,14 +50,14 @@ case "$COMMAND" in
   "examples" | "")
     pod repo update
     for example in examples/*/; do
-      echo "Building $example."
+      echo "Building and testing $example."
       pod install --project-directory=$example
       xcodebuild \
           -workspace "${example}Example.xcworkspace" \
           -scheme Example \
           -sdk "${IOS_SDK}" \
           -destination "${IOS_DESTINATION}" \
-          build
+          build test
     done
     exit 0
   ;;
