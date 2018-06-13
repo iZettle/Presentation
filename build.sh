@@ -8,7 +8,8 @@ PROJECT="Presentation.xcodeproj"
 SCHEME="Presentation"
 
 IOS_SDK="iphonesimulator11.3"
-IOS_DESTINATION="OS=11.3,name=iPhone X"
+IOS_DESTINATION_PHONE="OS=11.3,name=iPhone X"
+IOS_DESTINATION_PAD="OS=11.3,name=iPad Air 2"
 
 usage() {
 cat << EOF
@@ -40,7 +41,7 @@ case "$COMMAND" in
     -project $PROJECT \
     -scheme "${SCHEME}" \
     -sdk "${IOS_SDK}" \
-    -destination "${IOS_DESTINATION}" \
+    -destination "${IOS_DESTINATION_PHONE}" \
     -configuration Debug ONLY_ACTIVE_ARCH=YES \
     CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO \
     build | xcpretty -c
@@ -56,7 +57,8 @@ case "$COMMAND" in
           -workspace "${example}Example.xcworkspace" \
           -scheme Example \
           -sdk "${IOS_SDK}" \
-          -destination "${IOS_DESTINATION}" \
+          -destination "${IOS_DESTINATION_PHONE}" \
+          -destination "${IOS_DESTINATION_PAD}" \          
           build test
     done
     exit 0
@@ -68,7 +70,8 @@ case "$COMMAND" in
     -project $PROJECT \
     -scheme "${SCHEME}" \
     -sdk "${IOS_SDK}" \
-    -destination "${IOS_DESTINATION}" \
+    -destination "${IOS_DESTINATION_PHONE}" \
+    -destination "${IOS_DESTINATION_PAD}" \          
     -configuration Debug \
     ONLY_ACTIVE_ARCH=YES \
     CODE_SIGNING_REQUIRED=NO \
