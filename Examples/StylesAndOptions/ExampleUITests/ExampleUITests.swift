@@ -23,7 +23,9 @@ class ExampleUITests: XCTestCase {
         verifyForAllContainerConfigurations {
             showDismissablePresentation(style: style, option: "Default")
 
-            if !app.launchArguments.contains("UseSplitViewContainer") {
+            let isSideBySideSplitView = app.launchArguments.contains("UseSplitViewContainer") &&
+                UIDevice.current.userInterfaceIdiom == .pad
+            if !isSideBySideSplitView {
                 pressBack()
                 XCTAssertTrue(initialScreenVisible)
             }
