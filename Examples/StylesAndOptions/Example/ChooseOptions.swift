@@ -1,6 +1,6 @@
 //
 //  ChooseOptions.swift
-//  StylesAndOptions
+//  Example
 //
 //  Created by Nataliya Patsovska on 2018-06-12.
 //  Copyright © 2018 iZettle. All rights reserved.

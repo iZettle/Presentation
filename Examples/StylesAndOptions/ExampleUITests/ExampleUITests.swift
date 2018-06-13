@@ -1,15 +1,15 @@
 //
-//  StylesAndOptionsUITests.swift
-//  StylesAndOptionsUITests
+//  ExampleUITests.swift
+//  ExampleUITests
 //
 //  Created by Nataliya Patsovska on 2018-06-13.
 //  Copyright © 2018 iZettle. All rights reserved.
 //
 
 import XCTest
-@testable import StylesAndOptions
+@testable import Example
 
-class StylesAndOptionsUITests: XCTestCase {
+class ExampleUITests: XCTestCase {
     var app: XCUIApplication!
     override func setUp() {
         super.setUp()
