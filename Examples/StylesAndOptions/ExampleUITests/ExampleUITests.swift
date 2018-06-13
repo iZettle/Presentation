@@ -144,10 +144,13 @@ class ExampleUITests: XCTestCase {
     // MARK: - Helpers
     func verifyForAllContainerConfigurations(_ verify: () -> ()) {
         ["UseNavigationContainer", "UseSplitViewContainer"].forEach { containerTypeOption in
-            app.launchArguments = [containerTypeOption]
-            app.launch()
-            verify()
-            app.terminate()
+            let name = "Test with \(containerTypeOption) configurationn"
+            XCTContext.runActivity(named: name) { _ in
+                app.launchArguments = [containerTypeOption]
+                app.launch()
+                verify()
+                app.terminate()
+            }
         }
     }
 
