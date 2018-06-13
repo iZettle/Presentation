@@ -58,7 +58,7 @@ case "$COMMAND" in
           -scheme Example \
           -sdk "${IOS_SDK}" \
           -destination "${IOS_DESTINATION_PHONE}" \
-          -destination "${IOS_DESTINATION_PAD}" \          
+          -destination "${IOS_DESTINATION_PAD}" \
           build test
     done
     exit 0
@@ -71,7 +71,7 @@ case "$COMMAND" in
     -scheme "${SCHEME}" \
     -sdk "${IOS_SDK}" \
     -destination "${IOS_DESTINATION_PHONE}" \
-    -destination "${IOS_DESTINATION_PAD}" \          
+    -destination "${IOS_DESTINATION_PAD}" \
     -configuration Debug \
     ONLY_ACTIVE_ARCH=YES \
     CODE_SIGNING_REQUIRED=NO \
