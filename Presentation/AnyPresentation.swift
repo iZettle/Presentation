@@ -9,7 +9,6 @@
 import UIKit
 import Flow
 
-
 /// A type erased Presentable
 public struct AnyPresentable<Matter, Result> {
     private let _materialize: () -> (Matter, Result)
@@ -26,7 +25,7 @@ public extension AnyPresentable {
     init<P: Presentable>(_ presentable: P) where P.Matter == Matter, P.Result == Result {
         _materialize = presentable.materialize
     }
-    
+
     /// Creates a new instance where the `presentable` type has been anonymized (erased) and its result will be transforms using `transform`.
     init<P: Presentable>(_ presentable: P, transform: @escaping (P.Result) -> Result) where P.Matter == Matter {
         _materialize = {

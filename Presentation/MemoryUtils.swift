@@ -9,7 +9,6 @@
 import UIKit
 import Flow
 
-
 public extension UIViewController {
     /// Whether to track and log memory leaks of presented view controllers, default to true
     var debugMemoryLeakTrackingEnabled: Bool {
@@ -19,24 +18,24 @@ public extension UIViewController {
 }
 
 /// UserDefaults key to boolean value to whether an alert should be presented in debug builds if a memory leak is discovered.
-public let enabledDisplayAlertOnMemoryLeaksUserDefaultsKey = "enabledDisplayAlertOnMemoryLeaks"
+public let enabledDisplayAlertOnMemoryLeaksKey = "enabledDisplayAlertOnMemoryLeaks"
 
 extension UIViewController {
     func trackMemoryLeaks(_ vc: UIViewController, whenDisposed bag: DisposeBag) {
         guard vc.debugMemoryLeakTrackingEnabled else { return }
-        
+
         let presentationDescription = self.presentationDescription
         let vcPresentationDescription = vc.presentationDescription
-        
+
         vc.deallocSignal.future.onValue {
             log("\(vcPresentationDescription) was deallocated after presentation from \(presentationDescription)")
         }
-        
+
         func onLeak() {
             log("WARNING \(vcPresentationDescription) was NOT deallocated after presentation from \(presentationDescription)")
-            
-            guard UserDefaults.standard.bool(forKey: enabledDisplayAlertOnMemoryLeaksUserDefaultsKey) else { return }
-            
+
+            guard UserDefaults.standard.bool(forKey: enabledDisplayAlertOnMemoryLeaksKey) else { return }
+
             #if DEBUG
                 let alert = Alert<()>(title: "View controller not released after being dismissed", message: vcPresentationDescription, actions: Alert<()>.Action(title: "OK") {  })
                 var presentingVC = UIApplication.shared.keyWindow?.rootViewController
@@ -44,7 +43,7 @@ extension UIViewController {
                 presentingVC?.present(alert)
             #endif
         }
-        
+
         vc.trackMemoryLeak(whenDisposed: bag) { leakingVC in
             if let nc = leakingVC.navigationController {
                 nc.deallocSignal.future.onValue { [weak leakingVC] in
@@ -53,7 +52,7 @@ extension UIViewController {
                 }
                 return
             }
-            
+
             onLeak()
         }
     }
@@ -71,7 +70,7 @@ extension NSObject {
 }
 
 extension NSObjectProtocol {
-    func trackMemoryLeak(whenDisposed bag: DisposeBag, after: TimeInterval = 2, _ onLeak: @escaping (Self) -> () = { o in assertionFailure("Object Not Deallocated \(o)") }) {
+    func trackMemoryLeak(whenDisposed bag: DisposeBag, after: TimeInterval = 2, _ onLeak: @escaping (Self) -> () = { object in assertionFailure("Object Not Deallocated \(object)") }) {
         bag += { [weak self] in
             Scheduler.main.async(after: after) {
                 guard let strongSelf = self else { return }
@@ -83,14 +82,13 @@ extension NSObjectProtocol {
 
 private final class DeallocTracker: SignalProvider {
     let callbacker = Callbacker<()>()
-    
+
     var providedSignal: Signal<()> {
         return Signal(callbacker: callbacker)
     }
-    
+
     deinit { callbacker.callAll(with: ()) }
 }
 
 private var trackerKey = false
 private var memoryLeakTrackingEnabledKey = false
-

@@ -13,18 +13,18 @@ import Flow
 class KeepSelectionTests: XCTestCase {
     func testExample() {
         let items = ReadWriteSignal([1, 2, 3])
-        let s = KeepSelection(elements: items.readOnly(), isSame: ==)
+        let selection = KeepSelection(elements: items.readOnly(), isSame: ==)
         let bag = DisposeBag()
 
         var index: Int? = nil
         var cnt = 0
-        bag += s.atOnce().onValue {
+        bag += selection.atOnce().onValue {
             cnt += 1
             index = $0?.index
         } // inc
-        
+
         XCTAssertEqual(index, 0)
-        s.select(index: 1) // inc
+        selection.select(index: 1) // inc
         XCTAssertEqual(index, 1)
         items.value = [1, 3] // inc
         XCTAssertEqual(index, 1)
@@ -40,7 +40,7 @@ class KeepSelectionTests: XCTestCase {
         XCTAssertEqual(index, 0)
 
         XCTAssertEqual(cnt, 9)
-        
+
     }
 
 }

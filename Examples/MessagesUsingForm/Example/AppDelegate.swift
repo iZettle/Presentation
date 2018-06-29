@@ -29,9 +29,7 @@ extension Messages {
         let messagesSignal = ReadWriteSignal(messages)
         self.messages = messagesSignal.readOnly()
 
-        composeMessage = Presentation(ComposeMessage(),
-                                      style: .modally(presentationStyle: .formSheet),
-                                      options: [.embedInNavigationController, .dontWaitForDismissAnimation]).onValue { message in
+        composeMessage = Presentation(ComposeMessage(), style: .modally(presentationStyle: .formSheet)).onValue { message in
             messagesSignal.value.insert(message, at: 0)
         }
 

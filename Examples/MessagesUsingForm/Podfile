@@ -1,0 +1,9 @@
+platform :ios, '11.0'
+
+target 'Example' do
+  use_frameworks!
+
+  pod 'PresentationFramework', :path => '../..'
+  pod 'FormFramework', '~> 1.0'
+
+end

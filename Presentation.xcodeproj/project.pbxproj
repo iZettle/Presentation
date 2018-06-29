@@ -44,7 +44,6 @@
 		1C0656EA1F8290CB00E60465 /* MemoryUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUtils.swift; sourceTree = "<group>"; };
 		1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUtilsTests.swift; sourceTree = "<group>"; };
 		2177C8F21D897360000DECA4 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
-		B38092B720A9B718009D8302 /* Flow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flow.framework; path = Carthage/Build/iOS/Flow.framework; sourceTree = "<group>"; };
 		F617E3751C197D5E00B567FB /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F617E37A1C197D5E00B567FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -95,7 +94,6 @@
 		F617E36B1C197D5E00B567FB = {
 			isa = PBXGroup;
 			children = (
-				B38092B720A9B718009D8302 /* Flow.framework */,
 				F6C2E6121C6A0EE700453548 /* README.md */,
 				F6C208D6209B3CC00068A5F3 /* CHANGELOG.md */,
 				F6C208D9209B3CC00068A5F3 /* LICENSE.md */,
@@ -173,7 +171,6 @@
 				F617E3711C197D5E00B567FB /* Frameworks */,
 				F617E3721C197D5E00B567FB /* Headers */,
 				F617E3731C197D5E00B567FB /* Resources */,
-				B3BF272E20A9BCDE0080ADA2 /* Copy Flow */,
 			);
 			buildRules = (
 			);
@@ -191,7 +188,6 @@
 				F6CB32981F2F399600CA56C2 /* Sources */,
 				F6CB32991F2F399600CA56C2 /* Frameworks */,
 				F6CB329A1F2F399600CA56C2 /* Resources */,
-				F6E6FE3820A9C522001CBB2C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -260,40 +256,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		B3BF272E20A9BCDE0080ADA2 /* Copy Flow */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Flow.framework",
-			);
-			name = "Copy Flow";
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Flow.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-		F6E6FE3820A9C522001CBB2C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Flow.framework",
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F617E3701C197D5E00B567FB /* Sources */ = {
@@ -455,7 +417,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = Presentation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -474,7 +435,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = Presentation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -492,7 +452,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -515,7 +474,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = PresentationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.izettle.PresentationTests;

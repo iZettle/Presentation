@@ -9,7 +9,6 @@
 import UIKit
 import Flow
 
-
 /// Conforming types can customize the presentation of view controllers on `self`.
 /// Used by the `default` `PresentationStyle` to forward the handling of a presentation.
 /// Typically conformed by coordination view controllers such as `UINavitgationController` and `UISplitViewController`.
@@ -19,4 +18,3 @@ public protocol PresentingViewController {
     typealias Result = (result: Future<()>, dismisser: () -> Future<()>)
     func present(_ viewController: UIViewController, options: PresentationOptions) -> Result
 }
-
