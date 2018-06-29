@@ -14,7 +14,7 @@ public final class KeepSelection<Elements: BidirectionalCollection>: SignalProvi
     public typealias Index = Elements.Index
     public typealias Element = Elements.Iterator.Element
     public typealias IndexAndElement = (index: Index, element: Element)
-    
+
     private let current = ReadWriteSignal<IndexAndElement?>(nil)
     private let bag = DisposeBag()
 
@@ -30,17 +30,17 @@ public final class KeepSelection<Elements: BidirectionalCollection>: SignalProvi
         self.isSame = isSame
         bag += self.elementsSignal.atOnce().atOnce().latestTwo().map { [weak self] oldElements, elements -> (Elements, Index)? in
             guard let `self` = self else { return nil }
-            
+
             let currentIndex = self.current.value?.index
             guard let oldIndex = currentIndex, oldIndex < oldElements.endIndex else {
                 return elements.isEmpty ? nil : (elements, elements.startIndex)
             }
-            
+
             let oldItem = oldElements[oldIndex]
             if let newIndex = elements.index(where: { isSame($0, oldItem) }) {
                 return (elements, newIndex)
             }
-            
+
             // Search forward to see if any of the items in old is still in new
             for oldItem in oldElements[oldElements.index(after: oldIndex)..<oldElements.endIndex] {
                 guard let index = elements.index(where: { isSame($0, oldItem) }) else {
@@ -48,7 +48,7 @@ public final class KeepSelection<Elements: BidirectionalCollection>: SignalProvi
                 }
                 return (elements, index)
             }
-            
+
             // Search backward to see if any of the items in old is still in new
             for oldItem in oldElements[oldElements.startIndex..<oldIndex].reversed() {
                 guard let index = elements.index(where: { isSame($0, oldItem) }) else {
@@ -57,16 +57,16 @@ public final class KeepSelection<Elements: BidirectionalCollection>: SignalProvi
                 let nextIndex = elements.index(after: index)
                 return (elements, nextIndex != elements.endIndex ? nextIndex : index)
             }
-            
+
             return elements.isEmpty ? nil : (elements, elements.startIndex)
         }.map { $0.map { ($1, $0[$1]) } }.bindTo(current)
     }
-    
+
     /// Returns a signal the will signal when the selected index and element is updated.
     public var providedSignal: ReadSignal<IndexAndElement?> {
         return current.readOnly()
     }
-    
+
     /// Updates the selected index.
     public func select(index: Index) {
         current.value = (index, elements[index])

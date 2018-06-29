@@ -9,14 +9,13 @@
 import UIKit
 import Flow
 
-
 extension UISplitViewController: PresentingViewController {
     public func present(_ vc: UIViewController, options: PresentationOptions) -> PresentingViewController.Result {
         let presenter: PresentingViewController
         vc.setAssociatedValue(options.contains(.showInMaster), forKey: &isPresentedInMasterKey)
-        
+
         switch (options.contains(.showInMaster), isCollapsed, viewControllers.first as? PresentingViewController, viewControllers.dropFirst().first as? PresentingViewController, options.contains(.embedInNavigationController)) {
-            
+
         // (showInMaster, collapsed, primaryNC?, detailnC?, embeddInNc)
         case (false, true, let primary?, _, _):
             // If collapsed, let's check if there is a master vc to be push on
@@ -52,7 +51,7 @@ extension UISplitViewController: PresentingViewController {
         default:
             fatalError("Not supported")
         }
-        
+
         return presenter.present(vc, options: options)
     }
 }
@@ -64,4 +63,3 @@ extension UIViewController {
 }
 
 private var isPresentedInMasterKey = false
-

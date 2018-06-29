@@ -59,6 +59,7 @@ presentingViewController.present(messages)
     - [Type-erased Presentable](#type-erased-presentable)
     - [Alerts](#alerts)
     - [Master detail](#master-detail)
+- [Form framework](#form-framework)
 - [Field tested](#field-tested)
 
 ## Requirements
@@ -261,7 +262,7 @@ It is useful to add a dismiss button to dismiss a presentation and Presentation 
 
 ```swift
 let done = UIBarButtonItem(...)
-controller.present(messages, configure: dismiss(done))
+controller.present(messages, configure: installDismiss(done))
 ```
 
 ### Presentation
@@ -341,7 +342,7 @@ typealias AnyPresentation<Context: UIViewController, Result> = Presentation<AnyP
 
 ### Alerts
 
-Presentation comes with a built in `Alert` presentable to make it more convenient  to work with alerts and action sheets:
+Presentation comes with a built in `Alert` presentable to make it more convenient to work with alerts and action sheets:
 
 ```swift
 let alert = Alert<Bool>(title: ..., message: ..., actions: 
@@ -361,6 +362,16 @@ presentingController.present(alert).onValue { boolean in
 presentingController.present(alert, style: .sheet())
 ```
 
+Alerts also supports editing of fields:
+
+```swift
+var add = Alert<URL>.Action(title: "Add") { URL(string: $0[0])! }
+add.enabledPredicate = { isValidURL($0[0]) }
+let alert = Alert(title: "Add server", fields: [.Field()], actions: add)
+
+presentingController.present(alert).onValue { url in ... }
+```
+ 
 ### Master-detail
 
 Presentation also comes with some helper types to make it easier to work with master-detail UIs such as split view controllers:
@@ -368,6 +379,10 @@ Presentation also comes with some helper types to make it easier to work with ma
 - `KeepSelection`: Maintain a single selection at the time. 
 - `MasterDetailSelection`: Extends `KeepSelection` to handle collapsable views. 
 - `DualNavigationControllersSplitDelegate`: Coordination between navigation controllers.
+
+## Form framework
+
+We highly recommend that you also check out the [Form framework](https://github.com/iZettle/Form). Form and Presentation were developed closely together and share many of the same underlying design philosophies.
 
 ## Field tested
 

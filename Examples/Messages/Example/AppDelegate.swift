@@ -10,17 +10,16 @@ import UIKit
 import Flow
 import Presentation
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let bag = DisposeBag()
-    
+
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let messages = Messages(messages: testMessages)
-        
+
         let window = UIWindow(frame: UIScreen.main.bounds)
         bag += window.present(messages, options: .embedInNavigationController)
-        
+
         return true
     }
 }
@@ -29,11 +28,13 @@ extension Messages {
     init(messages: [Message]) {
         let messagesSignal = ReadWriteSignal(messages)
         self.messages = messagesSignal.readOnly()
-        
-        composeMessage = Presentation(ComposeMessage(), style: .modal, options: [.embedInNavigationController, .dontWaitForDismissAnimation]).onValue { message in
+
+        composeMessage = Presentation(ComposeMessage(),
+                                      style: .modally(presentationStyle: .formSheet),
+                                      options: [.embedInNavigationController, .dontWaitForDismissAnimation]).onValue { message in
             messagesSignal.value.insert(message, at: 0)
         }
-        
+
         messageDetails = { message in
             let cancel = Alert.Action(title: "Cancel") { }
             let delete = Alert.Action(title: "Delete") {
@@ -41,12 +42,11 @@ extension Messages {
                 messagesSignal.value.remove(at: i)
             }
             let deleteAlert = Alert(title: "Delete message", message: "Are you sure you want to delete the message?", actions: cancel, delete)
-            
+
             return Presentation(MessageDetails(message: message, delete: Presentation(deleteAlert)))
-        }    
+        }
     }
 }
-
 
 let messagesJSON = """
 [
@@ -60,4 +60,3 @@ let testMessages: [Message] = {
     let decoder = JSONDecoder()
     return try! decoder.decode([Message].self, from: messagesJSON.data(using: .utf8)!)
 }()
-

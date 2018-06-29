@@ -9,17 +9,16 @@
 import UIKit
 import Flow
 
-
 public extension PresentationOptions {
     /// Pushing and popping on a navigation controller defaults to batch subsequent operation from the same run-loop togeher. This options turnes that of.
     public static let disablePushPopCoalecing = PresentationOptions()
-    
+
     /// Automatically pop a pushed view controller once the presentation completes.
     public static let autoPop = PresentationOptions()
-    
+
     /// Any succeedingly pushed view controllers (pushed after itself) will be popped when `self` is cancelled or completed.
     public static let autoPopSuccessors = PresentationOptions()
-    
+
     /// Equivalent to [.autoPop, .autoPopSuccessors]
     public static let autoPopSelfAndSuccessors: PresentationOptions = [.autoPop, .autoPopSuccessors]
 }
@@ -28,14 +27,14 @@ extension UINavigationController: PresentingViewController {
     public func present(_ vc: UIViewController, options: PresentationOptions) -> PresentingViewController.Result {
         let dismissFuture = vc.installDismissButton().future.map { throw PresentError.dismissed }
         let pushFuture = self.pushViewController(vc, options: options)
-        
+
         let dismiss = { () -> Future<()> in
             var futures = [Future<()>]()
             let nc = (vc.navigationController ?? self)
             if options.contains(.autoPop) {
                 futures.append(nc.popViewController(vc, options: options))
             }
-            
+
             if let index = nc.viewControllers.index(of: vc), options.contains(.autoPopSuccessors) {
                 for vc in nc.viewControllers.suffix(from: index).dropFirst() {
                     futures.append(nc.popViewController(vc, options: options))
@@ -43,7 +42,7 @@ extension UINavigationController: PresentingViewController {
             }
             return join(futures).toVoid()
         }
-        
+
         return (Flow.select(dismissFuture, or: pushFuture).toVoid(), dismiss)
     }
 }
@@ -55,24 +54,24 @@ public extension UINavigationController {
     /// Push `viewController` onto `self` and return a future that completes once the animation completes.
     @discardableResult
     func pushViewController(_ viewController: UIViewController, options: PresentationOptions) -> Future<()> {
-        return Future { c in
-            let pp = PushPoper(vc: viewController, animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing)) {
-                c($0)
+        return Future { completion in
+            let pushPoper = PushPoper(vc: viewController, animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing)) {
+                completion($0)
             }
-            self.append(pp)
-            return pp.bag
+            self.append(pushPoper)
+            return pushPoper.bag
         }
     }
-    
+
     /// Pop `viewController` from `self` and return a future that completes once the animation completes.
     @discardableResult
     func popViewController(_ viewController: UIViewController, options: PresentationOptions) -> Future<()> {
-        return Future { c in
-            let pp = PushPoper(vc: viewController, animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing), isPopping: true) { _ in
-                c(.success)
+        return Future { completion in
+            let pushPoper = PushPoper(vc: viewController, animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing), isPopping: true) { _ in
+                completion(.success)
             }
-            self.append(pp)
-            return pp.bag
+            self.append(pushPoper)
+            return pushPoper.bag
         }
     }
 }
@@ -87,7 +86,7 @@ private class PushPoper: NSObject {
     }
     let isPopping: Bool
     let bag = DisposeBag()
-    
+
     init(vc: UIViewController, animated: Bool, disableCoalecing: Bool = false, isPopping: Bool = false, onComplete: @escaping (Result<()>) -> ()) {
         self.vc = vc
         self.animated = animated
@@ -107,13 +106,13 @@ private extension UINavigationController {
         get { return associatedValue(forKey: &pushPopersKey, initial: []) }
         set { setAssociatedValue(newValue, forKey: &pushPopersKey) }
     }
-    
+
     func append(_ pushPoper: PushPoper) {
-        if let i = pushPopers.index(where: { $0.vc == pushPoper.vc && !$0.isPopping }) , pushPoper.isPopping {
+        if let i = pushPopers.index(where: { $0.vc == pushPoper.vc && !$0.isPopping }), pushPoper.isPopping {
             pushPopers.remove(at: i)
             return
         }
-        
+
         pushPopers.append(pushPoper)
         if (pushPoper.disableCoalecing || self.viewControllers.isEmpty) { // not coalescing if no viewcontroller is set yet, in order to not display an empty navigation controller
             self.processPushPopers()
@@ -123,21 +122,21 @@ private extension UINavigationController {
             }
         }
     }
-    
+
     func processPushPopers() {
         guard !pushPopers.isEmpty else { return }
-        
+
         var vcs = viewControllers
-        
+
         var animated = false
-        for pp in pushPopers {
-            animated = animated || pp.animated
-            if pp.isPopping {
-                _ = vcs.index(of: pp.vc).map { vcs.remove(at: $0) }
+        for pushPoper in pushPopers {
+            animated = animated || pushPoper.animated
+            if pushPoper.isPopping {
+                _ = vcs.index(of: pushPoper.vc).map { vcs.remove(at: $0) }
             } else {
-                guard !vcs.contains(pp.vc) else {
-                    pp.onComplete(.failure(PresentError.alreadyPresented))
-                    if let i = pushPopers.index(of: pp) {
+                guard !vcs.contains(pushPoper.vc) else {
+                    pushPoper.onComplete(.failure(PresentError.alreadyPresented))
+                    if let i = pushPopers.index(of: pushPoper) {
                         pushPopers.remove(at: i)
                     }
                     continue
@@ -145,10 +144,10 @@ private extension UINavigationController {
                 if let lastVC = vcs.last, let item = customNavigationBackButtonWithTitle(lastVC.title ?? "") {
                     lastVC.navigationItem.backBarButtonItem = item
                 }
-                vcs.append(pp.vc)
+                vcs.append(pushPoper.vc)
             }
         }
-        
+
         if vcs.count == viewControllers.count {
             animated = false
         } else if vcs.count < viewControllers.count {
@@ -156,41 +155,40 @@ private extension UINavigationController {
         } else if vcs.count > viewControllers.count {
             animated = animated && viewControllers.count > 0
         }
-        
-        if let t = transitionCoordinator, !animated {
+
+        if let coordinator = transitionCoordinator, !animated {
             // If we update the vcs while the nc (self) is being presented, the nc gets lost and controls in the the presented vcs can't become first responders.
             // Moving presentation inside transition animate fixes issue.
-            let willAnimate = t.animate(alongsideTransition: { context in
+            let willAnimate = coordinator.animate(alongsideTransition: { context in
                 let wasEnabled = UIView.areAnimationsEnabled
                 UIView.setAnimationsEnabled(false)
                 self.setViewControllers(vcs, animated: false)
                 UIView.setAnimationsEnabled(wasEnabled)
             })
-            
+
             if !willAnimate { // if the animation block wont't be called, fallback to normal setting up of vcx
                 setViewControllers(vcs, animated: animated)
             }
         } else {
             setViewControllers(vcs, animated: animated)
         }
-        
-        
+
         func finalizeProcessedPushPoppers() {
-            let processedPushPopers = pushPopers.filter { pp in (pp.isPopping && !viewControllers.contains(pp.vc)) || (!pp.isPopping && viewControllers.contains(pp.vc)) }
-            pushPopers = pushPopers.filter { pp in !processedPushPopers.contains(pp) }
-            
-            for pp in processedPushPopers {
-                animated = animated || pp.animated
-                if pp.isPopping {
-                    pp.onComplete(.success)
+            let processedPushPopers = pushPopers.filter { pushPoper in (pushPoper.isPopping && !viewControllers.contains(pushPoper.vc)) || (!pushPoper.isPopping && viewControllers.contains(pushPoper.vc)) }
+            pushPopers = pushPopers.filter { pushPoper in !processedPushPopers.contains(pushPoper) }
+
+            for pushPoper in processedPushPopers {
+                animated = animated || pushPoper.animated
+                if pushPoper.isPopping {
+                    pushPoper.onComplete(.success)
                 } else {
-                    listenOnPop(for: pp)
+                    listenOnPop(for: pushPoper)
                 }
             }
         }
-        
+
         finalizeProcessedPushPoppers()
-        
+
         guard vcs == viewControllers else { // transition in progress let's try again next run-loop
             DispatchQueue.main.async {
                 finalizeProcessedPushPoppers()
@@ -199,15 +197,15 @@ private extension UINavigationController {
             return
         }
     }
-    
-    func listenOnPop(for pp: PushPoper) {
-        popSignalPushPopers.append(Weak(pp))
-        pp.bag += popViewControllerSignal.filter { $0 == pp.vc }.onFirstValue { _ in
-            pp.vc.navigationItem.popCallbacker.callAll(with: ())
-            pp.onComplete(.success)
+
+    func listenOnPop(for pushPoper: PushPoper) {
+        popSignalPushPopers.append(Weak(pushPoper))
+        pushPoper.bag += popViewControllerSignal.filter { $0 == pushPoper.vc }.onFirstValue { _ in
+            pushPoper.vc.navigationItem.popCallbacker.callAll(with: ())
+            pushPoper.onComplete(.success)
         }
     }
-    
+
     var popSignalPushPopers: [Weak<PushPoper>] {
         get { return associatedValue(forKey: &popSignalPushPopersKey, initial: []) }
         set { setAssociatedValue(newValue, forKey: &popSignalPushPopersKey) }
@@ -217,14 +215,14 @@ private extension UINavigationController {
 extension UINavigationController {
     func transferViewControllers(from: UINavigationController) {
         viewControllers += from.viewControllers
-        for pp in from.popSignalPushPopers.compactMap({ $0.value }) {
-            let onComplete = pp._onComplete
-            pp.bag.dispose()
-            pp._onComplete = onComplete
-            pp.bag += {
+        for pushPoper in from.popSignalPushPopers.compactMap({ $0.value }) {
+            let onComplete = pushPoper._onComplete
+            pushPoper.bag.dispose()
+            pushPoper._onComplete = onComplete
+            pushPoper.bag += {
                 _ = onComplete // hold on, keeping reference of onComplete inside the bag to avoid potential retain cycles  (PushPoper > onComplete > UINavigationController > PushPoper)
             }
-            listenOnPop(for: pp)
+            listenOnPop(for: pushPoper)
         }
         from.popSignalPushPopers.removeAll()
     }

@@ -9,7 +9,6 @@
 import UIKit
 import Flow
 
-
 /// Options for configuring different aspects of a presentation.
 ///
 /// - Note: Not all options makes sense for all presentation styles.
@@ -26,7 +25,7 @@ public struct PresentationOptions: OptionSet {
 public extension PresentationOptions {
     /// Captures any current first responder just before a presentation and restores it after the presentation is done.
     static let restoreFirstResponder = PresentationOptions()
-  
+
     /// Embed the presented view contrroller in a navigation controller unless the presenting controller is already in a navigation controller.
     static let embedInNavigationController = PresentationOptions()
 
@@ -60,7 +59,7 @@ private var nextPresentationOptions = 0
 public extension PresentationOptions {
     /// Boolean indicating whether animation temporary disabled.
     static var animated: Bool { return performUnanimatedCount == 0 }
-    
+
     /// Boolean indicating whether a presentation style should animate or not.
     var animated: Bool { return performUnanimatedCount == 0 && !contains(.unanimated) }
 }
@@ -88,7 +87,7 @@ public extension UIViewController {
         nc.viewControllers = [ self ]
         return nc
     }
-    
+
     /// Helper used by presentation styles to implement the option `.restoreFirstResponder`
     func restoreFirstResponder(_ options: PresentationOptions) -> Disposable {
         guard options.contains(.restoreFirstResponder) else { return NilDisposer() }
@@ -102,36 +101,30 @@ public extension UIViewController {
 
 extension UIResponder {
     @nonobjc var firstResponder: UIResponder? {
-        // Send a message will a nil responder will walk the responder chain an call __findFirstResponder on responders that participate in the responder chain. If the participant is not the firstResponder continue with its children if the participant is a view.
+        // Send a message will a nil responder will walk the responder chain an call findFirstResponder on responders that participate in the responder chain. If the participant is not the firstResponder continue with its children if the participant is a view.
         // https://stackoverflow.com/questions/1823317/get-the-current-first-responder-without-using-a-private-api
-        
+
         _currentFirstResponder = nil
-        UIApplication.shared.sendAction(#selector(UIResponder.__findFirstResponder), to: self, from: nil, for: nil)
-        
+        UIApplication.shared.sendAction(#selector(UIResponder.findFirstResponder), to: self, from: nil, for: nil)
+
         guard let first = _currentFirstResponder, !first.isFirstResponder else {
             return _currentFirstResponder
         }
-        
+
         let subviews = (first as? UIView)?.subviews ?? (first as? UIViewController).map { [$0.view] } ?? []
-        
+
         for view in subviews {
-            if let v = view.firstResponder {
-                return v
+            if let view = view.firstResponder {
+                return view
             }
         }
-        
+
         return nil
     }
-    
-    @objc func __findFirstResponder(sender: AnyObject) {
+
+    @objc func findFirstResponder(sender: AnyObject) {
         _currentFirstResponder = self
     }
 }
 
-private var _currentFirstResponder: UIResponder? = nil
-
-
-
-
-
-
+private var _currentFirstResponder: UIResponder?

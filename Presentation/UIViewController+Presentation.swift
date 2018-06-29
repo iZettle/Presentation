@@ -25,31 +25,31 @@ public extension UIViewController {
                 self.present(vc, style: style, options: options, function: function)
             }
         }
-        
-        return Future { _completion in
+
+        return Future { futureCompletion in
             let bag = DisposeBag()
-            
+
             let responder = self.restoreFirstResponder(options)
-            
+
             let onDismissedBag = DisposeBag()
             onDismissedBag += responder
-            
+
             var didComplete = false
             var dismiss = { Future() }
             func completion(_ result: Result<Value>) {
                 guard !didComplete else { return }
                 didComplete = true
-                
+
                 let complete = {
                     switch result {
                     case .success(let result):
-                        log("\(self.presentationDescription) did end presentation of: \(vc.presentationDescription) with result: \(result)")
+                        log("\(self.presentationDescription) did end presentation of: \(vc.presentationDescription)", data: "\(result)")
                     case .failure(let error):
-                        log("\(self.presentationDescription) did end presentation of: \(vc.presentationDescription) with error: \(error)")
+                        log("\(self.presentationDescription) did end presentation of: \(vc.presentationDescription)", data: "\(error)")
                     }
-                    _completion(result)
+                    futureCompletion(result)
                 }
-                
+
                 if options.contains(.dontWaitForDismissAnimation) {
                     dismiss().always(onDismissedBag.dispose)
                     complete()
@@ -57,7 +57,7 @@ public extension UIViewController {
                     dismiss().always(onDismissedBag.dispose).always(complete)
                 }
             }
-            
+
             bag += {
                 guard !didComplete else { return }
                 log("\(self.presentationDescription) did cancel presentation of: \(vc.presentationDescription)")
@@ -70,7 +70,7 @@ public extension UIViewController {
             log("\(self.presentationDescription) will '\(style.name)' present: \(vc.presentationDescription)")
 
             bag += future.onResult(completion)
-            
+
             guard !didComplete else {
                 // future completed before starting presentation, so just skip it.
                 return bag
@@ -79,10 +79,10 @@ public extension UIViewController {
             #if DEBUG
             self.trackMemoryLeaks(vc, whenDisposed: onDismissedBag)
             #endif
-            
+
             let (result, dismisser) = style.present(vc, from: self, options: options)
             dismiss = dismisser
-            
+
             bag += result.onError { error in
                 if case PresentError.presentationNotPossible = error {
                     assertionFailure("Could not successfully present view controller")
@@ -91,22 +91,22 @@ public extension UIViewController {
             }.onValue {
                 completion(.failure(PresentError.dismissed))
             }
-            
+
             return bag
         }
     }
-    
+
     /// Presents `viewController` on `self` and returns a future that will complete in the case of an error.
     /// - Parameter configure: Called before presentation allowing configuration of the view controller as well as adding disposables to the provided bag that will be dipsosed once dismissed.
     /// - Note: The presentation can be aborted by cancelling the returned future.
     @discardableResult
-    func present<VC: UIViewController>(_ viewController: VC, style: PresentationStyle = .default, options: PresentationOptions = .defaults, configure: @escaping (VC, DisposeBag) -> () = { _,_  in }) -> Future<()> {
+    func present<VC: UIViewController>(_ viewController: VC, style: PresentationStyle = .default, options: PresentationOptions = .defaults, configure: @escaping (VC, DisposeBag) -> () = { _, _  in }) -> Future<()> {
         return self.present(viewController, style: style, options: options) { vc, bag -> Future<()> in
             configure(vc, bag)
             return Future { _ in bag }
         }
     }
-    
+
     /// Presents `viewController` on `self` and returns a signal that will signal the values signaled from `function`'s returned signal.
     /// - Parameter function: Called before presentation allowing configuration of the view controller as well as adding disposables to the provided bag that will be dipsosed once dismissed. Should return a signal.
     /// - Note: The presentation will not start until the returned signal has at least one listener.
@@ -128,10 +128,10 @@ public extension UIViewController {
 public enum PresentError: Error {
     // The presentation was dismissed.
     case dismissed
-    
+
      // The presentation was not possible.
     case presentationNotPossible
-    
+
     // The same view controller cannot be simultaneously presented more than one at the time.
     case alreadyPresented
 
@@ -145,13 +145,13 @@ public extension UIViewController {
         get { return associatedValue(forKey: &debugPresentationTitleKey) }
         set { setAssociatedValue(newValue, forKey: &debugPresentationTitleKey) }
     }
-    
+
     /// Arguments used when logging presentations
     var debugPresentationArguments: [String: CustomStringConvertible?] {
         get { return associatedValue(forKey: &debugPresentationArgumentsKey, initial: [:]) }
         set { setAssociatedValue(newValue, forKey: &debugPresentationArgumentsKey) }
     }
-    
+
     /// Setup `self`'s debug title and arguments to that of `viewController`.
     func transferDebugPresentationInfo(from viewController: UIViewController) {
         debugPresentationTitle = viewController.presentationTitle
@@ -160,8 +160,8 @@ public extension UIViewController {
 }
 
 /// Customization point to for presentation logging. Defaults to using `print()`
-public var presentableLogPresentation: (_ message: @escaping @autoclosure () -> String, _ file: String, _ function: String, _ line: Int) -> () = { (message: () -> String, file, function, line) in
-    print("\(file): \(function)(\(line)) - \(message())")
+public var presentableLogPresentation: (_ message: @escaping @autoclosure () -> String, _ data: @escaping @autoclosure () -> String?, _ file: String, _ function: String, _ line: Int) -> () = { (message: () -> String, data: () -> String?, file, function, line) in
+    print("\(file): \(function)(\(line)) - \(message()), data: \(data() ?? "")")
 }
 
 public extension UIViewController {
@@ -178,7 +178,7 @@ public extension UIViewController {
         if willEnqueue {
             log("\(fromDescription) will enqueue modal presentation of \(vc.presentationDescription)")
         }
-        
+
         let dismissedCallbacker = Callbacker<Result<()>>()
         let resultCallbacker = Callbacker<Result<()>>()
         var hasBeenCancelled = false
@@ -186,36 +186,38 @@ public extension UIViewController {
             guard !hasBeenCancelled else {
                 throw PresentError.presentationNotPossible
             }
-            
+
             guard from.presentedViewController == nil else {
                 resultCallbacker.callAll(with: .failure(PresentError.presentationBlockedByOtherPresentation))
                 throw PresentError.presentationBlockedByOtherPresentation
             }
-            
+
             if willEnqueue {
                 log("\(fromDescription) will dequeue modal presentation of \(vc.presentationDescription)")
             }
-            
+
             from.present(vc, animated: animated)
-            
-            let f = callback().onResult(resultCallbacker.callAll)
-            return Future(callbacker: dismissedCallbacker).always(f.cancel) // Block queue until dismissed.
+
+            let future = callback().onResult(resultCallbacker.callAll)
+            return Future(callbacker: dismissedCallbacker).always(future.cancel) // Block queue until dismissed.
         }
-        
+
         let future = Future(callbacker: resultCallbacker).onCancel {
             hasBeenCancelled = true
         }
-        
+
         let dismiss = { // Don't allow dismiss until presented
             vc.dismiss(animated: animated).onResult(dismissedCallbacker.callAll)
         }
-        
+
         return (future, dismiss)
     }
 }
 
-func log(_ message: @escaping @autoclosure () -> String, file: String = #file, function: String = #function, line: Int = #line) {
-    presentableLogPresentation(message, file, function, line)
+func log(_ message: @escaping @autoclosure () -> String,
+         data: @escaping @autoclosure () -> String? = nil,
+         file: String = #file, function: String = #function, line: Int = #line) {
+    presentableLogPresentation(message, data, file, function, line)
 }
 
 var unitTestDisablePresentWaitForWindow = false
@@ -227,9 +229,9 @@ extension UIViewController {
     var presentationTitle: String {
         return debugPresentationTitle ?? title ?? self.title ?? "\(type(of: self))"
     }
-    
+
     var presentationDescription: String {
-        let arguments = debugPresentationArguments.compactMap { k, v in v.map { "\(k): \($0)" } }.joined(separator: ", ")
+        let arguments = debugPresentationArguments.compactMap { key, value in value.map { "\(key): \($0)" } }.joined(separator: ", ")
         guard !arguments.isEmpty else { return presentationTitle }
         return presentationTitle + "(\(arguments))"
     }
@@ -242,31 +244,28 @@ private extension UIViewController {
     }
 }
 
-
 extension UIViewController {
     @discardableResult
     func present(_ vc: UIViewController, animated: Bool) -> Future<()> {
-        return Future { c in
-            self.present(vc, animated: animated, completion: { c(.success) })
+        return Future { completion in
+            self.present(vc, animated: animated, completion: { completion(.success) })
             return NilDisposer()
         }
     }
-    
+
     @discardableResult
     func dismiss(animated: Bool) -> Future<()> {
-        return Future<()> { c in
-            if let p = self.presentingViewController, p.presentedViewController == self {
-                p.dismiss(animated: animated, completion: {
-                    c(.success)
+        return Future<()> { completion in
+            if let presentingViewController = self.presentingViewController, presentingViewController.presentedViewController == self {
+                presentingViewController.dismiss(animated: animated, completion: {
+                    completion(.success)
                 })
             } else {
-                c(.success) // Alerts dismisses themselves
+                completion(.success) // Alerts dismisses themselves
             }
             return NilDisposer()
         }
     }
 }
 
-
 private var modalQueueKey = false
-

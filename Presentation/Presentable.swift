@@ -9,7 +9,6 @@
 import UIKit
 import Flow
 
-
 /// Conforming types can be materialized to a `Matter` and a `Result`.
 ///
 /// A conforming types typically contains information needed to construct a
