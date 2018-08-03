@@ -32,7 +32,12 @@ class DataSource<T>: NSObject, UITableViewDataSource {
 }
 
 class Delegate: NSObject, UITableViewDelegate {
-    let callbacker = Callbacker<IndexPath>()
+    private let callbacker = Callbacker<IndexPath>()
+    let didSelect: Signal<IndexPath>
+
+    override init() {
+        didSelect = Signal<IndexPath>(callbacker: callbacker)
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         callbacker.callAll(with: indexPath)
@@ -49,12 +54,11 @@ extension UITableView {
     func configure<T>(dataSource: DataSource<T>, delegate: Delegate) -> Signal<T> {
         self.dataSource = dataSource
         self.delegate = delegate
-        let selectSignal = Signal(callbacker: delegate.callbacker)
         let bag = DisposeBag()
         bag.hold(dataSource, delegate)
 
         let result = Signal<T> { callback in
-            bag += selectSignal.onValue { callback(dataSource.option(at: $0)) }
+            bag += delegate.didSelect.onValue { callback(dataSource.option(at: $0)) }
             return bag
         }
         return result
