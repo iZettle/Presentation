@@ -9,12 +9,13 @@
 import Flow
 import UIKit
 
-class DataSource<T: CustomStringConvertible>: NSObject, UITableViewDataSource {
+class DataSource<T>: NSObject, UITableViewDataSource {
     let options: [T]
-    private let cellIdentifier = "OptionCell"
+    let cellForIndexPath: (UITableView, IndexPath, T) -> UITableViewCell
 
-    init(options: [T]) {
+    init(options: [T], cellForIndexPath: @escaping (UITableView, IndexPath, T) -> UITableViewCell) {
         self.options = options
+        self.cellForIndexPath = cellForIndexPath
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -22,13 +23,7 @@ class DataSource<T: CustomStringConvertible>: NSObject, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
-            ?? UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-
-        let option = self.option(at: indexPath)
-        cell.textLabel?.text = option.description
-        return cell
+        return cellForIndexPath(tableView, indexPath, option(at: indexPath))
     }
 
     func option(at indexPath: IndexPath) -> T {
@@ -63,5 +58,17 @@ extension UITableView {
             return bag
         }
         return result
+    }
+}
+
+extension DataSource where T: CustomStringConvertible {
+    convenience init(options: [T]) {
+        self.init(options: options) { tableView, indexPath, option in
+            let cellIdentifier = "OptionCell"
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
+
+            cell.textLabel?.text = option.description
+            return cell
+        }
     }
 }
