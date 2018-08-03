@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
+        // Always show memory leaks alerts in examples
+        UserDefaults.standard.set(true, forKey: enabledDisplayAlertOnMemoryLeaksKey)
+
         let window = UIWindow(frame: UIScreen.main.bounds)
         bag += window.present(AppFlow())
 

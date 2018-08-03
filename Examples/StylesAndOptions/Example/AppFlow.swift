@@ -48,30 +48,39 @@ extension AppFlow: Presentable {
         let bag = DisposeBag()
 
         let containerController = createContainer()
-        let installDismiss = dismiss(UIBarButtonItem(title: "Cancel"))
+        let withDismiss = installDismiss(UIBarButtonItem(title: "Cancel"))
 
-        bag += containerController
-            .present(ChooseStyle(), options: [.defaults, .showInMaster])
-            .onValue { style, preferredPresenter, alertToPresent in
-
-                containerController
-                    .present(Presentation(ChoosePresentationOptions(), style: .modal, options: [.defaults, .showInMaster], configure: installDismiss)).future
-                    .onValue { options in
-                        let presentation: EitherPresentation<TapToDismiss, Alert<()>>
-                        if let alertToPresent = alertToPresent {
-                            presentation = .right(Presentation(alertToPresent,
-                                                               style: style,
-                                                               options: options,
-                                                               configure: installDismiss))
-                        } else {
-                            presentation = .left(Presentation(TapToDismiss(),
-                                                              style: style,
-                                                              options: options,
-                                                              configure: style.name == "default" ? { _,_  in } : installDismiss))
-                        }
-                        (preferredPresenter ?? containerController).present(presentation)
-                }
+        let chooseOptions: () -> Future<PresentationOptions> = {
+            let choosePresentationOptions = Presentation(ChoosePresentationOptions(), style: .modal, configure: withDismiss)
+            return containerController.present(choosePresentationOptions).future
         }
+
+        typealias ShowPresentationOrAlert = (PresentationStyle, PresentationOptions, UIViewController?, Alert<()>?) -> Future<()>
+        let showDismissablePresentationOrAlert: ShowPresentationOrAlert = { style, options, preferredPresenter, alertToPresent in
+            let presentation: EitherPresentation<TapToDismiss, Alert<()>>
+
+            if let alertToPresent = alertToPresent {
+                presentation = .right(Presentation(alertToPresent,
+                                                   style: style,
+                                                   options: options,
+                                                   configure: withDismiss))
+            } else {
+                presentation = .left(Presentation(TapToDismiss(),
+                                                  style: style,
+                                                  options: options,
+                                                  configure: style.name == "default" ? { _,_  in } : withDismiss))
+            }
+            return (preferredPresenter ?? containerController).present(presentation).toVoid()
+        }
+
+        let styleWithContext = containerController.present(ChooseStyle(), options: [.defaults, .showInMaster])
+
+        bag += styleWithContext.onValueDisposePrevious { style, preferredPresenter, alertToPresent in
+            return chooseOptions().onValue { options in
+                bag += showDismissablePresentationOrAlert(style, options, preferredPresenter, alertToPresent).disposable
+            }.disposable
+        }
+
         return (containerController, bag)
     }
 }
