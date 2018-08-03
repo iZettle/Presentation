@@ -45,13 +45,13 @@ class Delegate: NSObject, UITableViewDelegate {
 }
 
 extension UITableViewController {
-    func configure<T>(dataSource: DataSource<T>, delegate: Delegate) -> Signal<T> {
+    func configure<T>(dataSource: DataSource<T>, delegate: Delegate = Delegate()) -> Signal<T> {
         return self.tableView.configure(dataSource: dataSource, delegate: delegate)
     }
 }
 
 extension UITableView {
-    func configure<T>(dataSource: DataSource<T>, delegate: Delegate) -> Signal<T> {
+    func configure<T>(dataSource: DataSource<T>, delegate: Delegate = Delegate()) -> Signal<T> {
         self.dataSource = dataSource
         self.delegate = delegate
         let bag = DisposeBag()

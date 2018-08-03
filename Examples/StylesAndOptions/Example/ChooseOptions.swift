@@ -48,7 +48,7 @@ extension ChoosePresentationOptions: Presentable {
         let viewController = UITableViewController()
         viewController.title = "Presentation Options"
 
-        let result = viewController.configure(dataSource: createDataSource(), delegate: Delegate())
+        let result = viewController.configure(dataSource: createDataSource())
 
         return (viewController, result.map { $0.value } )
     }
