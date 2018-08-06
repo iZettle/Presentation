@@ -14,32 +14,30 @@ struct NamedPresentationOptions {
     let value: PresentationOptions
 }
 
-struct ChoosePresentationOptions {
-    private let createDataSource: () -> DataSource<NamedPresentationOptions>
+struct ChoosePresentationOptions { }
 
-    init() {
-        createDataSource = {
-            let presentationOptions: [(String, PresentationOptions)] = [
-                ("Default", .defaults),
-                ("Embed In Navigation Controller", .embedInNavigationController),
-                ("Dont Wait For Dismiss Animation", .dontWaitForDismissAnimation),
-                ("Unanimated", .unanimated),
-                ("Restore first responder", .restoreFirstResponder),
+extension PresentationOptions {
+    static func namedOptionsDataSource() -> DataSource<NamedPresentationOptions> {
+        let presentationOptions: [(String, PresentationOptions)] = [
+            ("Default", .defaults),
+            ("Embed In Navigation Controller", .embedInNavigationController),
+            ("Dont Wait For Dismiss Animation", .dontWaitForDismissAnimation),
+            ("Unanimated", .unanimated),
+            ("Restore first responder", .restoreFirstResponder),
+            
+            ("Show In Master (for split v)", .showInMaster),
+            ("Fail On Block (for modal/popover vc)", .failOnBlock),
 
-                ("Show In Master (for split v)", .showInMaster),
-                ("Fail On Block (for modal/popover vc)", .failOnBlock),
+            ("Tap Outside To Dismiss (for modal/sheet vc)", .tapOutsideToDismiss),
 
-                ("Tap Outside To Dismiss (for modal/sheet vc)", .tapOutsideToDismiss),
-
-                ("Disable Push Pop Coalecing (for navigation vc)", .disablePushPopCoalecing),
-                ("Auto Pop (for navigation vc)", .autoPop),
-                ("Auto Pop Successors (for navigation vc)", .autoPopSuccessors),
-                ("Auto Pop Self And Successors (for navigation vc)", .autoPopSelfAndSuccessors),
-                ]
-            return DataSource(options: presentationOptions.map {
-                NamedPresentationOptions(name: $0.0, value: $0.1)
-            })
-        }
+            ("Disable Push Pop Coalecing (for navigation vc)", .disablePushPopCoalecing),
+            ("Auto Pop (for navigation vc)", .autoPop),
+            ("Auto Pop Successors (for navigation vc)", .autoPopSuccessors),
+            ("Auto Pop Self And Successors (for navigation vc)", .autoPopSelfAndSuccessors),
+            ]
+        return DataSource(options: presentationOptions.map {
+            NamedPresentationOptions(name: $0.0, value: $0.1)
+        })
     }
 }
 
@@ -48,7 +46,7 @@ extension ChoosePresentationOptions: Presentable {
         let viewController = UITableViewController()
         viewController.title = "Presentation Options"
 
-        let result = viewController.configure(dataSource: createDataSource())
+        let result = viewController.configure(dataSource: PresentationOptions.namedOptionsDataSource())
 
         return (viewController, result.map { $0.value } )
     }

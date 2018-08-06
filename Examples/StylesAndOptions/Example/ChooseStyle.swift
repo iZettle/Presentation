@@ -9,25 +9,27 @@
 import Flow
 import Presentation
 
-struct ChooseStyle {
-    private let createDataSource: (UIView) -> DataSource<PresentationStyle>
+struct ChooseStyle { }
 
-    init() {
-        createDataSource = { view in
-            let styles: [PresentationStyle] = [
-                .default,
-                .modal,
-                .embed(in: view),
-                .invisible,
-                .sheet(from: view, rect: nil),
-                .popover(from: view),
+extension PresentationStyle {
+    static func createStylesDataSource(containerForEmbedStyle containerView: UIView,
+                                       sourceForPartialPresentations: UIView? = nil) -> DataSource<PresentationStyle> {
+        let sourceView = sourceForPartialPresentations ?? containerView
+        let styles: [PresentationStyle] = [
+            .default,
+            .modal,
+            .embed(in: containerView),
+            .invisible,
+            .sheet(from: sourceView, rect: nil),
+            .popover(from: sourceView),
             ]
-            return DataSource(options: styles)
-        }
+        return DataSource(options: styles)
     }
 }
 
 extension ChooseStyle: Presentable {
+    // Some presentation styles require additional setup, for example `.sheet` can only be used for alerts
+    // In this particular example the style chooser creates the styles and provides the additional info if needed
     typealias ChooseStyleResult = (PresentationStyle, preferredPresenter: UIViewController?, alertToPresent: Alert<()>?)
     
     func materialize() -> (UIViewController, Signal<ChooseStyleResult>) {
@@ -45,11 +47,12 @@ extension ChooseStyle: Presentable {
 
         viewController.view = content
 
-        let result = tableView.configure(dataSource: createDataSource(containerForEmbeddingViews), delegate: Delegate())
+        let dataSource = PresentationStyle.createStylesDataSource(containerForEmbedStyle: containerForEmbeddingViews)
+        let result = tableView.configure(dataSource: dataSource)
         return (viewController, result.map { style in
-            if style.name == "embed" {
+            if style.name == PresentationStyle.embed(in: nil).name {
                 return (style, viewController, nil)
-            } else if style.name == "sheet" {
+            } else if style.name == PresentationStyle.sheet().name {
                 let alertAction = Alert<()>.Action(title: "OK", action: { })
                 return (style, nil, Alert(message: "Test alert", actions: [alertAction]))
             } else {
