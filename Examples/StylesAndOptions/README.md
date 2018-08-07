@@ -8,4 +8,4 @@ The app doesn't provide any interesting functionality and is not designed to be 
 On the other hand its implementation can be a useful reference for seeing how to combine results from multiple presentations and what happens if they are disposables and get disposed (check the [AppFlow](Example/AppFlow.swift)).
 
 Note:
-We have enabled the debug option to display alerts on memory leaks so if a leak has been introduced it might cause test failures (since the alert will automatically be presented and block the UI interactions).
+We have enabled the debug option to display alerts on memory leaks so if a leak had been introduced it might cause test failures (since the alert will automatically be presented and block the UI interactions).
