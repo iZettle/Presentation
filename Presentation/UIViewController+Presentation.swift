@@ -169,10 +169,15 @@ public extension UIViewController {
     /// - Parameter callback: Will be called once the presention is possible, where the returned future will complete the presentation.
     /// - Note: Helper for PresentationStyle implementations helper for queueing up modal presentations if already presenting.
     /// - Note: If a modal presention is already ongoing the presentation will be queued up.
-    func modallyPresentQueued(_ viewController: UIViewController, animated: Bool, _ callback: @escaping () -> Future<()>) -> PresentingViewController.Result {
+    func modallyPresentQueued(_ viewController: UIViewController, options: PresentationOptions, _ callback: @escaping () -> Future<()>) -> PresentingViewController.Result {
         let vc = viewController
         let from = targetViewController(forAction: #selector(UIViewController.present(_:animated:completion:)), sender: nil) ?? self
         let queue = from.associatedValue(forKey: &modalQueueKey, initial: FutureQueue())
+
+        guard (from.presentedViewController == nil && queue.isEmpty) || !options.contains(.failOnBlock) else {
+            return (Future(error: PresentError.presentationBlockedByOtherPresentation), { Future() })
+        }
+
         let willEnqueue = !queue.isEmpty
         let fromDescription = from == self ? presentationDescription : "\(self.presentationDescription)(\(from.presentationDescription))"
         if willEnqueue {
@@ -196,7 +201,7 @@ public extension UIViewController {
                 log("\(fromDescription) will dequeue modal presentation of \(vc.presentationDescription)")
             }
 
-            from.present(vc, animated: animated)
+            from.present(vc, animated: options.animated)
 
             let future = callback().onResult(resultCallbacker.callAll)
             return Future(callbacker: dismissedCallbacker).always(future.cancel) // Block queue until dismissed.
@@ -207,10 +212,15 @@ public extension UIViewController {
         }
 
         let dismiss = { // Don't allow dismiss until presented
-            vc.dismiss(animated: animated).onResult(dismissedCallbacker.callAll)
+            vc.dismiss(animated: options.animated).onResult(dismissedCallbacker.callAll)
         }
 
         return (future, dismiss)
+    }
+
+    @available(*, deprecated, message: "use `modallyPresentQueued` passing `options` instead")
+    func modallyPresentQueued(_ viewController: UIViewController, animated: Bool, _ callback: @escaping () -> Future<()>) -> PresentingViewController.Result {
+        return modallyPresentQueued(viewController, options: animated ? [] : .unanimated, callback)
     }
 }
 

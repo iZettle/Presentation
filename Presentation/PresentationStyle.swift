@@ -82,23 +82,21 @@ public extension PresentationStyle {
     ///   unless options contains `.failOnBlock` where the presentation will instead fail.
     static func modally(presentationStyle: UIModalPresentationStyle? = nil, transitionStyle: UIModalTransitionStyle? = nil, capturesStatusBarAppearance: Bool? = nil) -> PresentationStyle {
         return PresentationStyle(name: "modally") { viewController, from, options in
-            guard from.presentedViewController == nil || !options.contains(.failOnBlock) else {
-                throw PresentError.presentationBlockedByOtherPresentation
-            }
-
             let vc = viewController.embededInNavigationController(options)
 
             if let presentationStyle = presentationStyle {
                 vc.modalPresentationStyle = presentationStyle
             }
+
             if let transitionStyle = transitionStyle {
                 vc.modalTransitionStyle = transitionStyle
             }
+
             if let capturesStatusBarAppearance = capturesStatusBarAppearance {
                 vc.modalPresentationCapturesStatusBarAppearance = capturesStatusBarAppearance
             }
 
-            return from.modallyPresentQueued(vc, animated: options.animated) {
+            return from.modallyPresentQueued(vc, options: options) {
                 Future { completion in
                     let bag = DisposeBag()
                     bag += viewController.installDismissButton().onValue { completion(.failure(PresentError.dismissed)) }
@@ -227,15 +225,11 @@ extension UIView {
 private extension PresentationStyle {
     static func popover(from source: Either<UIView, UIBarButtonItem>, permittedDirections: UIPopoverArrowDirection) -> PresentationStyle {
         return PresentationStyle(name: "popover") { viewcontroller, from, options in
-            guard from.presentedViewController == nil || !options.contains(.failOnBlock) else {
-                throw PresentError.presentationBlockedByOtherPresentation
-            }
-
             let vc = viewcontroller.embededInNavigationController(options)
 
             vc.modalPresentationStyle = .popover
 
-            return from.modallyPresentQueued(vc, animated: options.animated) {
+            return from.modallyPresentQueued(vc, options: options) {
                 let popover = vc.popoverPresentationController
                 popover?.permittedArrowDirections = permittedDirections
 
@@ -264,7 +258,6 @@ private extension PresentationStyle {
             }
         }
     }
-
 }
 
 private class PopoverPresentationControllerDelegate: NSObject, UIPopoverPresentationControllerDelegate {
