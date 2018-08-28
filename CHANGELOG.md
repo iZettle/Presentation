@@ -1,3 +1,7 @@
+# 1.1.1
+
+- Updated modallyPresentQueued to accept an options parameter instead of animated and improved handling of `.failOnBlock`. Old version has been deprecated.
+
 # 1.1
 
 - Renamed `dismiss()` to `installDismiss()`
