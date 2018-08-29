@@ -1,4 +1,8 @@
-# 1.1
+# 1.2.0
+
+ - Updated modallyPresentQueued to accept an options parameter instead of animated and improved handling of `.failOnBlock`. Old version has been deprecated.
+
+# 1.1.0
 
 - Renamed `dismiss()` to `installDismiss()`
 - Added more configurable `modally` presentation style. E.g. `.modally(presentationStyle: .formSheet)`
