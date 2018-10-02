@@ -1,6 +1,11 @@
+# 1.2.1
+
+- Remove Carthage copy phase to avoid iTunes connect invalid Bundle error [#10]
+- Update Flow to 1.3
+
 # 1.2.0
 
- - Updated modallyPresentQueued to accept an options parameter instead of animated and improved handling of `.failOnBlock`. Old version has been deprecated.
+- Updated modallyPresentQueued to accept an options parameter instead of animated and improved handling of `.failOnBlock`. Old version has been deprecated.
 
 # 1.1.0
 
