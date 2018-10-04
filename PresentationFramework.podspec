@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "PresentationFramework"
-  s.version      = "1.2.1"
+  s.version      = "1.2.2"
   s.module_name  = "Presentation"
   s.summary      = "Driving presentations from model to result"
   s.description  = <<-DESC
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.author       = { 'iZettle AB' => 'hello@izettle.com' }
 
   s.ios.deployment_target = "9.0"
-  s.dependency 'FlowFramework', '~> 1.3'
+  s.dependency 'FlowFramework', '>= 1.3'
   
   s.source       = { :git => "https://github.com/iZettle/Presentation.git", :tag => "#{s.version}" }
   s.source_files = "Presentation/*.{swift}"

@@ -1,3 +1,7 @@
+# 1.2.2
+
+- Updated dependency on Flow to be at least `>=` instead of compatible with version `~=`.
+
 # 1.2.1
 
 - Remove Carthage copy phase to avoid iTunes connect invalid Bundle error [#10]
