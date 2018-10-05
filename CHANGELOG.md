@@ -1,3 +1,7 @@
+# 1.2.2
+
+- Bugfix: When disposing the bag passed to `present`'s `configure` closure  `present`'s returned future was not completed, hence resulting in the presented view controller being leaked.
+
 # 1.2.1
 
 - Remove Carthage copy phase to avoid iTunes connect invalid Bundle error [#10]

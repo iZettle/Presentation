@@ -61,8 +61,7 @@ public extension UIViewController {
             bag += {
                 guard !didComplete else { return }
                 log("\(self.presentationDescription) did cancel presentation of: \(vc.presentationDescription)")
-                _ = dismiss()
-                onDismissedBag.dispose()
+                completion(.failure(PresentError.dismissed))
             }
 
             let future = function(vc, bag)
