@@ -26,6 +26,13 @@ public extension PresentationOptions {
 extension UINavigationController: PresentingViewController {
     public func present(_ vc: UIViewController, options: PresentationOptions) -> PresentingViewController.Result {
         let dismissFuture = vc.installDismissButton().future.map { throw PresentError.dismissed }
+
+        if options.contains(.prefersNavigationBarHidden) {
+            self.isNavigationBarHidden = true
+        } else if options.contains(.prefersNavigationBarShown) {
+            self.isNavigationBarHidden = false
+        }
+        
         let pushFuture = self.pushViewController(vc, options: options)
 
         let dismiss = { () -> Future<()> in

@@ -46,6 +46,10 @@ public extension PresentationOptions {
 
     /// Default options used unless any options are explicity passed when presented: `[embedInNavigationController]`
     static let defaults: PresentationOptions = [embedInNavigationController]
+
+    static func prefersNavigationBarHidden(_ hidden: Bool) -> PresentationOptions {
+        return hidden ? prefersNavigationBarHidden : prefersNavigationBarShown
+    }
 }
 
 public extension PresentationOptions {
@@ -97,6 +101,14 @@ public extension UIViewController {
             responder?.becomeFirstResponder()
         }
     }
+}
+
+internal extension PresentationOptions {
+    /// Will hide the navigation bar
+    static let prefersNavigationBarHidden = PresentationOptions()
+
+    /// Will show the navigation bar
+    static let prefersNavigationBarShown = PresentationOptions()
 }
 
 extension UIResponder {
