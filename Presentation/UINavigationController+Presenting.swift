@@ -27,12 +27,20 @@ extension UINavigationController: PresentingViewController {
     public func present(_ vc: UIViewController, options: PresentationOptions) -> PresentingViewController.Result {
         let dismissFuture = vc.installDismissButton().future.map { throw PresentError.dismissed }
 
-        if options.contains(.prefersNavigationBarHidden) {
-            self.isNavigationBarHidden = true
-        } else if options.contains(.prefersNavigationBarShown) {
-            self.isNavigationBarHidden = false
+        let current = self.isNavigationBarHidden
+        self.isNavigationBarHidden = options.contains(.prefersNavigationBarHidden)
+//        if options.contains(.prefersNavigationBarHidden) {
+//            self.isNavigationBarHidden = true
+//        } else if options.contains(.prefersNavigationBarShown) {
+//            self.isNavigationBarHidden = false
+//        }
+//
+
+        let bag = DisposeBag()
+        bag += self.popViewControllerSignal.onValue { _ in
+            self.setNavigationBarHidden(true, animated: true)
         }
-        
+
         let pushFuture = self.pushViewController(vc, options: options)
 
         let dismiss = { () -> Future<()> in
@@ -47,7 +55,9 @@ extension UINavigationController: PresentingViewController {
                     futures.append(nc.popViewController(vc, options: options))
                 }
             }
-            return join(futures).toVoid()
+            return join(futures).toVoid().always {
+                bag.dispose()
+            }
         }
 
         return (Flow.select(dismissFuture, or: pushFuture).toVoid(), dismiss)
@@ -65,6 +75,7 @@ public extension UINavigationController {
             let pushPoper = PushPoper(vc: viewController, animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing)) {
                 completion($0)
             }
+
             self.append(pushPoper)
             return pushPoper.bag
         }

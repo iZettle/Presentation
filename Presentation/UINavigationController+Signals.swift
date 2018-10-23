@@ -76,6 +76,10 @@ private class NavigationControllerDelegate: NSObject, UINavigationControllerDele
     }
 
     fileprivate func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if navigationController.viewControllers.lastIndex(of: viewController)! <  (navigationController.viewControllers.count - 1) {
+            print("poping")
+            navigationController.setNavigationBarHidden(true, animated: false)
+        }
         navigationController.view.endEditing(true) // End editing to help nc in modal to reset it's size
         delegate?.navigationController?(navigationController, willShow: viewController, animated: animated)
     }
