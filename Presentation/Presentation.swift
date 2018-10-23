@@ -227,6 +227,11 @@ public extension UIViewController {
          .onCancel { presentation.onDismiss(PresentError.dismissed) }
     }
 
+    @discardableResult
+    func present<P, Value>(_ presentation: Presentation<P>) -> Future<Value> where P.Result == Future<Value>, P: PresentableFlow, P.PresentableFlowResult == P.Result {
+        return presentation.presentable.show(on: self)
+    }
+
     /// Presents `presentation` on `self` and returns a signal that will signal updates from the presentation.
     @discardableResult
     func present<P, S: SignalProvider, Value>(_ presentation: Presentation<P>) -> FiniteSignal<Value> where P.Result == S, S.Value == Value {
