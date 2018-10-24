@@ -26,6 +26,7 @@ public extension UIViewController {
             }
         }
 
+        let previous = (self as? UINavigationController)?.isNavigationBarHidden
         return Future { futureCompletion in
             let bag = DisposeBag()
 
@@ -48,6 +49,10 @@ public extension UIViewController {
                         log("\(self.presentationDescription) did end presentation of: \(vc.presentationDescription)", data: "\(error)")
                     }
                     futureCompletion(result)
+                }
+
+                if let nc = self as? UINavigationController, let hide = previous {
+                    nc.setNavigationBarHidden(hide, animated: false)
                 }
 
                 if options.contains(.dontWaitForDismissAnimation) {

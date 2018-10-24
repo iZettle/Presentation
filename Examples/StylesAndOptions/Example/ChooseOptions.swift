@@ -17,6 +17,10 @@ struct NamedPresentationOptions {
 struct ChoosePresentationOptions { }
 
 extension PresentationOptions {
+    static let custom = PresentationOptions()
+}
+
+extension PresentationOptions {
     static func namedOptionsDataSource() -> DataSource<NamedPresentationOptions> {
         let presentationOptions: [(String, PresentationOptions)] = [
             ("Default", .defaults),
@@ -34,6 +38,7 @@ extension PresentationOptions {
             ("Auto Pop (for navigation vc)", .autoPop),
             ("Auto Pop Successors (for navigation vc)", .autoPopSuccessors),
             ("Auto Pop Self And Successors (for navigation vc)", .autoPopSelfAndSuccessors),
+            ("Identifier", .custom)
             ]
         return DataSource(options: presentationOptions.map {
             NamedPresentationOptions(name: $0.0, value: $0.1)

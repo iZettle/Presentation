@@ -59,6 +59,10 @@ extension AppFlow: Presentable {
         let showDismissablePresentationOrAlert: ShowPresentationOrAlert = { style, options, preferredPresenter, alertToPresent in
             let presentation: EitherPresentation<TapToDismiss, Alert<()>>
 
+            if options.contains(.custom) {
+                return containerController.present(Presentation(TestNavigationBarHiding(), style: .modal)).toVoid()
+            }
+
             if let alertToPresent = alertToPresent {
                 presentation = .right(Presentation(alertToPresent,
                                                    style: style,
