@@ -29,12 +29,6 @@ extension UINavigationController: PresentingViewController {
 
         let current = self.isNavigationBarHidden
         self.isNavigationBarHidden = options.contains(.prefersNavigationBarHidden)
-//        if options.contains(.prefersNavigationBarHidden) {
-//            self.isNavigationBarHidden = true
-//        } else if options.contains(.prefersNavigationBarShown) {
-//            self.isNavigationBarHidden = false
-//        }
-//
 
         let bag = DisposeBag()
         bag += self.popViewControllerSignal.onValue { _ in
