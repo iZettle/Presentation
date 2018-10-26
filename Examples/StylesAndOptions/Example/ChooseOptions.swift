@@ -38,7 +38,7 @@ extension PresentationOptions {
             ("Auto Pop (for navigation vc)", .autoPop),
             ("Auto Pop Successors (for navigation vc)", .autoPopSuccessors),
             ("Auto Pop Self And Successors (for navigation vc)", .autoPopSelfAndSuccessors),
-            ("Identifier", .custom)
+            ("NavigationBar visibility preference", .custom)
             ]
         return DataSource(options: presentationOptions.map {
             NamedPresentationOptions(name: $0.0, value: $0.1)

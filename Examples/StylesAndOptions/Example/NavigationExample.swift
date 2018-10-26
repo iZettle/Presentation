@@ -19,13 +19,11 @@ struct TestNavigationBarHiding {
 extension TestNavigationBarHiding: Presentable {
     func materialize() -> (UIViewController, Disposable) {
         let nc = UINavigationController()
-//        nc.setNavigationBarHidden(true, animated: false)
 
         let bag = DisposeBag()
         bag += nc.present(Presentation(NavigationExample())).onValue {
             bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(true))).onValue {
                 bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(false))).onValue {
-                    //
                 }
             }
         }
