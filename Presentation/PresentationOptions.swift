@@ -89,6 +89,11 @@ public extension UIViewController {
         let nc = customNavigationController(options)
         nc.transferDebugPresentationInfo(from: self)
         nc.viewControllers = [ self ]
+        if options.contains(.prefersNavigationBarShown) {
+            nc.setNavigationBarHidden(false, animated: options.animated)
+        } else if options.contains(.prefersNavigationBarHidden) {
+            nc.setNavigationBarHidden(true, animated: options.animated)
+        }
         return nc
     }
 
