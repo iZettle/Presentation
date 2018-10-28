@@ -32,7 +32,7 @@ extension UINavigationController: PresentingViewController {
 
         let bag = DisposeBag()
         bag += self.popViewControllerSignal.onValue { _ in
-            self.setNavigationBarHidden(true, animated: true)
+            self.setNavigationBarHidden(current, animated: true)
         }
 
         let pushFuture = self.pushViewController(vc, options: options)
