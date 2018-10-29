@@ -21,16 +21,16 @@ extension TestNavigationBarHiding: Presentable {
         let nc = UINavigationController()
 
         let bag = DisposeBag()
-        bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(false))).onValue {
-            bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(true))).onValue {
-                bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(true))).onValue {
-                    bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(true))).onValue {
-                        bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(false))).onValue {
-                        }
-                    }
-                }
-            }
-        }
+
+        bag += nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(false))).plain().flatMapLatest{
+                nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(true)))
+            }.plain().flatMapLatest{
+                nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(false)))
+            }.plain().flatMapLatest{
+                nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(true)))
+            }.plain().flatMapLatest{
+                nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(false)))
+            }.plain().onValue{ }
         return (nc, bag)
     }
 }
