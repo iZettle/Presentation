@@ -222,11 +222,6 @@ private extension UINavigationController {
         }
         pushPoper.bag += willPopViewControllerSignal.filter { $0 == pushPoper.vc }.onFirstValue { vc in
             guard self.viewControllers.count > 1 else { return }
-//            if let previousPopSignalPushPoper = self.popSignalPushPopers.lastIndex(where: { $0.value?.vc == pushPoper.vc}).map({ self.popSignalPushPopers[$0 - 1] }), let previousPushPoper = previousPopSignalPushPoper.value, let navBarVisibilityPrefernce = previousPushPoper.vcPrefersNavBarHidden {
-//                self.setNavigationBarHidden(!navBarVisibilityPrefernce, animated: previousPushPoper.animated)
-//            }
-
-//            self.popSignalPushPopers.map({ $0.value?.vc == vc })
             if let previousPushPoper = self.popSignalPushPopers.first(where: { $0.value?.vc == self.viewControllers.last }).flatMap({ $0.value }), let navBarHidden = previousPushPoper.vcPrefersNavBarHidden {
                 self.setNavigationBarHidden(navBarHidden, animated: previousPushPoper.animated)
             }
