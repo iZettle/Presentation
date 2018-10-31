@@ -1,8 +1,7 @@
 # 1.3.0
 - Add a static function `prefersNavigationBarHidden(Bool)` to PresentationOptions to return option based on navigation bar  preference passed as a Bool.
-- Update PushPoper implementation in UINavigationController to take additional parameter `vcPrefersNavBarHidden` and respect the preference provided when pushing and popping a `UIViewController`
-- Implement a use-case in `Examples/StylesAndOptions/Example.xcodeproj`
-- Add UI test to secure the new use-case.
+- Implement behaviour to support fallbacks on current client implementations
+- Implement a use-case in `Examples/StylesAndOptions/Example.xcodeproj` and add UI test to secure the new use-case.
 
 # 1.2.2
 
