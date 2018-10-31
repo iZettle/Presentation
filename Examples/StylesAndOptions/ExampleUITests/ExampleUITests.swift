@@ -141,6 +141,36 @@ class ExampleUITests: XCTestCase {
         }
     }
 
+    func testNavigationBarVisibilityPreference() {
+        app.launch()
+        showDismissablePresentation(style: "default", option: "NavigationBar visibility preference")
+        let navBar = app.navigationBars["UIView"]
+        let nextButton = app.buttons["Next"]
+        let backButton = navBar.buttons["Back"]
+
+        XCTAssertTrue(navBar.exists)
+
+        nextButton.tap()
+        XCTAssertFalse(navBar.exists)
+
+        nextButton.tap()
+        XCTAssertTrue(navBar.exists)
+
+        backButton.tap()
+        XCTAssertFalse(navBar.exists)
+
+        nextButton.tap()
+        XCTAssertTrue(navBar.exists)
+
+        nextButton.tap()
+        XCTAssertFalse(navBar.exists)
+
+        nextButton.tap()
+        XCTAssertFalse(navBar.exists)
+
+        app.terminate()
+    }
+    
     // MARK: - Helpers
     func verifyForAllContainerConfigurations(_ verify: () -> ()) {
         ["UseNavigationContainer", "UseSplitViewContainer"].forEach { containerTypeOption in

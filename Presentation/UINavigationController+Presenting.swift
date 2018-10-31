@@ -179,11 +179,8 @@ private extension UINavigationController {
             setViewControllers(vcs, animated: animated)
         }
 
-        if let navBarHidden = pushPopers.lastIndex(where: { pushPoper in
-            pushPoper.vc == vcs.last
-        }).map({ indexOfPushPoperForLastVC in
-            pushPopers[indexOfPushPoperForLastVC]
-        })?.vcPrefersNavBarHidden {
+        let viewControllerToAppear = vcs.last
+        if let navBarHidden = pushPopers.filter ({ $0.vc == viewControllerToAppear }).last?.vcPrefersNavBarHidden {
             self.setNavigationBarHidden(navBarHidden, animated: animated)
         }
 
@@ -221,12 +218,15 @@ private extension UINavigationController {
         pushPoper.bag += willPopViewControllerSignal.filter { $0 == pushPoper.vc }.onFirstValue { vc in
             guard self.viewControllers.count > 1 else { return } //return because there is no previous PushPoper
 
-            if let previousPushPoper = self.popSignalPushPopers.first(where: { popSignalPushPoper in
-                popSignalPushPoper.value?.vc == self.viewControllers.last //popSignalPushPopers for last viewController in Navigation stack
-            }).flatMap({ popSignalPushPoperForLastVC in
-                popSignalPushPoperForLastVC.value //returns PushPoper
-            }), let navBarHidden = previousPushPoper.vcPrefersNavBarHidden {
-                self.setNavigationBarHidden(navBarHidden, animated: previousPushPoper.animated)
+            let previousPushPoper = self.popSignalPushPopers.compactMap { popSignalPushPoper -> PushPoper? in
+                guard let pushPoper = popSignalPushPoper.value, pushPoper.vc == self.viewControllers.last else {
+                    return nil
+                }
+                return pushPoper
+            }.last
+
+            if let navBarHidden = previousPushPoper?.vcPrefersNavBarHidden {
+                self.setNavigationBarHidden(navBarHidden, animated: previousPushPoper!.animated)
             }
         }
     }

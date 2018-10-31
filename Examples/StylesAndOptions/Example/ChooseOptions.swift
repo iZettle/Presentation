@@ -17,7 +17,7 @@ struct NamedPresentationOptions {
 struct ChoosePresentationOptions { }
 
 extension PresentationOptions {
-    static let custom = PresentationOptions()
+    static let navigationBarPreference = PresentationOptions()
 }
 
 extension PresentationOptions {
@@ -38,7 +38,7 @@ extension PresentationOptions {
             ("Auto Pop (for navigation vc)", .autoPop),
             ("Auto Pop Successors (for navigation vc)", .autoPopSuccessors),
             ("Auto Pop Self And Successors (for navigation vc)", .autoPopSelfAndSuccessors),
-            ("NavigationBar visibility preference", .custom)
+            ("NavigationBar visibility preference", .navigationBarPreference)
             ]
         return DataSource(options: presentationOptions.map {
             NamedPresentationOptions(name: $0.0, value: $0.1)

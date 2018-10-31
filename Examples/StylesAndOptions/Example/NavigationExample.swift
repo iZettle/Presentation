@@ -29,7 +29,7 @@ extension TestNavigationBarHiding: Presentable {
             }.plain().flatMapLatest{
                 nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(true)))
             }.plain().flatMapLatest{
-                nc.present(Presentation(NavigationExample(), options: PresentationOptions.prefersNavigationBarHidden(false)))
+                nc.present(Presentation(NavigationExample()))
             }.plain().onValue{ }
         return (nc, bag)
     }
