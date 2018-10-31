@@ -114,7 +114,7 @@ private extension UINavigationController {
         }
 
         pushPopers.append(pushPoper)
-        if (pushPoper.disableCoalecing || self.viewControllers.isEmpty) { // not coalescing if no viewcontroller is set yet, in order to not display an empty navigation controller
+        if pushPoper.disableCoalecing || self.viewControllers.isEmpty { // not coalescing if no viewcontroller is set yet, in order to not display an empty navigation controller
             self.processPushPopers()
         } else {
             DispatchQueue.main.async {
@@ -159,7 +159,7 @@ private extension UINavigationController {
         if let coordinator = transitionCoordinator, !animated {
             // If we update the vcs while the nc (self) is being presented, the nc gets lost and controls in the the presented vcs can't become first responders.
             // Moving presentation inside transition animate fixes issue.
-            let willAnimate = coordinator.animate(alongsideTransition: { context in
+            let willAnimate = coordinator.animate(alongsideTransition: { _ in
                 let wasEnabled = UIView.areAnimationsEnabled
                 UIView.setAnimationsEnabled(false)
                 self.setViewControllers(vcs, animated: false)

@@ -47,7 +47,7 @@ extension UIViewController {
         vc.trackMemoryLeak(whenDisposed: bag) { leakingVC in
             if let nc = leakingVC.navigationController {
                 nc.deallocSignal.future.onValue { [weak leakingVC] in
-                    guard let _ = leakingVC else { return }
+                    guard leakingVC != nil else { return }
                     onLeak()
                 }
                 return

@@ -24,7 +24,7 @@ extension PresentationOptions {
             ("Dont Wait For Dismiss Animation", .dontWaitForDismissAnimation),
             ("Unanimated", .unanimated),
             ("Restore first responder", .restoreFirstResponder),
-            
+
             ("Show In Master (for split v)", .showInMaster),
             ("Fail On Block (for modal/popover vc)", .failOnBlock),
 
@@ -48,7 +48,7 @@ extension ChoosePresentationOptions: Presentable {
 
         let result = viewController.configure(dataSource: PresentationOptions.namedOptionsDataSource())
 
-        return (viewController, result.map { $0.value } )
+        return (viewController, result.map { $0.value })
     }
 }
 

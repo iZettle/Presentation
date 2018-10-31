@@ -68,7 +68,7 @@ extension AppFlow: Presentable {
                 presentation = .left(Presentation(TapToDismiss(),
                                                   style: style,
                                                   options: options,
-                                                  configure: style.name == "default" ? { _,_  in } : withDismiss))
+                                                  configure: style.name == "default" ? { _, _  in } : withDismiss))
             }
             return (preferredPresenter ?? containerController).present(presentation).toVoid()
         }

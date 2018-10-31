@@ -31,7 +31,7 @@ extension ChooseStyle: Presentable {
     // Some presentation styles require additional setup, for example `.sheet` can only be used for alerts
     // In this particular example the style chooser creates the styles and provides the additional info if needed
     typealias ChooseStyleResult = (PresentationStyle, preferredPresenter: UIViewController?, alertToPresent: Alert<()>?)
-    
+
     func materialize() -> (UIViewController, Signal<ChooseStyleResult>) {
         let viewController = UIViewController()
         viewController.title = "Presentation Styles"
@@ -40,7 +40,7 @@ extension ChooseStyle: Presentable {
         containerForEmbeddingViews.backgroundColor = .white
 
         let tableView = UITableView()
-        
+
         let content = UIStackView(arrangedSubviews: [tableView, containerForEmbeddingViews])
         content.distribution = .fillEqually
         content.axis = .vertical

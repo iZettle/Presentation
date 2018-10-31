@@ -16,7 +16,7 @@ class KeepSelectionTests: XCTestCase {
         let selection = KeepSelection(elements: items.readOnly(), isSame: ==)
         let bag = DisposeBag()
 
-        var index: Int? = nil
+        var index: Int?
         var cnt = 0
         bag += selection.atOnce().onValue {
             cnt += 1
