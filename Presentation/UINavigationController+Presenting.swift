@@ -152,8 +152,6 @@ private extension UINavigationController {
             }
         }
 
-        let navBarHidden = pushPopers.lastIndex(where: { $0.vc == vcs.last }).map{ pushPopers[$0] }?.vcPrefersNavBarHidden
-
         if vcs.count == viewControllers.count {
             animated = false
         } else if vcs.count < viewControllers.count {
@@ -163,6 +161,7 @@ private extension UINavigationController {
         }
 
 
+
         if let coordinator = transitionCoordinator, !animated {
             // If we update the vcs while the nc (self) is being presented, the nc gets lost and controls in the the presented vcs can't become first responders.
             // Moving presentation inside transition animate fixes issue.
@@ -170,23 +169,22 @@ private extension UINavigationController {
                 let wasEnabled = UIView.areAnimationsEnabled
                 UIView.setAnimationsEnabled(false)
                 self.setViewControllers(vcs, animated: false)
-                if let navBarHidden = navBarHidden {
-                    self.setNavigationBarHidden(navBarHidden, animated: false)
-                }
                 UIView.setAnimationsEnabled(wasEnabled)
             })
 
             if !willAnimate { // if the animation block wont't be called, fallback to normal setting up of vcx
                 setViewControllers(vcs, animated: animated)
-                if let navBarHidden = navBarHidden {
-                    self.setNavigationBarHidden(navBarHidden, animated: animated)
-                }
             }
         } else {
             setViewControllers(vcs, animated: animated)
-            if let navBarHidden = navBarHidden {
-                self.setNavigationBarHidden(navBarHidden, animated: animated)
-            }
+        }
+
+        if let navBarHidden = pushPopers.lastIndex(where: { pushPoper in
+            pushPoper.vc == vcs.last
+        }).map({ indexOfPushPoperForLastVC in
+            pushPopers[indexOfPushPoperForLastVC]
+        })?.vcPrefersNavBarHidden {
+            self.setNavigationBarHidden(navBarHidden, animated: animated)
         }
 
         func finalizeProcessedPushPoppers() {
