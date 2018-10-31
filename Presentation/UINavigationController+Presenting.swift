@@ -55,9 +55,10 @@ public extension UINavigationController {
     @discardableResult
     func pushViewController(_ viewController: UIViewController, options: PresentationOptions) -> Future<()> {
         return Future { completion in
-            let pushPoper = PushPoper(vc: viewController, animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing)) {
+            let pushPoper = PushPoper(vc: viewController, vcPrefersNavBarHidden: options.navigationBarHidden(), animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing)) {
                 completion($0)
             }
+
             self.append(pushPoper)
             return pushPoper.bag
         }
@@ -67,7 +68,7 @@ public extension UINavigationController {
     @discardableResult
     func popViewController(_ viewController: UIViewController, options: PresentationOptions) -> Future<()> {
         return Future { completion in
-            let pushPoper = PushPoper(vc: viewController, animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing), isPopping: true) { _ in
+            let pushPoper = PushPoper(vc: viewController, vcPrefersNavBarHidden: options.navigationBarHidden(), animated: options.animated, disableCoalecing: options.contains(.disablePushPopCoalecing), isPopping: true) { _ in
                 completion(.success)
             }
             self.append(pushPoper)
@@ -78,6 +79,7 @@ public extension UINavigationController {
 
 private class PushPoper: NSObject {
     let vc: UIViewController
+    let vcPrefersNavBarHidden: Bool?
     let animated: Bool
     let disableCoalecing: Bool
     weak var _onComplete: Box<((Result<()>) -> ())>?
@@ -87,8 +89,10 @@ private class PushPoper: NSObject {
     let isPopping: Bool
     let bag = DisposeBag()
 
-    init(vc: UIViewController, animated: Bool, disableCoalecing: Bool = false, isPopping: Bool = false, onComplete: @escaping (Result<()>) -> ()) {
+    init(vc: UIViewController, vcPrefersNavBarHidden: Bool?, animated: Bool, disableCoalecing: Bool = false, isPopping: Bool = false, onComplete: @escaping (Result<()>) -> ()) {
+
         self.vc = vc
+        self.vcPrefersNavBarHidden = vcPrefersNavBarHidden
         self.animated = animated
         self.disableCoalecing = disableCoalecing
         self.isPopping = isPopping
@@ -156,6 +160,8 @@ private extension UINavigationController {
             animated = animated && viewControllers.count > 0
         }
 
+
+
         if let coordinator = transitionCoordinator, !animated {
             // If we update the vcs while the nc (self) is being presented, the nc gets lost and controls in the the presented vcs can't become first responders.
             // Moving presentation inside transition animate fixes issue.
@@ -171,6 +177,11 @@ private extension UINavigationController {
             }
         } else {
             setViewControllers(vcs, animated: animated)
+        }
+
+        let viewControllerToAppear = vcs.last
+        if let navBarHidden = pushPopers.filter ({ $0.vc == viewControllerToAppear }).last?.vcPrefersNavBarHidden {
+            self.setNavigationBarHidden(navBarHidden, animated: animated)
         }
 
         func finalizeProcessedPushPoppers() {
@@ -203,6 +214,20 @@ private extension UINavigationController {
         pushPoper.bag += popViewControllerSignal.filter { $0 == pushPoper.vc }.onFirstValue { _ in
             pushPoper.vc.navigationItem.popCallbacker.callAll(with: ())
             pushPoper.onComplete(.success)
+        }
+        pushPoper.bag += willPopViewControllerSignal.filter { $0 == pushPoper.vc }.onFirstValue { vc in
+            guard self.viewControllers.count > 1 else { return } //return because there is no previous PushPoper
+
+            let previousPushPoper = self.popSignalPushPopers.compactMap { popSignalPushPoper -> PushPoper? in
+                guard let pushPoper = popSignalPushPoper.value, pushPoper.vc == self.viewControllers.last else {
+                    return nil
+                }
+                return pushPoper
+            }.last
+
+            if let navBarHidden = previousPushPoper?.vcPrefersNavBarHidden {
+                self.setNavigationBarHidden(navBarHidden, animated: previousPushPoper!.animated)
+            }
         }
     }
 

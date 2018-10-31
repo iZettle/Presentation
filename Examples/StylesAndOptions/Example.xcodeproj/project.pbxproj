@@ -16,6 +16,7 @@
 		722481B620D14EFC0038787C /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722481B120D14EFC0038787C /* AppFlow.swift */; };
 		722481B720D14EFC0038787C /* ChooseOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722481B220D14EFC0038787C /* ChooseOptions.swift */; };
 		722481B820D14EFC0038787C /* ChooseStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722481B320D14EFC0038787C /* ChooseStyle.swift */; };
+		CF5C44DB217F5DA600738044 /* NavigationExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5C44DA217F5DA600738044 /* NavigationExample.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		722481B120D14EFC0038787C /* AppFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		722481B220D14EFC0038787C /* ChooseOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseOptions.swift; sourceTree = "<group>"; };
 		722481B320D14EFC0038787C /* ChooseStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseStyle.swift; sourceTree = "<group>"; };
+		CF5C44DA217F5DA600738044 /* NavigationExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationExample.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				722481B320D14EFC0038787C /* ChooseStyle.swift */,
 				722481AF20D14EFB0038787C /* TableViewControllerUtilities.swift */,
 				722481B020D14EFB0038787C /* Utilities.swift */,
+				CF5C44DA217F5DA600738044 /* NavigationExample.swift */,
 				7224819620D14EB80038787C /* Assets.xcassets */,
 				7224819820D14EB80038787C /* LaunchScreen.storyboard */,
 				7224819B20D14EB80038787C /* Info.plist */,
@@ -206,6 +209,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				722481B520D14EFC0038787C /* Utilities.swift in Sources */,
+				CF5C44DB217F5DA600738044 /* NavigationExample.swift in Sources */,
 				722481B620D14EFC0038787C /* AppFlow.swift in Sources */,
 				722481B420D14EFC0038787C /* TableViewControllerUtilities.swift in Sources */,
 				7224819020D14EB60038787C /* AppDelegate.swift in Sources */,

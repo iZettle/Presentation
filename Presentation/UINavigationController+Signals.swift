@@ -15,6 +15,11 @@ public extension UINavigationController {
         return delegateSignal(for: { $0.popSignal })
     }
 
+    /// Returns a signal that signals a view controller just before it is popped from `self`.
+    var willPopViewControllerSignal: Signal<UIViewController> {
+        return delegateSignal(for: { $0.willPopSignal })
+    }
+
     /// Returns a signal that signals when `self` `viewController` is updated.
     var viewControllersSignal: ReadSignal<[UIViewController]> {
         return delegateSignal(for: { $0.viewControllersSignal }).readable(capturing: self.viewControllers)
@@ -75,7 +80,16 @@ private class NavigationControllerDelegate: NSObject, UINavigationControllerDele
         return Signal(callbacker: viewControllersCallbacker)
     }
 
+    fileprivate var willPopCallbacker = Callbacker<UIViewController>()
+    var willPopSignal: Signal<UIViewController> {
+        return Signal(callbacker: willPopCallbacker)
+    }
+
     fileprivate func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+
+        let removedControllers = popControllers.filter { !navigationController.viewControllers.contains($0) }
+        removedControllers.forEach(willPopCallbacker.callAll)
+
         navigationController.view.endEditing(true) // End editing to help nc in modal to reset it's size
         delegate?.navigationController?(navigationController, willShow: viewController, animated: animated)
     }
