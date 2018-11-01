@@ -1,3 +1,8 @@
+# 1.3.0
+- Add a static function `prefersNavigationBarHidden(Bool)` to PresentationOptions to return option based on navigation bar  preference passed as a Bool.
+- Implement behaviour to support fallbacks on current client implementations
+- Implement a use-case in `Examples/StylesAndOptions/Example.xcodeproj` and add UI test to secure the new use-case.
+
 # 1.2.2
 
 - Bugfix: When disposing the bag passed to `present`'s `configure` closure  `present`'s returned future was not completed, hence resulting in the presented view controller being leaked.
