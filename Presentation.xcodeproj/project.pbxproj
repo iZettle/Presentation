@@ -10,6 +10,7 @@
 		1C0656EB1F8290CB00E60465 /* MemoryUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0656EA1F8290CB00E60465 /* MemoryUtils.swift */; };
 		1C0656ED1F8393C100E60465 /* MemoryUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */; };
 		2177C8F31D897360000DECA4 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177C8F21D897360000DECA4 /* Presentable.swift */; };
+		CD1B3FC1218CDC6C00643FF6 /* UIViewController+Signals.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1B3FC0218CDC6C00643FF6 /* UIViewController+Signals.swift */; };
 		F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */; };
 		F646BEDB1C85CF5400AA7526 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F646BEDA1C85CF5400AA7526 /* Alert.swift */; };
 		F65D5DC11C58C421002B5D95 /* DualNavigationControllersSplitDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65D5DC01C58C421002B5D95 /* DualNavigationControllersSplitDelegate.swift */; };
@@ -45,6 +46,7 @@
 		1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUtilsTests.swift; sourceTree = "<group>"; };
 		2177C8F21D897360000DECA4 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		B38092B720A9B718009D8302 /* Flow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flow.framework; path = Carthage/Build/iOS/Flow.framework; sourceTree = "<group>"; };
+		CD1B3FC0218CDC6C00643FF6 /* UIViewController+Signals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Signals.swift"; sourceTree = "<group>"; };
 		F617E3751C197D5E00B567FB /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F617E37A1C197D5E00B567FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */,
 				F6A2D4971EA9DF3B00C93D9A /* Presentation.swift */,
 				F65D5DC61C58C546002B5D95 /* PresentingViewController.swift */,
+				CD1B3FC0218CDC6C00643FF6 /* UIViewController+Signals.swift */,
 				F662929F206911BA00DDE0DF /* UINavigationController+Presenting.swift */,
 				F68A43C71C8047DB0097D483 /* UINavigationController+Signals.swift */,
 				F662929D206911BA00DDE0DF /* UISplitViewController+Presenting.swift */,
@@ -287,6 +290,7 @@
 				F68A43C81C8047DB0097D483 /* UINavigationController+Signals.swift in Sources */,
 				F6A2D4981EA9DF3B00C93D9A /* Presentation.swift in Sources */,
 				F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */,
+				CD1B3FC1218CDC6C00643FF6 /* UIViewController+Signals.swift in Sources */,
 				F66292A1206911BA00DDE0DF /* UINavigationController+Presenting.swift in Sources */,
 				F669340E1E7939E000F83529 /* PresentationOptions.swift in Sources */,
 				F68AF6061F30AB6F009C28A9 /* MasterDetailSelection.swift in Sources */,
