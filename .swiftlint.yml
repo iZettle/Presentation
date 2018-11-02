@@ -12,8 +12,10 @@ disabled_rules:
 
 included:
   - Presentation
-  - Examples
   - PresentationTests
+
+excluded:
+  - Examples
 
 identifier_name:
   excluded: [vc, nc, i]
