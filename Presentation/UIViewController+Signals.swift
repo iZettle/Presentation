@@ -56,7 +56,7 @@ private extension UIViewController {
 }
 
 /// Swizzling of all UIViewController lifecycle methods
-extension UIViewController {
+private extension UIViewController {
     static let runOnce: Void = {
         selectorsToSwizzle.forEach { (original, swizzled) in
             swizzle(class: UIViewController.self, original: original, swizzled: swizzled)
@@ -76,8 +76,8 @@ extension UIViewController {
 private func swizzle(class aClass: AnyClass, original: Selector, swizzled: Selector) {
     guard let original = class_getInstanceMethod(aClass, original),
         let swizzled = class_getInstanceMethod(aClass, swizzled) else {
-        assertionFailure("Invalid selector for " +  String(describing: aClass))
-        return
+            assertionFailure("Invalid selector for " +  String(describing: aClass))
+            return
     }
 
     method_exchangeImplementations(original, swizzled)
@@ -91,7 +91,7 @@ private extension UIViewController {
     }
 
     @objc func _swizzled_viewWillAppear(_ animated: Bool) {
-        self._swizzled_viewDidAppear(animated)
+        self._swizzled_viewWillAppear(animated)
         callbackers.viewWillAppear.callAll(with: animated)
     }
 
