@@ -177,7 +177,7 @@ public extension Presentation {
         return new
     }
 
-    /// Returns a new presentation where `callback` will be called for every values.
+    /// Returns a new presentation where `callback` will be called for every signaled value.
     func onValue<Kind, Value>(_ callback: @escaping (Value) -> ()) -> Presentation where P.Result == CoreSignal<Kind, Value> {
         return map { $0.atValue(callback) }
     }
