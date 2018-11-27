@@ -10,6 +10,9 @@ disabled_rules:
   - void_return
   - trailing_comma
 
+  - weak_delegate
+  - vertical_whitespace
+
 included:
   - Presentation
   - PresentationTests
