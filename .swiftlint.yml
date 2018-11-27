@@ -16,8 +16,6 @@ disabled_rules:
 included:
   - Presentation
   - PresentationTests
-
-excluded:
   - Examples
 
 identifier_name:
