@@ -14,7 +14,7 @@ class MasterDetailSelectionTests: XCTestCase {
     func testPresentDetailsExpanded() {
         let items = ReadWriteSignal([1, 2, 3])
         let isCollapsed = ReadWriteSignal(false)
-        var presentedIndex: Int? = nil
+        var presentedIndex: Int?
 
         var presentCount = 0
         let masterDetail = MasterDetailSelection(elements: items.readOnly(), isSame: ==, isCollapsed: isCollapsed.readOnly())
@@ -50,7 +50,7 @@ class MasterDetailSelectionTests: XCTestCase {
     func testPresentDetailsCollpased() {
         let items = ReadWriteSignal([1, 2, 3])
         let isCollapsed = ReadWriteSignal(true)
-        var presentedIndex: Int? = nil
+        var presentedIndex: Int?
 
         var presentCount = 0
         let masterDetail = MasterDetailSelection(elements: items.readOnly(), isSame: ==, isCollapsed: isCollapsed.readOnly())
@@ -82,7 +82,7 @@ class MasterDetailSelectionTests: XCTestCase {
     func testExpandedToCollapsed() {
         let items = ReadWriteSignal([1, 2, 3])
         let isCollapsed = ReadWriteSignal(true)
-        var presentedIndex: Int? = nil
+        var presentedIndex: Int?
 
         var presentCount = 0
         let masterDetail = MasterDetailSelection(elements: items.readOnly(), isSame: ==, isCollapsed: isCollapsed.readOnly())
@@ -116,7 +116,7 @@ class MasterDetailSelectionTests: XCTestCase {
     func testExpandedStepBetween() {
         let items = ReadWriteSignal([1, 2, 3])
         let isCollapsed = ReadWriteSignal(false)
-        var presentedIndex: Int? = nil
+        var presentedIndex: Int?
 
         var presentCount = 0
         let masterDetail = MasterDetailSelection(elements: items.readOnly(), isSame: ==, isCollapsed: isCollapsed.readOnly())
@@ -144,7 +144,7 @@ class MasterDetailSelectionTests: XCTestCase {
     func testCollapsedStepBetween() {
         let items = ReadWriteSignal([1, 2, 3])
         let isCollapsed = ReadWriteSignal(true)
-        var presentedIndex: Int? = nil
+        var presentedIndex: Int?
 
         var presentCount = 0
         let masterDetail = MasterDetailSelection(elements: items.readOnly(), isSame: ==, isCollapsed: isCollapsed.readOnly())

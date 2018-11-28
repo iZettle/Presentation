@@ -156,15 +156,15 @@ public extension PresentationStyle {
     }
 
     /// Present invisibly.
-    static let invisible = PresentationStyle(name: "invisible") { vc, from, options in
+    static let invisible = PresentationStyle(name: "invisible") { _, _, _ in
         return (Future(), { Future() })
     }
 
     /// Present by embedding the view controller in `view`.
     /// - Parameter dynamicPreferredContentSize: Whether or not the child view controller should automatically update the parents preferredCOntentSize.
     static func embed(in view: UIView?, dynamicPreferredContentSize: Bool = true) -> PresentationStyle {
-        return PresentationStyle(name: "embed") { vc, from, options in
-            let result = Future<()> { completion in
+        return PresentationStyle(name: "embed") { vc, from, _ in
+            let result = Future<()> { _ in
                 let bag = DisposeBag()
 
                 let parentView: ReadSignal<UIView> = view.map { ReadSignal($0) } ?? vc.signal(for: \.view).map { $0! }

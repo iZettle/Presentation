@@ -67,7 +67,7 @@ extension UITableView {
 
 extension DataSource where T: CustomStringConvertible {
     convenience init(options: [T]) {
-        self.init(options: options) { tableView, indexPath, option in
+        self.init(options: options) { tableView, _, option in
             let cellIdentifier = "OptionCell"
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
 

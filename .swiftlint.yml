@@ -1,0 +1,25 @@
+disabled_rules:
+  - line_length
+  - function_body_length
+
+  - nesting
+  - cyclomatic_complexity
+
+  - force_try
+  - force_cast
+  - void_return
+  - trailing_comma
+
+  - weak_delegate
+  - vertical_whitespace
+
+included:
+  - Presentation
+  - PresentationTests
+
+excluded:
+  - Examples
+
+identifier_name:
+  excluded: [vc, nc, i]
+  severity: warning
