@@ -7,13 +7,11 @@ env:
 
 jobs:
   swiftlint:
-    macos:
-      xcode: "9.3.0"
+    docker:
+      - image: dantoml/swiftlint:latest
     steps:
       - checkout
-      - run:
-          name: test iOS
-          command: swiftlint --strict
+      - run: swiftlint --strict
 
   test-iOS:
     macos:
@@ -35,7 +33,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: test native
+          name: examples
           command: |
             set -o pipefail
             xcodebuild -version
