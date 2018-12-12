@@ -1,4 +1,5 @@
 version: 2
+
 env:
   global:
   - LC_CTYPE=en_US.UTF-8
@@ -17,8 +18,6 @@ jobs:
   test-iOS:
     macos:
       xcode: "9.3.0"
-    requires:
-      - swiftlint
     steps:
       - checkout
       - run:
@@ -33,8 +32,6 @@ jobs:
   examples:
     macos:
       xcode: "9.3.0"
-    requires:
-      - swiftlint
     steps:
       - checkout
       - run:
@@ -48,8 +45,11 @@ jobs:
 
 workflows:
   version: 2
-  build-and-test:
-    jobs:
+  swiftlint:
       - swiftlint
+  build-and-test:
+    requires:
+      - swiftlint
+    jobs:
       - test-iOS
       - examples
