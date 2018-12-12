@@ -6,7 +6,7 @@ env:
   - LANG=en_US.UTF-8
 
 jobs:
-  swiftlint-job:
+  swiftlint:
     docker:
       - image: dantoml/swiftlint:latest
     steps:
@@ -43,11 +43,12 @@ jobs:
 
 workflows:
   version: 2
-  swiftlint:
-      - swiftlint-job
   build-and-test:
-    requires:
-      - swiftlint
     jobs:
-      - test-iOS
-      - examples
+      - swiftlint
+      - test-iOS:
+          requires:
+          - swiftlint
+      - examples:
+          requires:
+          - swiftlint
