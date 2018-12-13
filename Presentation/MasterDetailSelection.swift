@@ -34,8 +34,9 @@ public final class MasterDetailSelection<Elements: BidirectionalCollection>: Sig
 
         let subBag = DisposeBag()
         bag += subBag
-        bag += isCollapsed.atOnce().onValue { isCollapsed in
+        bag += isCollapsed.atOnce().onValue { [weak self] isCollapsed in
             subBag.dispose()
+            guard let `self` = self else { return }
             subBag += self.keepSelection.atOnce().enumerate().onValue { [weak self] (eventCount, indexAndElement) in
                 guard let `self` = self else { return }
 
@@ -114,7 +115,10 @@ public final class MasterDetailSelection<Elements: BidirectionalCollection>: Sig
 
     /// Delegate the will be called when details should be presented for an index and element.
     public lazy var presentDetail: Delegate<IndexAndElement?, ()> = {
-        return Delegate { onSet in
+        return Delegate { [weak self] onSet in
+            guard let `self` = self else {
+                return NilDisposer()
+            }
             onSet(self.isCollapsed.value ? nil : self.current)
             return NilDisposer()
         }
