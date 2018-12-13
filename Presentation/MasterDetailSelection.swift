@@ -32,12 +32,9 @@ public final class MasterDetailSelection<Elements: BidirectionalCollection>: Sig
         keepSelection = KeepSelection(elements: elements, isSame: isSame)
         self.isCollapsed = isCollapsed
 
-        let subBag = DisposeBag()
-        bag += subBag
-        bag += isCollapsed.atOnce().onValue { [weak self] isCollapsed in
-            subBag.dispose()
-            guard let `self` = self else { return }
-            subBag += self.keepSelection.atOnce().enumerate().onValue { [weak self] (eventCount, indexAndElement) in
+        bag += isCollapsed.atOnce().onValueDisposePrevious { [weak self] isCollapsed in
+            guard let `self` = self else { return NilDisposer() }
+            return self.keepSelection.atOnce().enumerate().onValue { [weak self] (eventCount, indexAndElement) in
                 guard let `self` = self else { return }
 
                 let indexWasUpdated = eventCount > 0 // if eventCount is 0, it was just the atOnce value
