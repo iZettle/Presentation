@@ -59,7 +59,7 @@ case "$COMMAND" in
           -sdk "${IOS_SDK}" \
           -destination "${IOS_DESTINATION_PHONE}" \
           -destination "${IOS_DESTINATION_PAD}" \
-          build test
+          build test | xcpretty -c
     done
     exit 0
   ;;
