@@ -23,7 +23,7 @@ Usage: sh $0 command
   [Testing]
 
   test-iOS      Run tests on iOS host
-  test-native	Run tests using `swift test`
+  test-native	Run tests using \`swift test\`
 EOF
 }
 
@@ -52,7 +52,7 @@ case "$COMMAND" in
     pod repo update
     for example in examples/*/; do
       echo "Building and testing $example."
-      pod install --project-directory=$example
+      pod install --project-directory="${example}"
       xcodebuild \
           -workspace "${example}Example.xcworkspace" \
           -scheme Example \
