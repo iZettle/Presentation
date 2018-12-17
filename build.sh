@@ -9,7 +9,6 @@ SCHEME="Presentation"
 
 IOS_SDK="iphonesimulator12.1"
 IOS_DESTINATION_PHONE="OS=12.1,name=iPhone X"
-IOS_DESTINATION_PAD="OS=12.1,name=iPad Pro (11-inch)"
 
 usage() {
 cat << EOF
@@ -58,7 +57,6 @@ case "$COMMAND" in
           -scheme Example \
           -sdk "${IOS_SDK}" \
           -destination "${IOS_DESTINATION_PHONE}" \
-          -destination "${IOS_DESTINATION_PAD}" \
           build test | xcpretty -c
     done
     exit 0
@@ -71,7 +69,6 @@ case "$COMMAND" in
     -scheme "${SCHEME}" \
     -sdk "${IOS_SDK}" \
     -destination "${IOS_DESTINATION_PHONE}" \
-    -destination "${IOS_DESTINATION_PAD}" \
     -configuration Debug \
     ONLY_ACTIVE_ARCH=YES \
     CODE_SIGNING_REQUIRED=NO \
