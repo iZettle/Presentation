@@ -9,7 +9,7 @@ SCHEME="Presentation"
 
 IOS_SDK="iphonesimulator12.1"
 IOS_DESTINATION_PHONE="OS=12.1,name=iPhone X"
-IOS_DESTINATION_PAD="OS=12.1,name=iPad Air 2"
+IOS_DESTINATION_PAD="OS=12.1,name=iPad Pro (11-inch)"
 
 usage() {
 cat << EOF
