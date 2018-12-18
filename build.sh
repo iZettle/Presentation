@@ -7,9 +7,8 @@ set -o pipefail
 PROJECT="Presentation.xcodeproj"
 SCHEME="Presentation"
 
-IOS_SDK="iphonesimulator11.3"
-IOS_DESTINATION_PHONE="OS=11.3,name=iPhone X"
-IOS_DESTINATION_PAD="OS=11.3,name=iPad Air 2"
+IOS_SDK="iphonesimulator12.1"
+IOS_DESTINATION_PHONE="OS=12.1,name=iPhone X"
 
 usage() {
 cat << EOF
@@ -23,7 +22,7 @@ Usage: sh $0 command
   [Testing]
 
   test-iOS      Run tests on iOS host
-  test-native	Run tests using `swift test`
+  test-native	Run tests using \`swift test\`
 EOF
 }
 
@@ -52,13 +51,12 @@ case "$COMMAND" in
     pod repo update
     for example in examples/*/; do
       echo "Building and testing $example."
-      pod install --project-directory=$example
+      pod install --project-directory="${example}"
       xcodebuild \
           -workspace "${example}Example.xcworkspace" \
           -scheme Example \
           -sdk "${IOS_SDK}" \
           -destination "${IOS_DESTINATION_PHONE}" \
-          -destination "${IOS_DESTINATION_PAD}" \
           build test | xcpretty -c
     done
     exit 0
@@ -71,7 +69,6 @@ case "$COMMAND" in
     -scheme "${SCHEME}" \
     -sdk "${IOS_SDK}" \
     -destination "${IOS_DESTINATION_PHONE}" \
-    -destination "${IOS_DESTINATION_PAD}" \
     -configuration Debug \
     ONLY_ACTIVE_ARCH=YES \
     CODE_SIGNING_REQUIRED=NO \
