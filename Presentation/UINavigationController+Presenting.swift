@@ -177,9 +177,9 @@ private extension UINavigationController {
             }
         } else {
             // push and pop animations doesn't work for some reason with setViewControllers, so defaulting to pushViewController and popViewController
-            if vcs.count == viewControllers.count + 1 {
+            if vcs.dropLast().elementsEqual(viewControllers) {
                 pushViewController(vcs.last!, animated: animated)
-            } else if vcs.count == viewControllers.count - 1 {
+            } else if vcs.elementsEqual(viewControllers.dropLast()) {
                 popViewController(animated: animated)
             } else {
                 setViewControllers(vcs, animated: animated)
