@@ -53,3 +53,19 @@ public protocol Presentable {
     /// Constructs a matter from `self` and returns it toghether with the result of presenting it.
     func materialize() -> (Matter, Result)
 }
+
+// MARK: - Conviniences
+public extension Presentable where Result == Void {
+    func materialize() -> Matter {
+        let result: (Matter, Result) = self.materialize()
+        return result.0
+    }
+}
+
+public extension Presentable where Result == Disposable {
+    func materialize(into bag: DisposeBag) -> Matter {
+        let (matter, disposable) = materialize()
+        bag += disposable
+        return matter
+    }
+}
