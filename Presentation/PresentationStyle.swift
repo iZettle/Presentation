@@ -232,12 +232,12 @@ private extension PresentationStyle {
             return from.modallyPresentQueued(vc, options: options) {
                 let popover = vc.popoverPresentationController
                 popover?.permittedArrowDirections = permittedDirections
+                popover?.backgroundColor = .white
 
                 switch source {
                 case .left(let view):
                     popover?.sourceView = view
                     popover?.sourceRect = view.bounds
-                    popover?.backgroundColor = .white
                 case .right(let item):
                     popover?.barButtonItem = item
                 }
