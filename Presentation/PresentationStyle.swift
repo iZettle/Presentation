@@ -237,6 +237,7 @@ private extension PresentationStyle {
                 case .left(let view):
                     popover?.sourceView = view
                     popover?.sourceRect = view.bounds
+                    popover?.backgroundColor = .white
                 case .right(let item):
                     popover?.barButtonItem = item
                 }
