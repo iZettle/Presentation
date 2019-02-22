@@ -1,3 +1,9 @@
+# 1.4.0
+- Add support for Signals in Presentation onValue
+- Fix MaterDetailSelection retain cycle
+- Add `materialize` overload for void result type and `materialize(into:)` for disposable result type
+- CI aditions: SwiftLint,CircleCi configs, Xcode 10 project updates
+
 # 1.3.0
 - Add a static function `prefersNavigationBarHidden(Bool)` to PresentationOptions to return option based on navigation bar  preference passed as a Bool.
 - Implement behaviour to support fallbacks on current client implementations
