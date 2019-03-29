@@ -35,7 +35,7 @@ extension UINavigationController: PresentingViewController {
                 futures.append(nc.popViewController(vc, options: options))
             }
 
-            if let index = nc.viewControllers.index(of: vc), options.contains(.autoPopSuccessors) {
+            if let index = nc.viewControllers.firstIndex(of: vc), options.contains(.autoPopSuccessors) {
                 for vc in nc.viewControllers.suffix(from: index).dropFirst() {
                     futures.append(nc.popViewController(vc, options: options))
                 }
@@ -112,7 +112,7 @@ private extension UINavigationController {
     }
 
     func append(_ pushPoper: PushPoper) {
-        if let i = pushPopers.index(where: { $0.vc == pushPoper.vc && !$0.isPopping }), pushPoper.isPopping {
+        if let i = pushPopers.firstIndex(where: { $0.vc == pushPoper.vc && !$0.isPopping }), pushPoper.isPopping {
             pushPopers.remove(at: i)
             return
         }
@@ -136,11 +136,11 @@ private extension UINavigationController {
         for pushPoper in pushPopers {
             animated = animated || pushPoper.animated
             if pushPoper.isPopping {
-                _ = vcs.index(of: pushPoper.vc).map { vcs.remove(at: $0) }
+                _ = vcs.firstIndex(of: pushPoper.vc).map { vcs.remove(at: $0) }
             } else {
                 guard !vcs.contains(pushPoper.vc) else {
                     pushPoper.onComplete(.failure(PresentError.alreadyPresented))
-                    if let i = pushPopers.index(of: pushPoper) {
+                    if let i = pushPopers.firstIndex(of: pushPoper) {
                         pushPopers.remove(at: i)
                     }
                     continue

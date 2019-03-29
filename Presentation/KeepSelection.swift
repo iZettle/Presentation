@@ -37,13 +37,13 @@ public final class KeepSelection<Elements: BidirectionalCollection>: SignalProvi
             }
 
             let oldItem = oldElements[oldIndex]
-            if let newIndex = elements.index(where: { isSame($0, oldItem) }) {
+            if let newIndex = elements.firstIndex(where: { isSame($0, oldItem) }) {
                 return (elements, newIndex)
             }
 
             // Search forward to see if any of the items in old is still in new
             for oldItem in oldElements[oldElements.index(after: oldIndex)..<oldElements.endIndex] {
-                guard let index = elements.index(where: { isSame($0, oldItem) }) else {
+                guard let index = elements.firstIndex(where: { isSame($0, oldItem) }) else {
                     continue
                 }
                 return (elements, index)
@@ -51,7 +51,7 @@ public final class KeepSelection<Elements: BidirectionalCollection>: SignalProvi
 
             // Search backward to see if any of the items in old is still in new
             for oldItem in oldElements[oldElements.startIndex..<oldIndex].reversed() {
-                guard let index = elements.index(where: { isSame($0, oldItem) }) else {
+                guard let index = elements.firstIndex(where: { isSame($0, oldItem) }) else {
                     continue
                 }
                 let nextIndex = elements.index(after: index)

@@ -38,7 +38,7 @@ open class DualNavigationControllersSplitDelegate: NSObject, UISplitViewControll
         return nc
     }
 
-    open func targetDisplayModeForAction(in svc: UISplitViewController) -> UISplitViewControllerDisplayMode {
+    open func targetDisplayModeForAction(in svc: UISplitViewController) -> UISplitViewController.DisplayMode {
         isCollapsedProperty.value = svc.isViewLoaded && svc.view.window != nil ? svc.isCollapsed : true
 
         if svc.viewControllers.isEmpty {

@@ -168,7 +168,7 @@ public extension PresentationStyle {
                 let bag = DisposeBag()
 
                 let parentView: ReadSignal<UIView> = view.map { ReadSignal($0) } ?? vc.signal(for: \.view).map { $0! }
-                from.addChildViewController(vc)
+                from.addChild(vc)
 
                 var movedToParent = false
                 bag += parentView.atOnce().onValueDisposePrevious { parentView in
@@ -179,7 +179,7 @@ public extension PresentationStyle {
                             vc.view.layoutIfNeeded()
                         }
                         if !movedToParent {
-                            vc.didMove(toParentViewController: from)
+                            vc.didMove(toParent: from)
                             movedToParent = true
                         }
                     }
@@ -196,9 +196,9 @@ public extension PresentationStyle {
             }
 
             return (result, {
-                vc.willMove(toParentViewController: nil)
+                vc.willMove(toParent: nil)
                 vc.view.removeFromSuperview()
-                vc.removeFromParentViewController()
+                vc.removeFromParent()
                 return Future()
             })
         }

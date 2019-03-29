@@ -198,7 +198,7 @@ public extension SignalProvider where Value: BidirectionalCollection {
     typealias Element = Value.Iterator.Element
     func index(before element: Element, isSame: @escaping (Element, Element) -> Bool) -> CoreSignal<Kind.DropWrite, Value.Index?> {
         return map { collection in
-            guard let index = collection.index(where: { isSame(element, $0) }), index != collection.startIndex else { return nil }
+            guard let index = collection.firstIndex(where: { isSame(element, $0) }), index != collection.startIndex else { return nil }
             return collection.index(before: index)
         }
     }
@@ -208,7 +208,7 @@ public extension SignalProvider where Value: Collection {
     /// Returns a signal that will signal when index after `element` is updated.
     func index(after element: Element, isSame: @escaping (Element, Element) -> Bool) -> CoreSignal<Kind.DropWrite, Value.Index?> {
         return map { collection in
-            guard let index = collection.index(where: { isSame(element, $0) }) else { return nil }
+            guard let index = collection.firstIndex(where: { isSame(element, $0) }) else { return nil }
             let next = collection.index(after: index)
             return next != collection.endIndex ? next : nil
         }

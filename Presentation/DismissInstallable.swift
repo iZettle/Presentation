@@ -38,7 +38,7 @@ public extension UIViewController {
             }
 
             return Disposer {
-                guard let index = self.navigationItem.leftBarButtonItems?.index(of: barItem) else { return }
+                guard let index = self.navigationItem.leftBarButtonItems?.firstIndex(of: barItem) else { return }
                 self.navigationItem.leftBarButtonItems?.remove(at: index)
             }
         }
