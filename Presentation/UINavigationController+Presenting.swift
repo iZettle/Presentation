@@ -11,16 +11,16 @@ import Flow
 
 public extension PresentationOptions {
     /// Pushing and popping on a navigation controller defaults to batch subsequent operation from the same run-loop togeher. This options turnes that of.
-    public static let disablePushPopCoalecing = PresentationOptions()
+    static let disablePushPopCoalecing = PresentationOptions()
 
     /// Automatically pop a pushed view controller once the presentation completes.
-    public static let autoPop = PresentationOptions()
+    static let autoPop = PresentationOptions()
 
     /// Any succeedingly pushed view controllers (pushed after itself) will be popped when `self` is cancelled or completed.
-    public static let autoPopSuccessors = PresentationOptions()
+    static let autoPopSuccessors = PresentationOptions()
 
     /// Equivalent to [.autoPop, .autoPopSuccessors]
-    public static let autoPopSelfAndSuccessors: PresentationOptions = [.autoPop, .autoPopSuccessors]
+    static let autoPopSelfAndSuccessors: PresentationOptions = [.autoPop, .autoPopSuccessors]
 }
 
 extension UINavigationController: PresentingViewController {
