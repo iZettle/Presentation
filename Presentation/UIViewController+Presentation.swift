@@ -226,7 +226,7 @@ public extension UIViewController {
 func log(_ message: @escaping @autoclosure () -> String,
          data: @escaping @autoclosure () -> String? = nil,
          file: String = #file, function: String = #function, line: Int = #line) {
-    presentableLogPresentation(message, data, file, function, line)
+    presentableLogPresentation(message(), data(), file, function, line)
 }
 
 var unitTestDisablePresentWaitForWindow = false

@@ -210,28 +210,29 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = iZettle;
 				TargetAttributes = {
 					F617E3741C197D5E00B567FB = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = G94FN7ACW4;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					F6CB329B1F2F399600CA56C2 = {
 						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 0910;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = F617E36F1C197D5E00B567FB /* Build configuration list for PBXProject "Presentation" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = F617E36B1C197D5E00B567FB;
 			productRefGroup = F617E3761C197D5E00B567FB /* Products */;
@@ -463,7 +464,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.iZettle.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -482,7 +483,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.iZettle.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -505,7 +506,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -522,7 +523,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.izettle.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

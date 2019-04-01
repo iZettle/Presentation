@@ -18,7 +18,7 @@ public struct Alert<Value> {
     /// An action to be displayed
     public struct Action {
         public var title: String
-        public var style: UIAlertActionStyle
+        public var style: UIAlertAction.Style
 
         /// A closure that produces the result of this action. It accepts an array of the current values of the action's fields as its parameter and returns a result value
         public var action: ([String]) throws -> Value
@@ -69,14 +69,14 @@ public extension Alert {
 }
 
 public extension Alert.Action {
-    init(title: String, style: UIAlertActionStyle = .default, enabledPredicate: @escaping ([String]) -> Bool = { _ in true }, action: @escaping ([String]) throws -> Value) {
+    init(title: String, style: UIAlertAction.Style = .default, enabledPredicate: @escaping ([String]) -> Bool = { _ in true }, action: @escaping ([String]) throws -> Value) {
         self.title = title
         self.style = style
         self.action = action
         self.enabledPredicate = enabledPredicate
     }
 
-    init(title: String, style: UIAlertActionStyle = .default, action: @escaping () throws -> Value) {
+    init(title: String, style: UIAlertAction.Style = .default, action: @escaping () throws -> Value) {
         self.init(title: title, style: style, action: { (_: [String]) in try action() })
     }
 }
@@ -139,7 +139,7 @@ extension Alert: Presentable {
 private var createSheetKey = false
 
 private extension Alert {
-    func materialize(for preferredStyle: UIAlertControllerStyle) -> (UIAlertController, Future<Value>) {
+    func materialize(for preferredStyle: UIAlertController.Style) -> (UIAlertController, Future<Value>) {
         let vc = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         vc.accessibilityLabel = title
         vc.message = message
@@ -193,7 +193,7 @@ private extension Alert {
 }
 
 private extension UIAlertAction {
-    convenience init(title: String, style: UIAlertActionStyle = .default, actionHandler: ((UIAlertAction) -> Void)? = nil) {
+    convenience init(title: String, style: UIAlertAction.Style = .default, actionHandler: ((UIAlertAction) -> Void)? = nil) {
         self.init(title: title, style: style, handler: actionHandler)
         // No accessibilityIdentifier avaialble on UIAlertAction, so we only set the localized accessibilityLabel instead
         accessibilityLabel = title
@@ -201,7 +201,7 @@ private extension UIAlertAction {
 }
 
 private extension UIAlertController {
-    func addActionWithTitle(_ title: String, style: UIAlertActionStyle = .default) -> Signal<()> {
+    func addActionWithTitle(_ title: String, style: UIAlertAction.Style = .default) -> Signal<()> {
         let callbacker = Callbacker<()>()
         let action = UIAlertAction(title: title, style: style) { _ in callbacker.callAll(with: ()) }
 
