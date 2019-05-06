@@ -20,6 +20,7 @@ public extension UINavigationController {
         return delegateSignal(for: { $0.willPopSignal })
     }
 
+    /// Returns a signal that signals a view controller just before it will be shown on `self`
     var willShowViewControllerSignal: Signal<(viewController: UIViewController, animated: Bool)> {
         return delegateSignal(for: { $0.willShowSignal })
     }
