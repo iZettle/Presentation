@@ -20,6 +20,10 @@ public extension UINavigationController {
         return delegateSignal(for: { $0.willPopSignal })
     }
 
+    var willShowViewControllerSignal: Signal<(viewController: UIViewController, animated: Bool)> {
+        return delegateSignal(for: { $0.willShowSignal })
+    }
+
     /// Returns a signal that signals when `self` `viewController` is updated.
     var viewControllersSignal: ReadSignal<[UIViewController]> {
         return delegateSignal(for: { $0.viewControllersSignal }).readable(capturing: self.viewControllers)
@@ -85,7 +89,13 @@ private class NavigationControllerDelegate: NSObject, UINavigationControllerDele
         return Signal(callbacker: willPopCallbacker)
     }
 
+    fileprivate var willShowCallbacker = Callbacker<(viewController: UIViewController, animated: Bool)>()
+    var willShowSignal: Signal<(viewController: UIViewController, animated: Bool)> {
+        return Signal(callbacker: willShowCallbacker)
+    }
+
     fileprivate func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        willShowCallbacker.callAll(with: (viewController: viewController, animated: animated))
 
         let removedControllers = popControllers.filter { !navigationController.viewControllers.contains($0) }
         removedControllers.forEach(willPopCallbacker.callAll)
