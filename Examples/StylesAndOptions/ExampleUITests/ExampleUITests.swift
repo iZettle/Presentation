@@ -141,7 +141,8 @@ class ExampleUITests: XCTestCase {
         }
     }
 
-    func testNavigationBarVisibilityPreference() {
+    // Issue: https://github.com/iZettle/Presentation/issues/36
+    func disabled_testNavigationBarVisibilityPreference() {
         app.launch()
         showDismissablePresentation(style: "default", option: "NavigationBar visibility preference")
         let navBar = app.navigationBars["UIView"]
