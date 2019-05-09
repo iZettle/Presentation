@@ -1,3 +1,6 @@
+# 1.4.1
+- Add `willShowViewControllerSignal` to `UINavigationController` that reflects UINavigationControllerDelegate's `navigationController(_:willShow:animated:)` delegate method.
+
 # 1.4.0
 - Add support for Signals in Presentation onValue
 - Fix MaterDetailSelection retain cycle
