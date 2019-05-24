@@ -28,11 +28,11 @@ extension UIViewController {
         let vcPresentationDescription = vc.presentationDescription
 
         vc.deallocSignal.future.onValue {
-            log("\(vcPresentationDescription) was deallocated after presentation from \(presentationDescription)")
+            log(.didDeallocate(.init(vcPresentationDescription), from: .init(presentationDescription)))
         }
 
         func onLeak() {
-            log("WARNING \(vcPresentationDescription) was NOT deallocated after presentation from \(presentationDescription)")
+            log(.didLeak(.init(vcPresentationDescription), from: .init(presentationDescription)))
 
             guard UserDefaults.standard.bool(forKey: enabledDisplayAlertOnMemoryLeaksKey) else { return }
 
