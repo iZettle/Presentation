@@ -345,18 +345,16 @@ private struct InvisiblePresentable<Result>: Presentable {
     }
 }
 
-private extension Presentable {
-    var debugPresentationTitle: String {
-        return "\(type(of: self))"
-    }
-}
-
 private extension UIViewController {
     func updatePresentationTitle<P: Presentable>(for presentable: P) {
-        let title = presentable.debugPresentationTitle
-        guard !title.hasPrefix("AnyPresentable<") else {
-            return
+        if let presentableIdentifier = (presentable as? PresentableIdentifierExpressible)?.presentableIdentifier {
+            debugPresentationTitle = presentableIdentifier.value
+        } else {
+            let title = "\(type(of: presentable))"
+            guard !title.hasPrefix("AnyPresentable<") else {
+                return
+            }
+            debugPresentationTitle = title
         }
-        debugPresentationTitle = title
     }
 }

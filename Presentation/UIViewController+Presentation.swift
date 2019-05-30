@@ -41,12 +41,7 @@ public extension UIViewController {
                 didComplete = true
 
                 let complete = {
-                    switch result {
-                    case .success(let result):
-                        log("\(self.presentationDescription) did end presentation of: \(vc.presentationDescription)", data: "\(result)")
-                    case .failure(let error):
-                        log("\(self.presentationDescription) did end presentation of: \(vc.presentationDescription)", data: "\(error)")
-                    }
+                    log(.didDismiss(.init(vc.presentationDescription), from: .init(self.presentationDescription), result: result.map { $0 as Any }))
                     futureCompletion(result)
                 }
 
@@ -60,13 +55,13 @@ public extension UIViewController {
 
             bag += {
                 guard !didComplete else { return }
-                log("\(self.presentationDescription) did cancel presentation of: \(vc.presentationDescription)")
+                log(.didCancel(.init(vc.presentationDescription), from: .init(self.presentationDescription)))
                 completion(.failure(PresentError.dismissed))
             }
 
             let future = function(vc, bag)
 
-            log("\(self.presentationDescription) will '\(style.name)' present: \(vc.presentationDescription)")
+            log(.willPresent(.init(vc.presentationDescription), from: .init(self.presentationDescription), styleName: style.name))
 
             bag += future.onResult(completion)
 
@@ -158,11 +153,6 @@ public extension UIViewController {
     }
 }
 
-/// Customization point to for presentation logging. Defaults to using `print()`
-public var presentableLogPresentation: (_ message: @escaping @autoclosure () -> String, _ data: @escaping @autoclosure () -> String?, _ file: String, _ function: String, _ line: Int) -> () = { (message: () -> String, data: () -> String?, file, function, line) in
-    print("\(file): \(function)(\(line)) - \(message()), data: \(data() ?? "")")
-}
-
 public extension UIViewController {
     /// Modally presents `viewController` on `self`
     /// - Parameter callback: Will be called once the presention is possible, where the returned future will complete the presentation.
@@ -180,7 +170,7 @@ public extension UIViewController {
         let willEnqueue = !queue.isEmpty
         let fromDescription = from == self ? presentationDescription : "\(self.presentationDescription)(\(from.presentationDescription))"
         if willEnqueue {
-            log("\(fromDescription) will enqueue modal presentation of \(vc.presentationDescription)")
+            log(.willEnqueue(.init(vc.presentationDescription), from: .init(fromDescription)))
         }
 
         let dismissedCallbacker = Callbacker<Result<()>>()
@@ -197,7 +187,7 @@ public extension UIViewController {
             }
 
             if willEnqueue {
-                log("\(fromDescription) will dequeue modal presentation of \(vc.presentationDescription)")
+                log(.willDequeue(.init(vc.presentationDescription), from: .init(fromDescription)))
             }
 
             from.present(vc, animated: options.animated)
@@ -221,12 +211,6 @@ public extension UIViewController {
     func modallyPresentQueued(_ viewController: UIViewController, animated: Bool, _ callback: @escaping () -> Future<()>) -> PresentingViewController.Result {
         return modallyPresentQueued(viewController, options: animated ? [] : .unanimated, callback)
     }
-}
-
-func log(_ message: @escaping @autoclosure () -> String,
-         data: @escaping @autoclosure () -> String? = nil,
-         file: String = #file, function: String = #function, line: Int = #line) {
-    presentableLogPresentation(message(), data(), file, function, line)
 }
 
 var unitTestDisablePresentWaitForWindow = false
