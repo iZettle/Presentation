@@ -28,7 +28,6 @@ public let enabledDisplayAlertOnMemoryLeaksKey = "enabledDisplayAlertOnMemoryLea
             let presentationDescription = self.presentationDescription
             let vcPresentationDescription = vc.presentationDescription
 
-            
             vc.deallocSignal.future.onValue {
                 log(.didDeallocate(.init(vcPresentationDescription), from: .init(presentationDescription)))
             }
@@ -37,7 +36,7 @@ public let enabledDisplayAlertOnMemoryLeaksKey = "enabledDisplayAlertOnMemoryLea
                 log(.didLeak(.init(vcPresentationDescription), from: .init(presentationDescription)))
 
                 guard UserDefaults.standard.bool(forKey: enabledDisplayAlertOnMemoryLeaksKey) else { return }
-                
+
                 let alert = Alert<()>(title: "View controller not released after being dismissed", message: vcPresentationDescription, actions: Alert<()>.Action(title: "OK") {  })
                 var presentingVC = UIApplication.shared.keyWindow?.rootViewController
                 while let presentedVC = presentingVC?.presentedViewController { presentingVC = presentedVC }
