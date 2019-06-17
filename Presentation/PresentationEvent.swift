@@ -67,10 +67,12 @@ public var presentablePresentationEventHandler: (_ event: @escaping @autoclosure
             message = "\(context) did end presentation of: \(presentableId)"
             data = "\(error)"
         }
+    #if DEBUG
     case let .didDeallocate(presentableId, context):
         message = "\(presentableId) was deallocated after presentation from \(context)"
     case let .didLeak(presentableId, context):
         message = "WARNING \(presentableId) was NOT deallocated after presentation from \(context)"
+    #endif
     }
 
     presentableLogPresentation(message, data, file, function, line)
