@@ -20,43 +20,44 @@ public extension UIViewController {
 /// UserDefaults key to boolean value to whether an alert should be presented in debug builds if a memory leak is discovered.
 public let enabledDisplayAlertOnMemoryLeaksKey = "enabledDisplayAlertOnMemoryLeaks"
 
-extension UIViewController {
-    func trackMemoryLeaks(_ vc: UIViewController, whenDisposed bag: DisposeBag) {
-        guard vc.debugMemoryLeakTrackingEnabled else { return }
+#if DEBUG
+    extension UIViewController {
+        func trackMemoryLeaks(_ vc: UIViewController, whenDisposed bag: DisposeBag) {
+            guard vc.debugMemoryLeakTrackingEnabled else { return }
 
-        let presentationDescription = self.presentationDescription
-        let vcPresentationDescription = vc.presentationDescription
+            let presentationDescription = self.presentationDescription
+            let vcPresentationDescription = vc.presentationDescription
 
-        vc.deallocSignal.future.onValue {
-            log(.didDeallocate(.init(vcPresentationDescription), from: .init(presentationDescription)))
-        }
+            
+            vc.deallocSignal.future.onValue {
+                log(.didDeallocate(.init(vcPresentationDescription), from: .init(presentationDescription)))
+            }
 
-        func onLeak() {
-            log(.didLeak(.init(vcPresentationDescription), from: .init(presentationDescription)))
+            func onLeak() {
+                log(.didLeak(.init(vcPresentationDescription), from: .init(presentationDescription)))
 
-            guard UserDefaults.standard.bool(forKey: enabledDisplayAlertOnMemoryLeaksKey) else { return }
-
-            #if DEBUG
+                guard UserDefaults.standard.bool(forKey: enabledDisplayAlertOnMemoryLeaksKey) else { return }
+                
                 let alert = Alert<()>(title: "View controller not released after being dismissed", message: vcPresentationDescription, actions: Alert<()>.Action(title: "OK") {  })
                 var presentingVC = UIApplication.shared.keyWindow?.rootViewController
                 while let presentedVC = presentingVC?.presentedViewController { presentingVC = presentedVC }
                 presentingVC?.present(alert)
-            #endif
-        }
-
-        vc.trackMemoryLeak(whenDisposed: bag) { leakingVC in
-            if let nc = leakingVC.navigationController {
-                nc.deallocSignal.future.onValue { [weak leakingVC] in
-                    guard leakingVC != nil else { return }
-                    onLeak()
-                }
-                return
             }
 
-            onLeak()
+            vc.trackMemoryLeak(whenDisposed: bag) { leakingVC in
+                if let nc = leakingVC.navigationController {
+                    nc.deallocSignal.future.onValue { [weak leakingVC] in
+                        guard leakingVC != nil else { return }
+                        onLeak()
+                    }
+                    return
+                }
+
+                onLeak()
+            }
         }
     }
-}
+#endif
 
 final class Weak<T> where T: AnyObject {
     private(set) weak var value: T?
