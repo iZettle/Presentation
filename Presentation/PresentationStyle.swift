@@ -102,7 +102,7 @@ public extension PresentationStyle {
 
                     if !(vc is UIAlertController) {
 
-                        let delegate = AdaptiveProxyPresentationDelegate()
+                        let delegate = AdaptiveProxyPresentationDelegate(presentationOptions: options)
                         bag.hold(delegate)
 
                         vc.presentationController?.delegate = delegate
@@ -317,6 +317,12 @@ private class AdaptiveProxyPresentationDelegate: NSObject, UIAdaptivePresentatio
     var didDismissSignal: Signal<()> {
         return Signal(callbacker: didDismissCallbacker)
     }
+
+    let presentationOptions: PresentationOptions
+
+    init(presentationOptions: PresentationOptions) {
+        self.presentationOptions = presentationOptions
+    }
 }
 
 @available(iOS 13.0, *)
@@ -339,8 +345,20 @@ extension AdaptiveProxyPresentationDelegate {
     }
 
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        return topNavigationPresentationDelegate(for: presentationController)?
-            .presentationControllerShouldDismiss?(presentationController) ?? true
+        guard !presentationOptions.contains(.allowSwipeDismissAlways) else {
+            return true
+        }
+
+        if let shouldDismiss = topNavigationPresentationDelegate(for: presentationController)?
+            .presentationControllerShouldDismiss?(presentationController) {
+            return shouldDismiss
+        }
+
+        guard let nc = (presentationController.presentedViewController as? UINavigationController) else {
+            return true
+        }
+
+        return nc.viewControllers.count <= 1
     }
 
     private func topNavigationPresentationDelegate(for presentationController: UIPresentationController) -> UIAdaptivePresentationControllerDelegate? {
