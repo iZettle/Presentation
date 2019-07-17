@@ -297,10 +297,28 @@ private class ViewControllerAdaptivePresentationDelegate: NSObject, UIAdaptivePr
     }
 
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-        print(presentationController)
+        var temp: UIPresentationController? = presentationController
+        while temp != nil {
+            if let confirmation = temp?.didAttemptToDismissConfirmation {
+                confirmation()
+                break
+            } else {
+                temp = (temp?.presentedViewController as? UINavigationController)?.topViewController?.presentationController
+            }
+        }
+
     }
 
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         didDismissCallbacker.callAll()
     }
 }
+
+public extension UIPresentationController {
+    var didAttemptToDismissConfirmation: (() -> ())? {
+        get { return associatedValue(forKey: &didAttemptToDismissConfirmationKey) }
+        set { setAssociatedValue(newValue, forKey: &didAttemptToDismissConfirmationKey) }
+    }
+}
+
+private var didAttemptToDismissConfirmationKey = false
