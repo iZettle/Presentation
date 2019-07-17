@@ -326,6 +326,7 @@ private class AdaptiveProxyPresentationDelegate: NSObject, UIAdaptivePresentatio
     }
 }
 
+#if compiler(>=5.1)
 @available(iOS 13.0, *)
 extension AdaptiveProxyPresentationDelegate {
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
@@ -366,3 +367,4 @@ extension AdaptiveProxyPresentationDelegate {
         return (presentationController.presentedViewController as? UINavigationController)?.topViewController?.customAdaptivePresentationDelegate
     }
 }
+#endif
