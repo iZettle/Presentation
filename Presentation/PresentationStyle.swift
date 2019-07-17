@@ -31,7 +31,7 @@ public struct PresentationStyle {
     /// Presents `viewController` from `fromViewController` using `options`.
     public func present(_ viewController: UIViewController, from fromViewController: UIViewController, options: PresentationOptions) -> Result {
         do {
-           return try _present(viewController, fromViewController, options)
+            return try _present(viewController, fromViewController, options)
         } catch {
             return (dismisser: { Future() }, result: Future(error: error))
         }
@@ -99,7 +99,22 @@ public extension PresentationStyle {
             return from.modallyPresentQueued(vc, options: options) {
                 Future { completion in
                     let bag = DisposeBag()
-                    bag += viewController.installDismissButton().onValue { completion(.failure(PresentError.dismissed)) }
+
+                    if !(vc is UIAlertController) {
+                        let delegate = ViewControllerAdaptivePresentationDelegate()
+                        bag.hold(delegate)
+
+                        vc.presentationController?.delegate = delegate
+
+                        bag += delegate.didDismissSignal.onValue {
+                            completion(.failure(PresentError.dismissed))
+                        }
+                    }
+
+                    // very weird, why not called?
+                    bag += viewController.installDismissButton().onValue {
+                        completion(.failure(PresentError.dismissed))
+                    }
 
                     if vc.modalPresentationStyle == .popover, let popover = vc.popoverPresentationController {
                         let delegate = PopoverPresentationControllerDelegate {
@@ -274,3 +289,18 @@ private class PopoverPresentationControllerDelegate: NSObject, UIPopoverPresenta
 }
 
 private var isIpad: Bool { return UIDevice.current.userInterfaceIdiom == .pad }
+
+private class ViewControllerAdaptivePresentationDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
+    private let didDismissCallbacker = Callbacker<()>()
+    var didDismissSignal: Signal<()> {
+        return Signal(callbacker: didDismissCallbacker)
+    }
+
+    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        print(presentationController)
+    }
+
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        didDismissCallbacker.callAll()
+    }
+}
