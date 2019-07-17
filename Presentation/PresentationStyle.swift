@@ -112,7 +112,10 @@ public extension PresentationStyle {
                         }
                     }
 
+<<<<<<< HEAD
                     // very weird, why not called?
+=======
+>>>>>>> bf67770293a48f45351892bd606e3d980431ba11
                     bag += viewController.installDismissButton().onValue {
                         completion(.failure(PresentError.dismissed))
                     }
