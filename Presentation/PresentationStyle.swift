@@ -101,7 +101,8 @@ public extension PresentationStyle {
                     let bag = DisposeBag()
 
                     if !(vc is UIAlertController) {
-                        let delegate = ViewControllerAdaptivePresentationDelegate()
+
+                        let delegate = AdaptiveProxyPresentationDelegate()
                         bag.hold(delegate)
 
                         vc.presentationController?.delegate = delegate
@@ -289,35 +290,60 @@ private class PopoverPresentationControllerDelegate: NSObject, UIPopoverPresenta
 
 private var isIpad: Bool { return UIDevice.current.userInterfaceIdiom == .pad }
 
-private class ViewControllerAdaptivePresentationDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
+public extension UIViewController {
+    var customAdaptivePresentationDelegate: CustomAdaptivePresentationDelegate {
+        get { return associatedValue(forKey: &customAdaptivePresentationDelegateKey, initial: CustomAdaptivePresentationDelegate()) }
+        set { setAssociatedValue(newValue, forKey: &customAdaptivePresentationDelegateKey) }
+    }
+}
+
+private var customAdaptivePresentationDelegateKey = false
+
+public class CustomAdaptivePresentationDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
+    private let didAttemptToDismissCallbacker = Callbacker<()>()
+
+    public var didAttemptToDismissSignal: Signal<()> {
+        return Signal(callbacker: didAttemptToDismissCallbacker)
+    }
+
+    @available(iOS 13.0, *)
+    public func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        self.didAttemptToDismissCallbacker.callAll()
+    }
+}
+
+private class AdaptiveProxyPresentationDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
     private let didDismissCallbacker = Callbacker<()>()
     var didDismissSignal: Signal<()> {
         return Signal(callbacker: didDismissCallbacker)
     }
+}
 
+@available(iOS 13.0, *)
+extension AdaptiveProxyPresentationDelegate {
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-        var temp: UIPresentationController? = presentationController
-        while temp != nil {
-            if let confirmation = temp?.didAttemptToDismissConfirmation {
-                confirmation()
-                break
-            } else {
-                temp = (temp?.presentedViewController as? UINavigationController)?.topViewController?.presentationController
-            }
-        }
+        topNavigationPresentationDelegate(for: presentationController)?
+            .presentationControllerDidAttemptToDismiss?(presentationController)
+    }
 
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        topNavigationPresentationDelegate(for: presentationController)?
+            .presentationControllerWillDismiss?(presentationController)
     }
 
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         didDismissCallbacker.callAll()
+
+        topNavigationPresentationDelegate(for: presentationController)?
+            .presentationControllerDidDismiss?(presentationController)
+    }
+
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        return topNavigationPresentationDelegate(for: presentationController)?
+            .presentationControllerShouldDismiss?(presentationController) ?? true
+    }
+
+    private func topNavigationPresentationDelegate(for presentationController: UIPresentationController) -> UIAdaptivePresentationControllerDelegate? {
+        return (presentationController.presentedViewController as? UINavigationController)?.topViewController?.customAdaptivePresentationDelegate
     }
 }
-
-public extension UIPresentationController {
-    var didAttemptToDismissConfirmation: (() -> ())? {
-        get { return associatedValue(forKey: &didAttemptToDismissConfirmationKey) }
-        set { setAssociatedValue(newValue, forKey: &didAttemptToDismissConfirmationKey) }
-    }
-}
-
-private var didAttemptToDismissConfirmationKey = false
