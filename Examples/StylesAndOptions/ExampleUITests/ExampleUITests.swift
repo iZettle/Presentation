@@ -185,22 +185,24 @@ class ExampleUITests: XCTestCase {
         }
     }
 
-    func showDismissablePresentation(style: String, option: String) {
+    func showDismissablePresentation(style: String, option: String, file: StaticString = #file, line: UInt = #line) {
         let tablesQuery = app.tables
 
-        XCTAssertTrue(app.navigationBars["Presentation Styles"].exists)
+        XCTAssertTrue(app.navigationBars["Presentation Styles"].exists, file: file, line: line)
         tablesQuery.cells.staticTexts[style].tap()
-        XCTAssertTrue(app.navigationBars["Presentation Options"].exists)
+        XCTAssertTrue(app.navigationBars["Presentation Options"].exists, file: file, line: line)
         tablesQuery.cells.staticTexts[option].tap()
     }
 
-    func pressBack() {
+    func pressBack(file: StaticString = #file, line: UInt = #line) {
         let back = app.navigationBars["UIView"].buttons.firstMatch
+        XCTAssert(back.waitForExistence(timeout: 1.0), file: file, line: line)
         back.tap()
     }
-
-    func pressDismiss() {
+    
+    func pressDismiss(file: StaticString = #file, line: UInt = #line) {
         let dismiss = app.buttons["Tap To Dismiss"]
+        XCTAssert(dismiss.waitForExistence(timeout: 1.0), file: file, line: line)
         dismiss.tap()
     }
 
