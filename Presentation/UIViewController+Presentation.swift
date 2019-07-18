@@ -19,7 +19,16 @@ public extension UIViewController {
     func present<VC: UIViewController, Value>(_ viewController: VC, style: PresentationStyle = .default, options: PresentationOptions = .defaults, function: @escaping (VC, DisposeBag) -> Future<Value>) -> Future<Value> {
         let vc = viewController
         let root = rootViewController
-        guard (root.isViewLoaded && root.view.window != nil) || unitTestDisablePresentWaitForWindow else {
+        
+        // iOS 13 temporary fix for issue #40: https://github.com/iZettle/Presentation/issues/40
+        let shouldPresentImmediately: Bool
+        if #available(iOS 13.0, *) {
+            shouldPresentImmediately = root is UISplitViewController || vc is UISplitViewController
+        } else {
+            shouldPresentImmediately = false
+        }
+        
+        guard shouldPresentImmediately || (root.isViewLoaded && root.view.window != nil) || unitTestDisablePresentWaitForWindow else {
             // Wait for root to be presented before presenting vc
             return root.signal(for: \.view).flatMapLatest { $0.hasWindowSignal.atOnce() }.filter { $0 }.future.flatMap { _ in
                 self.present(vc, style: style, options: options, function: function)
