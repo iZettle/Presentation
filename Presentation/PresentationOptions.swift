@@ -44,7 +44,7 @@ public extension PresentationOptions {
     /// Disable any presentation animations.
     static let unanimated = PresentationOptions()
 
-    /// Even when in navigation stack ...
+    /// Allow modal dismissal with swipe down gesture when the presented view controller is inside a navigation stack
     static let allowSwipeDismissAlways = PresentationOptions()
 
     /// Default options used unless any options are explicity passed when presented: `[embedInNavigationController]`
