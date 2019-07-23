@@ -141,6 +141,38 @@ class ExampleUITests: XCTestCase {
         }
     }
 
+    func testSwipeDownToDismissModal() {
+        if #available(iOS 13.0, *) {
+            let style = "modal"
+
+            verifyForAllContainerConfigurations {
+                showDismissablePresentation(style: style, option: "Show alert on swipe down to dismiss")
+                app.swipeDown()
+                pressAlertOK()
+                pressDismiss()
+
+                showDismissablePresentation(style: style, option: "Embed in navigation and swipe down to dismiss")
+                app.swipeDown()
+                pressAlertOK()
+                pressDismiss()
+
+                // Drag modal down and dismiss it
+                showDismissablePresentation(style: style, option: "Default")
+                let dismissButton = app.buttons["Tap To Dismiss"]
+                let navBar = app.navigationBars["UIView"]
+                navBar.press(forDuration: 0.5, thenDragTo: dismissButton)
+                XCTAssertFalse(dismissButton.exists)
+
+                // When in navigation stack with more than one view controller, dragging down dismisses a view only if that option has been passed
+                showDismissablePresentation(style: style, option: "Allow swipe to dismiss always")
+                let backButton = navBar.buttons["Back"]
+                XCTAssertTrue(backButton.waitForExistence(timeout: 1))
+                navBar.press(forDuration: 0.5, thenDragTo: dismissButton)
+                XCTAssertFalse(dismissButton.exists)
+            }
+        }
+    }
+
     // Issue: https://github.com/iZettle/Presentation/issues/36
     func disabled_testNavigationBarVisibilityPreference() {
         app.launch()
@@ -192,6 +224,15 @@ class ExampleUITests: XCTestCase {
         tablesQuery.cells.staticTexts[style].tap()
         XCTAssertTrue(app.navigationBars["Presentation Options"].exists, file: file, line: line)
         tablesQuery.cells.staticTexts[option].tap()
+        let dismiss = app.buttons["Tap To Dismiss"]
+        XCTAssert(dismiss.waitForExistence(timeout: 1.0), file: file, line: line)
+    }
+
+    func pressAlertOK(file: StaticString = #file, line: UInt = #line) {
+        let okButton = app.alerts.buttons["OK"]
+        XCTAssertTrue(okButton.waitForExistence(timeout: 1), file: file, line: line)
+        XCTAssertTrue(okButton.exists, file: file, line: line)
+        okButton.tap()
     }
 
     func pressBack(file: StaticString = #file, line: UInt = #line) {

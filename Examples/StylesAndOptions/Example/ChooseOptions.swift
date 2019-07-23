@@ -18,6 +18,7 @@ struct ChoosePresentationOptions { }
 
 extension PresentationOptions {
     static let navigationBarPreference = PresentationOptions()
+    static let showAlertOnDidAttemptToDismiss = PresentationOptions()
 }
 
 extension PresentationOptions {
@@ -38,8 +39,11 @@ extension PresentationOptions {
             ("Auto Pop (for navigation vc)", .autoPop),
             ("Auto Pop Successors (for navigation vc)", .autoPopSuccessors),
             ("Auto Pop Self And Successors (for navigation vc)", .autoPopSelfAndSuccessors),
-            ("NavigationBar visibility preference", .navigationBarPreference)
-            ]
+            ("NavigationBar visibility preference", .navigationBarPreference),
+            ("Show alert on swipe down to dismiss", .showAlertOnDidAttemptToDismiss),
+            ("Embed in navigation and swipe down to dismiss", [.showAlertOnDidAttemptToDismiss, embedInNavigationController]),
+            ("Allow swipe to dismiss always", [.allowSwipeDismissAlways, .defaults])
+        ]
         return DataSource(options: presentationOptions.map {
             NamedPresentationOptions(name: $0.0, value: $0.1)
         })
