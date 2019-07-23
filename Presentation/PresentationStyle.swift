@@ -343,28 +343,26 @@ extension AdaptiveProxyPresentationDelegate {
     }
 }
 
+@available(iOS 13.0, *)
 private extension UIPresentationController {
     // Get the AdaptivepPresentationDelegate from the view controller on the top of the stack
     private var customAdaptivePresentationDelegate: UIAdaptivePresentationControllerDelegate? {
-        return (presentedViewController as? UINavigationController)?.topViewController?.customAdaptivePresentationDelegate
+        return presentedViewController.customAdaptivePresentationDelegate ??
+            (presentedViewController as? UINavigationController)?.topViewController?.customAdaptivePresentationDelegate
     }
 
-    @available(iOS 13.0, *)
     func didAttemptToDismiss() {
         customAdaptivePresentationDelegate?.presentationControllerDidAttemptToDismiss?(self)
     }
 
-    @available(iOS 13.0, *)
     func willDismiss() {
         customAdaptivePresentationDelegate?.presentationControllerWillDismiss?(self)
     }
 
-    @available(iOS 13.0, *)
     func didDismiss() {
         customAdaptivePresentationDelegate?.presentationControllerDidDismiss?(self)
     }
 
-    @available(iOS 13.0, *)
     func shouldDismiss() -> Bool? {
         customAdaptivePresentationDelegate?.presentationControllerShouldDismiss?(self)
     }

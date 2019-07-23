@@ -11,7 +11,7 @@
 		1C0656ED1F8393C100E60465 /* MemoryUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */; };
 		2177C8F31D897360000DECA4 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177C8F21D897360000DECA4 /* Presentable.swift */; };
 		728711A2229818B700A086DF /* PresentationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728711A1229818B700A086DF /* PresentationEvent.swift */; };
-		EDE8A76E22E5A43600D5E422 /* CustomAdaptivePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE8A76D22E5A43600D5E422 /* CustomAdaptivePresentationDelegate.swift */; };
+		EDE8A76E22E5A43600D5E422 /* UIViewController+PresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE8A76D22E5A43600D5E422 /* UIViewController+PresentationDelegate.swift */; };
 		F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */; };
 		F646BEDB1C85CF5400AA7526 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F646BEDA1C85CF5400AA7526 /* Alert.swift */; };
 		F65D5DC11C58C421002B5D95 /* DualNavigationControllersSplitDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65D5DC01C58C421002B5D95 /* DualNavigationControllersSplitDelegate.swift */; };
@@ -48,7 +48,7 @@
 		2177C8F21D897360000DECA4 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		728711A1229818B700A086DF /* PresentationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationEvent.swift; sourceTree = "<group>"; };
 		B38092B720A9B718009D8302 /* Flow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flow.framework; path = Carthage/Build/iOS/Flow.framework; sourceTree = "<group>"; };
-		EDE8A76D22E5A43600D5E422 /* CustomAdaptivePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAdaptivePresentationDelegate.swift; sourceTree = "<group>"; };
+		EDE8A76D22E5A43600D5E422 /* UIViewController+PresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+PresentationDelegate.swift"; sourceTree = "<group>"; };
 		F617E3751C197D5E00B567FB /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F617E37A1C197D5E00B567FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; };
@@ -123,7 +123,7 @@
 		F617E3771C197D5E00B567FB /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				EDE8A76D22E5A43600D5E422 /* CustomAdaptivePresentationDelegate.swift */,
+				EDE8A76D22E5A43600D5E422 /* UIViewController+PresentationDelegate.swift */,
 				2177C8F21D897360000DECA4 /* Presentable.swift */,
 				F6DCDD031EC83F9D00ED39F6 /* AnyPresentation.swift */,
 				F66934091E79384400F83529 /* PresentationStyle.swift */,
@@ -314,7 +314,7 @@
 				F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */,
 				F66292A1206911BA00DDE0DF /* UINavigationController+Presenting.swift in Sources */,
 				F669340E1E7939E000F83529 /* PresentationOptions.swift in Sources */,
-				EDE8A76E22E5A43600D5E422 /* CustomAdaptivePresentationDelegate.swift in Sources */,
+				EDE8A76E22E5A43600D5E422 /* UIViewController+PresentationDelegate.swift in Sources */,
 				F68AF6061F30AB6F009C28A9 /* MasterDetailSelection.swift in Sources */,
 				1C0656EB1F8290CB00E60465 /* MemoryUtils.swift in Sources */,
 				F6B3B6FC1F398E1B00188409 /* KeepSelection.swift in Sources */,
