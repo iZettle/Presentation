@@ -102,12 +102,18 @@ public extension PresentationStyle {
 
                     // The presentationController of an alert controller should not have its delegate modified
                     if !(vc is UIAlertController) {
-                        let delegate = AdaptiveProxyPresentationDelegate(presentationOptions: options)
-                        bag.hold(delegate)
+                        let customPresentationDelegate: CustomAdaptivePresentationDelegate
+                        if let givenDelegate = viewController.customAdaptivePresentationDelegate {
+                            customPresentationDelegate = givenDelegate
+                        } else {
+                            customPresentationDelegate = CustomAdaptivePresentationDelegate()
+                            bag.hold(customPresentationDelegate)
+                        }
 
-                        vc.presentationController?.delegate = delegate
+                        customPresentationDelegate.allowSwipeDismissAlways = options.contains(.allowSwipeDismissAlways)
+                        vc.presentationController?.delegate = customPresentationDelegate
 
-                        bag += delegate.didDismissSignal.onValue {
+                        bag += customPresentationDelegate.didDismissSignal.onValue {
                             completion(.failure(PresentError.dismissed))
                         }
                     }
@@ -289,82 +295,3 @@ private class PopoverPresentationControllerDelegate: NSObject, UIPopoverPresenta
 }
 
 private var isIpad: Bool { return UIDevice.current.userInterfaceIdiom == .pad }
-
-private class AdaptiveProxyPresentationDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
-    private let didDismissCallbacker = Callbacker<()>()
-
-    /// A signal that fires when a modal presentation gets dismissed by swiping down
-    var didDismissSignal: Signal<()> {
-        return Signal(callbacker: didDismissCallbacker)
-    }
-
-    let presentationOptions: PresentationOptions
-
-    init(presentationOptions: PresentationOptions) {
-        self.presentationOptions = presentationOptions
-    }
-}
-
-#if compiler(>=5.1)
-@available(iOS 13.0, *)
-extension AdaptiveProxyPresentationDelegate {
-    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-       presentationController.didAttemptToDismiss()
-    }
-
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        presentationController.willDismiss()
-    }
-
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        didDismissCallbacker.callAll()
-        presentationController.didDismiss()
-    }
-
-    /// Checks whether a presentation controller should allow to dismiss from a swipe down action.
-    /// If an option `.allowSwipeDismissAlways` is set to the presentation then all views inside a navigation stack
-    /// will be able to be swiped down.
-    ///
-    /// By default on an navigation stack only the first view is allowed to be dismissed by swiping down.
-    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        guard !presentationOptions.contains(.allowSwipeDismissAlways) else {
-            return true
-        }
-
-        if let shouldDismiss = presentationController.shouldDismiss() {
-            return shouldDismiss
-        }
-
-        guard let nc = (presentationController.presentedViewController as? UINavigationController) else {
-            return true
-        }
-
-        return nc.viewControllers.count <= 1
-    }
-}
-
-@available(iOS 13.0, *)
-private extension UIPresentationController {
-    // Get the AdaptivepPresentationDelegate from the view controller on the top of the stack
-    private var customAdaptivePresentationDelegate: UIAdaptivePresentationControllerDelegate? {
-        return presentedViewController.customAdaptivePresentationDelegate ??
-            (presentedViewController as? UINavigationController)?.topViewController?.customAdaptivePresentationDelegate
-    }
-
-    func didAttemptToDismiss() {
-        customAdaptivePresentationDelegate?.presentationControllerDidAttemptToDismiss?(self)
-    }
-
-    func willDismiss() {
-        customAdaptivePresentationDelegate?.presentationControllerWillDismiss?(self)
-    }
-
-    func didDismiss() {
-        customAdaptivePresentationDelegate?.presentationControllerDidDismiss?(self)
-    }
-
-    func shouldDismiss() -> Bool? {
-        customAdaptivePresentationDelegate?.presentationControllerShouldDismiss?(self)
-    }
-}
-#endif

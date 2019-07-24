@@ -41,7 +41,11 @@ extension TapToDismiss: Presentable {
         return (vc, Future<()> { completion in
             let bag = DisposeBag()
             if #available(iOS 13.0, *) {
-                bag += vc.didAttemptToDismissSignal.onValue {
+                let delegate = CustomAdaptivePresentationDelegate()
+                bag.hold(delegate)
+
+                vc.customAdaptivePresentationDelegate = delegate
+                bag += delegate.didAttemptToDismissSignal.onValue {
                     let alertAction = Alert<()>.Action(title: "OK", action: { })
                     vc.present(Alert(message: "Test alert", actions: [alertAction]))
                 }
