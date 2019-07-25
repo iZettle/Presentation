@@ -1,3 +1,6 @@
+# 1.6.1
+- Update Flow dependency and pin it to a compatible version
+
 # 1.6.0
 - [Bug fix] Add DEBUG compiler flag in Debug mode to enable the debug-only functionality
 - [Addition] Expose raw presentation events in addition to logs
