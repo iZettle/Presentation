@@ -21,7 +21,7 @@ class ExampleUITests: XCTestCase {
         let style = "default"
 
         verifyForAllContainerConfigurations {
-            showDismissablePresentation(style: style, option: "Default")
+            chooseStyleAndOption(style: style, option: "Default")
 
             let isSideBySideSplitView = app.launchArguments.contains("UseSplitViewContainer") &&
                 UIDevice.current.userInterfaceIdiom == .pad
@@ -30,23 +30,23 @@ class ExampleUITests: XCTestCase {
                 XCTAssertTrue(initialScreenVisible)
             }
 
-            showDismissablePresentation(style: style, option: "Default")
+            chooseStyleAndOption(style: style, option: "Default")
             // completing the presentation doesn't dismiss the pushed vc automatically, we need to pass .autoPop for that
             pressDismiss()
             pressDismiss()
             pressBack()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Auto Pop Self And Successors (for navigation vc)")
+            chooseStyleAndOption(style: style, option: "Auto Pop Self And Successors (for navigation vc)")
             pressDismiss()
             XCTAssertTrue(initialScreenVisible)
 
             // no special behaviour for navigation presentation
-            showDismissablePresentation(style: style, option: "Fail On Block (for modal/popover vc)")
+            chooseStyleAndOption(style: style, option: "Fail On Block (for modal/popover vc)")
             pressBack()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Unanimated")
+            chooseStyleAndOption(style: style, option: "Unanimated")
             pressBack()
             XCTAssertTrue(initialScreenVisible)
         }
@@ -57,22 +57,22 @@ class ExampleUITests: XCTestCase {
         let cancel = app.navigationBars["UIView"].buttons["Cancel"]
 
         verifyForAllContainerConfigurations {
-            showDismissablePresentation(style: style, option: "Default")
+            chooseStyleAndOption(style: style, option: "Default")
             XCTAssertFalse(cancel.exists)
             pressDismiss()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Embed In Navigation Controller")
+            chooseStyleAndOption(style: style, option: "Embed In Navigation Controller")
             XCTAssertFalse(cancel.exists)
             pressDismiss()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Unanimated")
+            chooseStyleAndOption(style: style, option: "Unanimated")
             XCTAssertFalse(cancel.exists)
             pressDismiss()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Fail On Block (for modal/popover vc)")
+            chooseStyleAndOption(style: style, option: "Fail On Block (for modal/popover vc)")
             XCTAssertTrue(initialScreenVisible)
         }
     }
@@ -82,22 +82,22 @@ class ExampleUITests: XCTestCase {
         let cancel = app.navigationBars["UIView"].buttons["Cancel"]
 
         verifyForAllContainerConfigurations {
-            showDismissablePresentation(style: style, option: "Embed In Navigation Controller")
-            cancel.tap()
+            chooseStyleAndOption(style: style, option: "Embed In Navigation Controller")
+            cancel.waitForExistenceAndTap()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Embed In Navigation Controller")
+            chooseStyleAndOption(style: style, option: "Embed In Navigation Controller")
             pressDismiss()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Default")
-            cancel.tap()
+            chooseStyleAndOption(style: style, option: "Default")
+            cancel.waitForExistenceAndTap()
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Fail On Block (for modal/popover vc)")
+            chooseStyleAndOption(style: style, option: "Fail On Block (for modal/popover vc)")
             XCTAssertTrue(initialScreenVisible)
 
-            showDismissablePresentation(style: style, option: "Unanimated")
+            chooseStyleAndOption(style: style, option: "Unanimated")
             XCTAssertEqual(cancel.exists, false)
             pressDismiss()
             XCTAssertTrue(initialScreenVisible)
@@ -111,11 +111,11 @@ class ExampleUITests: XCTestCase {
         let okButton = app.sheets.buttons["OK"]
 
         verifyForAllContainerConfigurations {
-            showDismissablePresentation(style: style, option: "Fail On Block (for modal/popover vc)")
+            chooseStyleAndOption(style: style, option: "Fail On Block (for modal/popover vc)")
             XCTAssertEqual(okButton.exists, false)
 
-            showDismissablePresentation(style: style, option: "Default")
-            okButton.tap()
+            chooseStyleAndOption(style: style, option: "Default")
+            okButton.waitForExistenceAndTap()
             XCTAssertTrue(initialScreenVisible)
         }
     }
@@ -124,7 +124,7 @@ class ExampleUITests: XCTestCase {
         let style = "embed"
 
         verifyForAllContainerConfigurations {
-            showDismissablePresentation(style: style, option: "Default")
+            chooseStyleAndOption(style: style, option: "Default")
             XCTAssertTrue(initialScreenVisible)
 
             pressDismiss()
@@ -136,37 +136,76 @@ class ExampleUITests: XCTestCase {
         let style = "invisible"
 
         verifyForAllContainerConfigurations {
-            showDismissablePresentation(style: style, option: "Default")
+            chooseStyleAndOption(style: style, option: "Default")
             XCTAssertTrue(initialScreenVisible)
         }
     }
 
-    // Issue: https://github.com/iZettle/Presentation/issues/36
-    func disabled_testNavigationBarVisibilityPreference() {
+    func testSwipeDownToDismissModal() {
+        if #available(iOS 13.0, *) {
+            let style = "modal"
+            let dismissButton = app.buttons["Tap To Dismiss"]
+            let navBar = app.navigationBars["UIView"]
+
+            func swipeDown(afterExistenseOf requiredElement: XCUIElement) {
+                XCTAssertTrue(requiredElement.waitForExistence(timeout: 1.0))
+                app.swipeDown()
+            }
+
+            func dragDownFromNavigationBar(to toElement: XCUIElement, afterExistenseOf requiredElement: XCUIElement) {
+                XCTAssertTrue(requiredElement.waitForExistence(timeout: 1.0))
+                navBar.press(forDuration: 0.5, thenDragTo: toElement)
+            }
+
+            verifyForAllContainerConfigurations {
+                chooseStyleAndOption(style: style, option: "Show alert on swipe down to dismiss")
+                swipeDown(afterExistenseOf: dismissButton)
+                pressAlertOK()
+                dismissButton.tap()
+
+                chooseStyleAndOption(style: style, option: "Embed in navigation and swipe down to dismiss")
+                swipeDown(afterExistenseOf: dismissButton)
+                pressAlertOK()
+                dismissButton.tap()
+
+                // Drag modal down and dismiss it
+                chooseStyleAndOption(style: style, option: "Default")
+                dragDownFromNavigationBar(to: dismissButton, afterExistenseOf: dismissButton)
+                XCTAssertFalse(dismissButton.exists)
+
+                // When in navigation stack with more than one view controller, dragging down dismisses a view only if that option has been passed
+                chooseStyleAndOption(style: style, option: "Allow swipe to dismiss always")
+                dragDownFromNavigationBar(to: dismissButton, afterExistenseOf: navBar.buttons["Back"])
+                XCTAssertFalse(dismissButton.exists)
+            }
+        }
+    }
+
+    func testNavigationBarVisibilityPreference() {
         app.launch()
-        showDismissablePresentation(style: "default", option: "NavigationBar visibility preference")
+        chooseStyleAndOption(style: "default", option: "NavigationBar visibility preference")
         let navBar = app.navigationBars["UIView"]
         let nextButton = app.buttons["Next"]
         let backButton = navBar.buttons["Back"]
 
         XCTAssertTrue(navBar.exists)
 
-        nextButton.tap()
+        nextButton.waitForExistenceAndTap()
         XCTAssertFalse(navBar.exists)
 
-        nextButton.tap()
+        nextButton.waitForExistenceAndTap()
         XCTAssertTrue(navBar.exists)
 
-        backButton.tap()
+        backButton.waitForExistenceAndTap()
         XCTAssertFalse(navBar.exists)
 
-        nextButton.tap()
+        nextButton.waitForExistenceAndTap()
         XCTAssertTrue(navBar.exists)
 
-        nextButton.tap()
+        nextButton.waitForExistenceAndTap()
         XCTAssertFalse(navBar.exists)
 
-        nextButton.tap()
+        nextButton.waitForExistenceAndTap()
         XCTAssertFalse(navBar.exists)
 
         app.terminate()
@@ -185,26 +224,38 @@ class ExampleUITests: XCTestCase {
         }
     }
 
-    func showDismissablePresentation(style: String, option: String) {
+    func chooseStyleAndOption(style: String, option: String, file: StaticString = #file, line: UInt = #line) {
         let tablesQuery = app.tables
 
-        XCTAssertTrue(app.navigationBars["Presentation Styles"].exists)
+        XCTAssertTrue(app.navigationBars["Presentation Styles"].exists, file: file, line: line)
         tablesQuery.cells.staticTexts[style].tap()
-        XCTAssertTrue(app.navigationBars["Presentation Options"].exists)
+        XCTAssertTrue(app.navigationBars["Presentation Options"].exists, file: file, line: line)
         tablesQuery.cells.staticTexts[option].tap()
     }
 
-    func pressBack() {
-        let back = app.navigationBars["UIView"].buttons.firstMatch
-        back.tap()
+    func pressAlertOK(file: StaticString = #file, line: UInt = #line) {
+        let okButton = app.alerts.buttons["OK"]
+        okButton.waitForExistenceAndTap(file: file, line: line)
     }
 
-    func pressDismiss() {
+    func pressBack(file: StaticString = #file, line: UInt = #line) {
+        let back = app.navigationBars["UIView"].buttons.firstMatch
+        back.waitForExistenceAndTap(file: file, line: line)
+    }
+    
+    func pressDismiss(file: StaticString = #file, line: UInt = #line) {
         let dismiss = app.buttons["Tap To Dismiss"]
-        dismiss.tap()
+        dismiss.waitForExistenceAndTap(file: file, line: line)
     }
 
     var initialScreenVisible: Bool {
         return app.navigationBars["Presentation Styles"].exists
+    }
+}
+
+extension XCUIElement {
+    func waitForExistenceAndTap(file: StaticString = #file, line: UInt = #line) {
+        XCTAssert(self.waitForExistence(timeout: 1.0), file: file, line: line)
+        self.tap()
     }
 }
