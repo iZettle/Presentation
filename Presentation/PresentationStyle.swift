@@ -103,11 +103,15 @@ public extension PresentationStyle {
                     // The presentationController of an alert controller should not have its delegate modified
                     if !(vc is UIAlertController) {
                         let customPresentationDelegate: CustomAdaptivePresentationDelegate
-                        if let givenDelegate = viewController.customAdaptivePresentationDelegate {
+                        if let givenDelegate = viewController.presentationController?.delegate as? CustomAdaptivePresentationDelegate {
                             customPresentationDelegate = givenDelegate
                         } else {
                             customPresentationDelegate = CustomAdaptivePresentationDelegate()
                             bag.hold(customPresentationDelegate)
+                        }
+
+                        if vc != viewController {
+                            print("Presentation controller: \(viewController.presentationController)")
                         }
 
                         customPresentationDelegate.allowSwipeDismissAlways = options.contains(.allowSwipeDismissAlways)

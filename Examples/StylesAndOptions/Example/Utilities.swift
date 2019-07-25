@@ -44,7 +44,7 @@ extension TapToDismiss: Presentable {
                 let delegate = CustomAdaptivePresentationDelegate()
                 bag.hold(delegate)
 
-                vc.customAdaptivePresentationDelegate = delegate
+                vc.presentationController?.delegate = delegate
                 bag += delegate.didAttemptToDismissSignal.onValue {
                     let alertAction = Alert<()>.Action(title: "OK", action: { })
                     vc.present(Alert(message: "Test alert", actions: [alertAction]))
