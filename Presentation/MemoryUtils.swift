@@ -63,12 +63,6 @@ final class Weak<T> where T: AnyObject {
     init(_ value: T) { self.value = value }
 }
 
-extension NSObject {
-    var deallocSignal: Signal<()> {
-        return associatedValue(forKey: &trackerKey, initial: DeallocTracker()).providedSignal
-    }
-}
-
 extension NSObjectProtocol {
     func trackMemoryLeak(whenDisposed bag: DisposeBag, after: TimeInterval = 2, _ onLeak: @escaping (Self) -> () = { object in assertionFailure("Object Not Deallocated \(object)") }) {
         bag += { [weak self] in
@@ -80,15 +74,4 @@ extension NSObjectProtocol {
     }
 }
 
-private final class DeallocTracker: SignalProvider {
-    let callbacker = Callbacker<()>()
-
-    var providedSignal: Signal<()> {
-        return Signal(callbacker: callbacker)
-    }
-
-    deinit { callbacker.callAll(with: ()) }
-}
-
-private var trackerKey = false
 private var memoryLeakTrackingEnabledKey = false
