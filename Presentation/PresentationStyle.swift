@@ -102,15 +102,16 @@ public extension PresentationStyle {
 
                     // The presentationController of an alert controller should not have its delegate modified
                     if !(vc is UIAlertController) {
-                        let customPresentationDelegate: CustomAdaptivePresentationDelegate
-                        if let givenDelegate = viewController.customAdaptivePresentationDelegate {
-                            customPresentationDelegate = givenDelegate
-                        } else {
-                            customPresentationDelegate = CustomAdaptivePresentationDelegate()
-                            bag.hold(customPresentationDelegate)
-                        }
+                        /**
+                         Using a custom property instead of `viewController.presentationController?.delegate` because
+                         of a memory leak in UIKit when accessing the presentation controller of a view controller
+                         that's not going to be presented: https://github.com/iZettle/Presentation/pull/43#discussion_r307223478
+                         */
+                        let delegate = viewController.customAdaptivePresentationDelegate ?? CustomAdaptivePresentationDelegate()
+                        bag.hold(delegate)
+                        vc.presentationController?.delegate = delegate
 
-                        bag += customPresentationDelegate.shouldDismiss.set { presentationController -> Bool in
+                        bag += delegate.shouldDismiss.set { presentationController -> Bool in
                             guard !options.contains(.allowSwipeDismissAlways),
                             let nc = (presentationController.presentedViewController as? UINavigationController) else {
                                 return true
@@ -118,9 +119,7 @@ public extension PresentationStyle {
                             return nc.viewControllers.count <= 1
                         }
 
-                        vc.presentationController?.delegate = customPresentationDelegate
-
-                        bag += customPresentationDelegate.didDismissSignal.onValue { _ in
+                        bag += delegate.didDismissSignal.onValue { _ in
                             completion(.failure(PresentError.dismissed))
                         }
                     }

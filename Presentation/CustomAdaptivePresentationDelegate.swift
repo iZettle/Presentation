@@ -33,14 +33,14 @@ public final class CustomAdaptivePresentationDelegate: NSObject, UIAdaptivePrese
         return Signal(callbacker: willDismissCallbacker)
     }
 
-    /// A signal that fires on iOS 13+  when a modal presentation attemts to get dismissed by swiping down
+    /// A signal that fires on iOS 13+ when a modal presentation attemts to get dismissed by swiping down
     ///
     /// - Note: For this to get called, the dismissed view controller needs to have `isModalInPresentation` set to `true`
     public var didAttemptToDismissSignal: Signal<UIPresentationController> {
         return Signal(callbacker: didAttemptToDismissCallbacker)
     }
 
-    /// A signal that fires on iOS 13+  when a modal presentation gets dismissed by swiping down
+    /// A signal that fires on iOS 13+ when a modal presentation gets dismissed by swiping down
     public var didDismissSignal: Signal<UIPresentationController> {
         return Signal(callbacker: didDismissCallbacker)
     }
@@ -78,9 +78,10 @@ public extension CustomAdaptivePresentationDelegate {
         return shouldDismiss.call(presentationController) ?? true
     }
 }
+#endif
 
 public extension UIViewController {
-    /// A custom delegate  that allows you to listen to a Signals for adaptive presentations.
+    /// A custom delegate that allows you to listen to signals for adaptive presentations.
     ///
     /// **Warning:** When presenting using Presentation, do not use your own presentationController delegate.
     /// Presentation is performing extra work on this delegate to make sure things are disposed properly.
@@ -91,4 +92,3 @@ public extension UIViewController {
 }
 
 private var customAdaptivePresentationDelegateKey = false
-#endif
