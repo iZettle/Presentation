@@ -63,13 +63,25 @@ extension AppFlow: Presentable {
                 return containerController.present(Presentation(TestNavigationBarHiding(), style: .modal)).toVoid()
             }
 
+            if options.contains(.allowSwipeDismissAlways) {
+                struct NavigationStack: Presentable {
+                    func materialize() -> (UIViewController, Disposable) {
+                        let (vc, _) = TapToDismiss().materialize()
+                        vc.present(TapToDismiss())
+
+                        return (vc, NilDisposer())
+                    }
+                }
+                return containerController.present(NavigationStack(), style: style, options: options)
+            }
+
             if let alertToPresent = alertToPresent {
                 presentation = .right(Presentation(alertToPresent,
                                                    style: style,
                                                    options: options,
                                                    configure: withDismiss))
             } else {
-                presentation = .left(Presentation(TapToDismiss(),
+                presentation = .left(Presentation(TapToDismiss(showAlertOnDidAttemptToDismiss: options.contains(.showAlertOnDidAttemptToDismiss)),
                                                   style: style,
                                                   options: options,
                                                   configure: style.name == "default" ? { _, _  in } : withDismiss))

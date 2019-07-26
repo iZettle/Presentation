@@ -10,6 +10,7 @@
 		1C0656EB1F8290CB00E60465 /* MemoryUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0656EA1F8290CB00E60465 /* MemoryUtils.swift */; };
 		1C0656ED1F8393C100E60465 /* MemoryUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */; };
 		2177C8F31D897360000DECA4 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177C8F21D897360000DECA4 /* Presentable.swift */; };
+		722FE3B622EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */; };
 		728711A2229818B700A086DF /* PresentationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728711A1229818B700A086DF /* PresentationEvent.swift */; };
 		F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */; };
 		F646BEDB1C85CF5400AA7526 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F646BEDA1C85CF5400AA7526 /* Alert.swift */; };
@@ -45,6 +46,7 @@
 		1C0656EA1F8290CB00E60465 /* MemoryUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUtils.swift; sourceTree = "<group>"; };
 		1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUtilsTests.swift; sourceTree = "<group>"; };
 		2177C8F21D897360000DECA4 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAdaptivePresentationDelegate.swift; sourceTree = "<group>"; };
 		728711A1229818B700A086DF /* PresentationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationEvent.swift; sourceTree = "<group>"; };
 		B38092B720A9B718009D8302 /* Flow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flow.framework; path = Carthage/Build/iOS/Flow.framework; sourceTree = "<group>"; };
 		F617E3751C197D5E00B567FB /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +128,7 @@
 				F66934091E79384400F83529 /* PresentationStyle.swift */,
 				F669340D1E7939E000F83529 /* PresentationOptions.swift */,
 				F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */,
+				722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */,
 				F6A2D4971EA9DF3B00C93D9A /* Presentation.swift */,
 				728711A1229818B700A086DF /* PresentationEvent.swift */,
 				F65D5DC61C58C546002B5D95 /* PresentingViewController.swift */,
@@ -311,6 +314,7 @@
 				F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */,
 				F66292A1206911BA00DDE0DF /* UINavigationController+Presenting.swift in Sources */,
 				F669340E1E7939E000F83529 /* PresentationOptions.swift in Sources */,
+				722FE3B622EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift in Sources */,
 				F68AF6061F30AB6F009C28A9 /* MasterDetailSelection.swift in Sources */,
 				1C0656EB1F8290CB00E60465 /* MemoryUtils.swift in Sources */,
 				F6B3B6FC1F398E1B00188409 /* KeepSelection.swift in Sources */,

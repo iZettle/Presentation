@@ -1,3 +1,7 @@
+# 1.7.0
+- [Big fix] Fix presentation lifecycle management on iOS 13 when swiping down a modal sheet
+- [Addition] Expose a custom adaptive presentation delegate with reactive interface
+
 # 1.6.1
 - Update Flow dependency and pin it to a compatible version
 

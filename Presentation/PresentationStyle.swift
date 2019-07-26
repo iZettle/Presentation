@@ -31,7 +31,7 @@ public struct PresentationStyle {
     /// Presents `viewController` from `fromViewController` using `options`.
     public func present(_ viewController: UIViewController, from fromViewController: UIViewController, options: PresentationOptions) -> Result {
         do {
-           return try _present(viewController, fromViewController, options)
+            return try _present(viewController, fromViewController, options)
         } catch {
             return (dismisser: { Future() }, result: Future(error: error))
         }
@@ -99,7 +99,34 @@ public extension PresentationStyle {
             return from.modallyPresentQueued(vc, options: options) {
                 Future { completion in
                     let bag = DisposeBag()
-                    bag += viewController.installDismissButton().onValue { completion(.failure(PresentError.dismissed)) }
+
+                    // The presentationController of an alert controller should not have its delegate modified
+                    if !(vc is UIAlertController) {
+                        /**
+                         Using a custom property instead of `viewController.presentationController?.delegate` because
+                         of a memory leak in UIKit when accessing the presentation controller of a view controller
+                         that's not going to be presented: https://github.com/iZettle/Presentation/pull/43#discussion_r307223478
+                         */
+                        let delegate = viewController.customAdaptivePresentationDelegate ?? CustomAdaptivePresentationDelegate()
+                        bag.hold(delegate)
+                        vc.presentationController?.delegate = delegate
+
+                        bag += delegate.shouldDismiss.set { presentationController -> Bool in
+                            guard !options.contains(.allowSwipeDismissAlways),
+                            let nc = (presentationController.presentedViewController as? UINavigationController) else {
+                                return true
+                            }
+                            return nc.viewControllers.count <= 1
+                        }
+
+                        bag += delegate.didDismissSignal.onValue { _ in
+                            completion(.failure(PresentError.dismissed))
+                        }
+                    }
+
+                    bag += viewController.installDismissButton().onValue {
+                        completion(.failure(PresentError.dismissed))
+                    }
 
                     if vc.modalPresentationStyle == .popover, let popover = vc.popoverPresentationController {
                         let delegate = PopoverPresentationControllerDelegate {
