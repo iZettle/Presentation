@@ -47,11 +47,11 @@ public final class CustomAdaptivePresentationDelegate: NSObject, UIAdaptivePrese
 
     // MARK: - UIAdaptivePresentationControllerDelegate
     public func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return adaptivePresentationStyle.call((controller, nil)) ?? controller.adaptivePresentationStyle
+        return adaptivePresentationStyle.call((controller, nil)) ?? controller.presentationStyle
     }
 
     public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return adaptivePresentationStyle.call((controller, traitCollection)) ?? controller.adaptivePresentationStyle
+        return adaptivePresentationStyle.call((controller, traitCollection)) ?? controller.presentationStyle
     }
 
     public func presentationController(_ presentationController: UIPresentationController, willPresentWithAdaptiveStyle style: UIModalPresentationStyle, transitionCoordinator: UIViewControllerTransitionCoordinator?) {
