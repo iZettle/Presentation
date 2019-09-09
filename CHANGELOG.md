@@ -1,3 +1,6 @@
+# 1.7.1
+- [Bug fix] Added a workaround for a navigation bar layout issue in iOS 13. 
+
 # 1.7.0
 - [Big fix] Fix presentation lifecycle management on iOS 13 when swiping down a modal sheet
 - [Addition] Expose a custom adaptive presentation delegate with reactive interface
