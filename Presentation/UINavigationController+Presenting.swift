@@ -162,7 +162,14 @@ private extension UINavigationController {
 
 
 
-        if let coordinator = transitionCoordinator, !animated {
+        if #available(iOS 13.0, *), viewControllers.isEmpty {
+            // iOS 13 has an issue where the NavBar gets too narrow at initial presentation.
+            // Have tried different approaches to force UIKit to update the navbar layout on the current layout pass, but found no working solution.
+            // See https://github.com/iZettle/Presentation/issues/49
+            DispatchQueue.main.async {
+                self.setViewControllers(vcs, animated: false)
+            }
+        } else if let coordinator = transitionCoordinator, !animated {
             // If we update the vcs while the nc (self) is being presented, the nc gets lost and controls in the the presented vcs can't become first responders.
             // Moving presentation inside transition animate fixes issue.
             let willAnimate = coordinator.animate(alongsideTransition: { _ in
