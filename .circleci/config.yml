@@ -28,7 +28,9 @@ jobs:
             xcodebuild -version
             xcodebuild -showsdks
             swift -version
-            sh build.sh test-iOS
+            IOS_SDK="iphonesimulator13.0" \
+                IOS_DESTINATION_PHONE="OS=13.0,name=iPhone 11" \
+                sh build.sh test-iOS
 
   test-iOS12:
     macos:
@@ -60,7 +62,9 @@ jobs:
             xcodebuild -showsdks
             swift -version
             curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cfk
-            sh build.sh examples
+            IOS_SDK="iphonesimulator13.0" \
+                IOS_DESTINATION_PHONE="OS=13.0,name=iPhone 11" \
+                sh build.sh examples
 
 workflows:
   version: 2
