@@ -12,7 +12,21 @@ import Flow
 /// A split controller delegate (`UISplitViewControllerDelegate`), that manages navigation controllers for the master and detail view,
 /// as well as moving view controllers between these while expanding or collapsing.
 open class DualNavigationControllersSplitDelegate: NSObject, UISplitViewControllerDelegate {
-    private let isCollapsedProperty = ReadWriteSignal(true)
+
+    @available(*, deprecated, message: "use `init(initialCollapsedState:)` instead")
+    public convenience override init() {
+        self.init(initialCollapsedState: true)
+    }
+
+    /// Creates a delegate that will manage a split view controller with the specified initial collapsed state
+    /// - Parameter initialCollapsedState: The initial state of `isCollapsed` of the managed split view controller
+    ///  so that the delegate can provide correct information through its `isCollapsedSignal`
+    public init(initialCollapsedState: Bool) {
+        isCollapsedProperty = ReadWriteSignal(initialCollapsedState)
+        super.init()
+    }
+
+    private let isCollapsedProperty: ReadWriteSignal<Bool>
     private var detailBag: Disposable?
 
     /// Customization point for construction of the navigation controllers managed by `self`
@@ -112,7 +126,7 @@ open class DualNavigationControllersSplitDelegate: NSObject, UISplitViewControll
 public extension UISplitViewController {
     /// Creates and returns a new split delegate that will be set as `self`'s delegate until `bag` is disposed.
     func setupSplitDelegate(ownedBy bag: DisposeBag) -> DualNavigationControllersSplitDelegate {
-        let splitDelegate = DualNavigationControllersSplitDelegate()
+        let splitDelegate = DualNavigationControllersSplitDelegate(initialCollapsedState: isCollapsed)
         delegate = splitDelegate
         bag += {
             _ = splitDelegate
