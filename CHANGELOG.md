@@ -1,6 +1,7 @@
-# 1.7.1
+# 1.8.0
 - [Bug fix] Fixed a recursive delegate call issue in modal presentstions.
 - [Bug fix] Added a workaround for a navigation bar layout issue in iOS 13.
+- [Addition] Added support for Swift Package Manager.
 
 # 1.7.0
 - [Big fix] Fix presentation lifecycle management on iOS 13 when swiping down a modal sheet
