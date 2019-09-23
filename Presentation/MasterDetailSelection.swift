@@ -23,9 +23,9 @@ public final class MasterDetailSelection<Elements: BidirectionalCollection>: Sig
     private var isSelecting = false
     fileprivate let isCollapsed: ReadSignal<Bool?>
 
-    @available(*, deprecated, message: "use `init(elements:isSame:needsUpdate:collapsedState:)` instead")
+    @available(*, deprecated, message: "pass isCollapsed as a ReadSignal<Bool?> instead")
     public convenience init(elements: ReadSignal<Elements>, isSame: @escaping (Element, Element) -> Bool, needsUpdate: @escaping (Element, Element) -> Bool = { _, _ in false }, isCollapsed: ReadSignal<Bool>) {
-        self.init(elements: elements, isSame: isSame, needsUpdate: needsUpdate, collapsedState: isCollapsed.map { value -> Bool? in return value })
+        self.init(elements: elements, isSame: isSame, needsUpdate: needsUpdate, isCollapsed: isCollapsed.map { value -> Bool? in return value })
     }
 
     /// Creates a new instance using changes in `elements` and `isCollapsed` to maintain the selected detail index (provided signal).
@@ -33,15 +33,13 @@ public final class MasterDetailSelection<Elements: BidirectionalCollection>: Sig
     ///   - isSame: Is it the same row (same identity)
     ///   - needsUpdate: For the same row, does the row have updates that requires presenting new details (refresh details)
     ///   - isCollapsed: Whether or not details are displayed.
-    public init(elements: ReadSignal<Elements>, isSame: @escaping (Element, Element) -> Bool, needsUpdate: @escaping (Element, Element) -> Bool = { _, _ in false }, collapsedState: ReadSignal<Bool?>) {
+    public init(elements: ReadSignal<Elements>, isSame: @escaping (Element, Element) -> Bool, needsUpdate: @escaping (Element, Element) -> Bool = { _, _ in false }, isCollapsed: ReadSignal<Bool?>) {
         keepSelection = KeepSelection(elements: elements, isSame: isSame)
-        self.isCollapsed = collapsedState
+        self.isCollapsed = isCollapsed
 
-        bag += collapsedState.atOnce().onValueDisposePrevious { [weak self] isCollapsed in
-            guard let `self` = self, let isCollapsed = isCollapsed else { return NilDisposer() }
-            return self.keepSelection.atOnce().enumerate().onValue { [weak self] (eventCount, indexAndElement) in
-                guard let `self` = self else { return }
-
+        bag += isCollapsed.atOnce().with(weak: self).onValueDisposePrevious { isCollapsed, `self` in
+            guard let isCollapsed = isCollapsed else { return NilDisposer() }
+            return self.keepSelection.atOnce().enumerate().with(weak: self).onValue { (eventCount, indexAndElement, `self`) in
                 let indexWasUpdated = eventCount > 0 // if eventCount is 0, it was just the atOnce value
                 let index = indexAndElement?.index
                 let elementDidUpdate = indexAndElement.flatMap { i in self.current.map {
@@ -121,7 +119,7 @@ public final class MasterDetailSelection<Elements: BidirectionalCollection>: Sig
             guard let `self` = self else {
                 return NilDisposer()
             }
-            onSet((self.isCollapsed.value == nil || self.isCollapsed.value == true) ? nil: self.current)
+            onSet((self.isCollapsed.value ?? true) ? nil: self.current)
             return NilDisposer()
         }
     }()
@@ -162,6 +160,7 @@ public extension MasterDetailSelection {
 
             immediate = true
             let presentDisposable = vc.present(presentation.onDismiss {
+                guard let isCollapsed = self.isCollapsed.value else { return }
                 if isCollapsed && !immediate {
                     self.deselect()
                 }

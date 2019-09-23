@@ -13,17 +13,17 @@ import Flow
 /// as well as moving view controllers between these while expanding or collapsing.
 open class DualNavigationControllersSplitDelegate: NSObject, UISplitViewControllerDelegate {
 
-    @available(*, deprecated, message: "use `init(collapsedState:)` instead")
+    @available(*, deprecated, message: "use `init(isCollapsed:)` instead")
     public convenience override init() {
-        self.init(collapsedState: Future(true))
+        self.init(isCollapsed: Future(true))
     }
 
     /// Creates a delegate that will manage a split view controller with the specified initial collapsed state
-    /// - Parameter collapsedState: Use to report the initial `isCollapsed` state of the split view controller.
+    /// - Parameter isCollapsed: Use to report the initial `isCollapsed` state of the split view controller.
     /// Note that its value can be unreliable until it is rendered on the screen.
-    public init(collapsedState: Future<Bool>) {
+    public init(isCollapsed: Future<Bool>) {
         super.init()
-        initialCollapsedStateDisposable += collapsedState.onValue { [weak self] in
+        initialCollapsedStateDisposable += isCollapsed.onValue { [weak self] in
             self?.isCollapsedProperty.value = $0
         }.disposable
     }
@@ -41,13 +41,13 @@ open class DualNavigationControllersSplitDelegate: NSObject, UISplitViewControll
     public let presentDetail = Delegate<UISplitViewController, Disposable>()
 
     /// Returns a signal that will signal when collapsing or expanding with an initial value of true
-    @available(*, deprecated, message: "use `collapsedState` signal instead")
+    @available(*, deprecated, message: "use `isCollapsed` signal instead")
     public var isCollapsedSignal: ReadSignal<Bool> {
-        return isCollapsedProperty.readOnly().map { $0 ?? true }
+        return isCollapsedProperty.map { $0 ?? true }
     }
 
-    /// Returns a signal that will signal when collapsing or expanding. Current value can be nil the collapsed state cannot be determined reliably yet.
-    public var collapsedState: ReadSignal<Bool?> {
+    /// Returns a signal that will signal when collapsing or expanding. Current value can be nil if the collapsed state cannot be determined reliably yet.
+    public var isCollapsed: ReadSignal<Bool?> {
         return isCollapsedProperty.readOnly()
     }
 
@@ -139,7 +139,7 @@ public extension UISplitViewController {
     /// Creates and returns a new split delegate that will be set as `self`'s delegate until `bag` is disposed.
     func setupSplitDelegate(ownedBy bag: DisposeBag) -> DualNavigationControllersSplitDelegate {
         let collapsedState = self.view.didLayoutSignal.map { self.isCollapsed }.future
-        let splitDelegate = DualNavigationControllersSplitDelegate(collapsedState: collapsedState)
+        let splitDelegate = DualNavigationControllersSplitDelegate(isCollapsed: collapsedState)
         delegate = splitDelegate
         bag += {
             _ = splitDelegate
