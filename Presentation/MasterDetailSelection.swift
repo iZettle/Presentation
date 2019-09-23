@@ -160,7 +160,10 @@ public extension MasterDetailSelection {
 
             immediate = true
             let presentDisposable = vc.present(presentation.onDismiss {
-                guard let isCollapsed = self.isCollapsed.value else { return }
+                guard let isCollapsed = self.isCollapsed.value else {
+                    assertionFailure("Should not happen because once the collapsed state is determined it should not turn to nil")
+                    return
+                }
                 if isCollapsed && !immediate {
                     self.deselect()
                 }
