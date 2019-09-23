@@ -1,3 +1,4 @@
+---
 version: 2
 
 common: &common
@@ -74,12 +75,6 @@ workflows:
   build-and-test:
     jobs:
       - swiftlint
-      - test-iOS:
-          requires:
-            - swiftlint
-      - test-iOS12:
-          requires:
-            - swiftlint
-      - examples:
-          requires:
-            - swiftlint
+      - test-iOS
+      - test-iOS12
+      - examples
