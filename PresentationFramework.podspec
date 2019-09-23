@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "PresentationFramework"
-  s.version      = "1.8.1"
+  s.version      = "1.9.0"
   s.module_name  = "Presentation"
   s.summary      = "Driving presentations from model to result"
   s.description  = <<-DESC

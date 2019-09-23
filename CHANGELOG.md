@@ -1,3 +1,10 @@
+# 1.9.0
+- [Addition] Add a new `isCollapsedState` signal to DualNavigationControllersSplitDelegate that has a `nil` value until the collapsed state is known. Old `isCollapsedSignal` is deprecated.
+- [Addition] Add a new `init(collapsedState:)` method to DualNavigationControllersSplitDelegate that takes a future to get notified of a known collapsed state. The `init` without parameters is deprecated.
+- [Change] Deprecate MasterDetailSelection's init with `isCollapsed` signal in favour of init that can handle a `nil` collapsed state
+- [Bug fix] DualNavigationControllersSplitDelegate's `isCollapsedSignal` didn't signal `false` when moving from collapsed state to not collapsed (multitasking/rotation)
+- [Bug fix] DualNavigationControllersSplitDelegate's `isCollapsedSignal` didn't signal anything on iOS 13 ([issue #54](https://github.com/iZettle/Presentation/issues/54))
+
 # 1.8.1
 - [Bug fix] Revert a change of the default SplitVC delegate `isCollapsed` value that doesn't work as expected because it's used before the vc is added to the screen and the value is not reliable
 
