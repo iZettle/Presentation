@@ -1,3 +1,4 @@
+---
 version: 2
 
 common: &common
@@ -10,12 +11,15 @@ env:
     - LANG=en_US.UTF-8
 
 jobs:
+  <<: *common
   swiftlint:
-    docker:
-      - image: dantoml/swiftlint:latest
     steps:
       - checkout
-      - run: swiftlint --strict
+      - run:
+          name: Install swiftlint(0.35.0)
+          command: |
+            brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/ab64b13d26a3f8617689e3bc7e73a209d11f1bc8/Formula/swiftlint.rb
+      - run: swiftlint version && swiftlint --strict
 
   test-iOS:
     <<: *common
@@ -71,12 +75,6 @@ workflows:
   build-and-test:
     jobs:
       - swiftlint
-      - test-iOS:
-          requires:
-            - swiftlint
-      - test-iOS12:
-          requires:
-            - swiftlint
-      - examples:
-          requires:
-            - swiftlint
+      - test-iOS
+      - test-iOS12
+      - examples
