@@ -1,3 +1,6 @@
+# 1.8.1
+- [Bug fix] Revert a change of the default SplitVC delegate `isCollapsed` value that doesn't work as expected because it's used before the vc is added to the screen and the value is not reliable
+
 # 1.8.0
 - [Bug fix] Fixed a recursive delegate call issue in modal presentstions.
 - [Bug fix] Added a workaround for a navigation bar layout issue in iOS 13.
