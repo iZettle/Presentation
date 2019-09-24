@@ -184,7 +184,7 @@ private extension UINavigationController {
         }
 
         let viewControllerToAppear = vcs.last
-        if let navBarHidden = pushPopers.filter ({ $0.vc == viewControllerToAppear }).last?.vcPrefersNavBarHidden {
+        if let navBarHidden = pushPopers.filter({ $0.vc == viewControllerToAppear }).last?.vcPrefersNavBarHidden {
             self.setNavigationBarHidden(navBarHidden, animated: animated)
         }
 

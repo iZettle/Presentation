@@ -52,7 +52,7 @@ extension Messages: Presentable {
         }
 
         let splitDelegate = split.setupSplitDelegate(ownedBy: bag)
-        let selection = MasterDetailSelection(elements: messages, isSame: ==, isCollapsed: splitDelegate.isCollapsedSignal)
+        let selection = MasterDetailSelection(elements: messages, isSame: ==, isCollapsed: splitDelegate.isCollapsed)
 
         bag += selectSignal.onValue { indexPath in
             selection.select(index: indexPath.row)
