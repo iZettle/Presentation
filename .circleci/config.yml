@@ -14,8 +14,7 @@ env:
     - LANG=en_US.UTF-8
 
 commands:
-
-  fetch-pod-specs: # This is a job and not a command to be able to add it as a work flow step
+  fetch-pod-specs:
     steps:
       - run:
           name: Fetch CocoaPods Specs
@@ -27,7 +26,7 @@ commands:
       path:
         type: string
     steps:
-      - fetch-pod-specs
+      - fetch-pod-specs # Fetch the podspec repo changes first to be sure to always get the latest pods
       - run:
           command: | 
             cd <<parameters.path>>
