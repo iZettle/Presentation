@@ -1,3 +1,6 @@
+%YAML 1.2
+---
+
 version: 2.1
 
 anchors: 
@@ -56,6 +59,7 @@ commands:
           workspace: "Example.xcworkspace"
           scheme: "Example"
           path: <<parameters.path>>
+          test_output_folder: *test_output_folder
 
   # We introduced two separate commands for projects and workspaces because we didnt find a generic and non-confusing way to introduce 
   # a condition to only pass either the project or the workspace environment argument to the fastlane scan
@@ -89,6 +93,8 @@ commands:
         type: string
       path:
         type: string
+      test_output_folder:
+        type: string
     steps:
       - run:
           command:  |
@@ -100,10 +106,10 @@ commands:
               SCAN_DEVICE: *test_device
               SCAN_CLEAN: *clean_before_build
       - store_artifacts: # This will by default store an html and junit file as artifacts (See "Artifacts" tab in CircleCI report)
-          path: *test_output_folder # test_output is the default temporary folder for fastlane scan output
-          destination: *test_output_folder # This will create a sub structure in the artifacts section in CircleCI
+          path: <<parameters.path>>/<<parameters.test_output_folder>> # test_output is the default temporary folder for fastlane scan output
+          destination: <<parameters.test_output_folder>> # This will create a sub structure in the artifacts section in CircleCI
       - store_test_results: # This will store the test results so you can then see them in the "Test Summary" tab in CircleCI report
-          path: *test_output_folder
+          path: <<parameters.path>>/<<parameters.test_output_folder>>
 
 jobs:
   swiftlint: # This is a job and not a command to be able to add it as a work flow step
