@@ -123,6 +123,7 @@ jobs:
       - run: swiftlint version && swiftlint --strict --reporter html > swiftlint.html
       - store_artifacts:
           path: swiftlint.html
+          destination: swiftlint.html
 
   test-xcode10-ios12:
     macos:
