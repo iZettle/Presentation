@@ -114,7 +114,9 @@ jobs:
           name: Install swiftlint(0.35.0)
           command: |
             brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/ab64b13d26a3f8617689e3bc7e73a209d11f1bc8/Formula/swiftlint.rb
-      - run: swiftlint version && swiftlint --strict
+      - run: swiftlint version && swiftlint --strict --reporter html > swiftlint.html
+      - store_artifacts:
+          path: swiftlint.html
 
   test-xcode10-ios12:
     macos:
