@@ -16,7 +16,12 @@ public extension UIViewController {
     /// - Note: The returned future will not complete until the dismiss animation completes, unless the `.dontWaitForDismissAnimation` option is provided.
     /// - Note: The presentation can be aborted by cancelling the returned future.
     @discardableResult
-    func present<VC: UIViewController, Value>(_ viewController: VC, style: PresentationStyle = .default, options: PresentationOptions = .defaults, function: @escaping (VC, DisposeBag) -> Future<Value>) -> Future<Value> {
+    func present<VC: UIViewController, Value>(
+        _ viewController: VC,
+        style: PresentationStyle = .default,
+        options: PresentationOptions = .defaults,
+        function: @escaping (VC, DisposeBag) -> Future<Value>
+    ) -> Future<Value> {
         let vc = viewController
         let root = rootViewController
 
@@ -63,9 +68,11 @@ public extension UIViewController {
             }
 
             bag += {
-                guard !didComplete else { return }
-                log(.didCancel(.init(vc.presentationDescription), from: .init(self.presentationDescription)))
-                completion(.failure(PresentError.dismissed))
+                Scheduler.main.async {
+                    guard !didComplete else { return }
+                    log(.didCancel(.init(vc.presentationDescription), from: .init(self.presentationDescription)))
+                    completion(.failure(PresentError.dismissed))
+                }
             }
 
             let future = function(vc, bag)

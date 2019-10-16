@@ -1,3 +1,6 @@
+# 1.9.1
+- [Bug fix] Dissmissal happends on worker threads if the result future is mutated by the .succeed() or .fail() methods
+
 # 1.9.0
 - [Addition] Add a new `isCollapsedState` signal to DualNavigationControllersSplitDelegate that has a `nil` value until the collapsed state is known. Old `isCollapsedSignal` is deprecated.
 - [Addition] Add a new `init(collapsedState:)` method to DualNavigationControllersSplitDelegate that takes a future to get notified of a known collapsed state. The `init` without parameters is deprecated.
