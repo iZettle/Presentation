@@ -84,17 +84,9 @@ public extension PresentationStyle {
         return PresentationStyle(name: "modally") { viewController, from, options in
             let vc = viewController.embededInNavigationController(options)
 
-            if let presentationStyle = presentationStyle {
-                vc.modalPresentationStyle = presentationStyle
-            }
-
-            if let transitionStyle = transitionStyle {
-                vc.modalTransitionStyle = transitionStyle
-            }
-
-            if let capturesStatusBarAppearance = capturesStatusBarAppearance {
-                vc.modalPresentationCapturesStatusBarAppearance = capturesStatusBarAppearance
-            }
+            vc.modalPresentationStyle = presentationStyle ?? viewController.modalPresentationStyle
+            vc.modalTransitionStyle = transitionStyle ?? viewController.modalTransitionStyle
+            vc.modalPresentationCapturesStatusBarAppearance = capturesStatusBarAppearance ?? viewController.modalPresentationCapturesStatusBarAppearance
 
             return from.modallyPresentQueued(vc, options: options) {
                 Future { completion in

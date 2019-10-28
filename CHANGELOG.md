@@ -1,3 +1,6 @@
+# 1.9.2
+- [Bug fix] View controller's modal presentation preferences not used when it's embedded in a navigation controller during presentation.
+
 # 1.9.1
 - [Bug fix] Dissmissal happends on worker threads if the result future is mutated by the .succeed() or .fail() methods
 
