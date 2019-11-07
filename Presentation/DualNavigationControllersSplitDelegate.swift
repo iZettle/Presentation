@@ -48,7 +48,11 @@ open class DualNavigationControllersSplitDelegate: NSObject, UISplitViewControll
 
     /// Returns a signal that will signal when collapsing or expanding. Current value can be nil if the collapsed state cannot be determined reliably yet.
     public var isCollapsed: ReadSignal<Bool?> {
+        #if targetEnvironment(macCatalyst)
+        return ReadSignal<Bool?>(false)
+        #else
         return isCollapsedProperty.readOnly()
+        #endif
     }
 
     internal func makeMasterNavigationController(_ splitController: UISplitViewController) -> UINavigationController {
