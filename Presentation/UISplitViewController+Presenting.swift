@@ -48,6 +48,7 @@ extension UISplitViewController: PresentingViewController {
             }
             presenter = nc
             viewControllers = [ nc ] + viewControllers.dropFirst()
+            _ = self.delegate?.targetDisplayModeForAction?(in: self)
         default:
             fatalError("Not supported")
         }
