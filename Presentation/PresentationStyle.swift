@@ -180,9 +180,14 @@ public extension PresentationStyle {
     }
 
     /// Present by embedding the view controller in `view`.
-    /// - Parameter dynamicPreferredContentSize: Whether or not the child view controller should automatically update the parents preferredCOntentSize.
-    static func embed(in view: UIView?, dynamicPreferredContentSize: Bool = true) -> PresentationStyle {
-        return PresentationStyle(name: "embed") { vc, from, _ in
+    /// - Parameter dynamicPreferredContentSize: Whether the child view controller should automatically update the parents preferredCOntentSize.
+    /// - Parameter respectPresentationOptions: Whether the mebed of the child view controller will respect the custom presentation options passed during presentation. Defaults to `false` because in most cases embedded view controllers are used in the middle of other views and are not expected to visually look like view controllers, for example to show a navigation bar.
+    ///
+    /// - Note: This presentation style respects the `embedInNavigationController` option.
+    static func embed(in view: UIView?, dynamicPreferredContentSize: Bool = true, respectPresentationOptions: Bool = false) -> PresentationStyle {
+        return PresentationStyle(name: "embed") { viewController, from, options in
+            let vc = options.contains(.embedInNavigationController) ? viewController.embededInNavigationController(options) : viewController
+
             let result = Future<()> { _ in
                 let bag = DisposeBag()
 
