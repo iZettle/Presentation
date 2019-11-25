@@ -1,3 +1,6 @@
+# 1.10.0
+- [Addition] Make it possible to embed a Presentable wrapped in a navigation controller within another view. 
+
 # 1.9.2
 - [Bug fix] View controller's modal presentation preferences not used when it's embedded in a navigation controller during presentation.
 
