@@ -186,7 +186,12 @@ public extension PresentationStyle {
     /// - Note: This presentation style respects the `embedInNavigationController` option.
     static func embed(in view: UIView?, dynamicPreferredContentSize: Bool = true, respectPresentationOptions: Bool = false) -> PresentationStyle {
         return PresentationStyle(name: "embed") { viewController, from, options in
-            let vc = options.contains(.embedInNavigationController) ? viewController.embededInNavigationController(options) : viewController
+            let vc: UIViewController
+            if respectPresentationOptions && options.contains(.embedInNavigationController) {
+                vc = viewController.embededInNavigationController(options)
+            } else {
+                vc = viewController
+            }
 
             let result = Future<()> { _ in
                 let bag = DisposeBag()
