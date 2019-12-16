@@ -1,4 +1,4 @@
-# 1.10.0
+# 1.11.0
 - [Addition] Extracted the modal dismiss setup to a separate function, to be able to supply a custom presentation controller if needed.
 
 # 1.10.0
