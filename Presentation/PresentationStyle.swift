@@ -89,24 +89,25 @@ public extension PresentationStyle {
             vc.modalPresentationCapturesStatusBarAppearance = capturesStatusBarAppearance ?? viewController.modalPresentationCapturesStatusBarAppearance
 
             return from.modallyPresentQueued(vc, options: options) {
-                queuedModalPreparationFuture(for: vc, presentationController: vc.presentationController, options: options)
+                modalPresentationDismissalSetup(for: vc, options: options)
             }
         }
     }
 
-    /// Creates a future to be used for queued modal presentations.
+    /// Creates a future that will setup all dismiss functionality needed for modal presentations.
     /// - Parameters:
     ///   - viewController: The presented view controller.
-    ///   - presentationController: Optional custom presentation controller that will be used. Defaults to `nil`.
+    ///   - customPresentationController: Optional custom presentation controller that will be used for the presentation. Defaults to `nil`.
     ///   - options: Presentation options.
-    static func queuedModalPreparationFuture(for viewController: UIViewController, presentationController: UIPresentationController? = nil, options: PresentationOptions) -> Future<()> {
-        Future { completion in
+    static func modalPresentationDismissalSetup(for viewController: UIViewController, customPresentationController: UIPresentationController? = nil, options: PresentationOptions) -> Future<Void> {
+        return Future { completion in
             let bag = DisposeBag()
+            let presented = (viewController as? UINavigationController)?.viewControllers.first ?? viewController
 
-            if !(viewController is UIAlertController) {
-                let delegate = viewController.customAdaptivePresentationDelegate ?? CustomAdaptivePresentationDelegate()
+            if !(presented is UIAlertController) {
+                let delegate = presented.customAdaptivePresentationDelegate ?? CustomAdaptivePresentationDelegate()
                 bag.hold(delegate)
-                (presentationController ?? viewController.presentationController)?.delegate = delegate
+                (customPresentationController ?? viewController.presentationController)?.delegate = delegate
 
                 bag += delegate.shouldDismiss.set { presentationController -> Bool in
                     guard !options.contains(.allowSwipeDismissAlways),
@@ -121,7 +122,7 @@ public extension PresentationStyle {
                 }
             }
 
-            bag += viewController.installDismissButton().onValue {
+            bag += presented.installDismissButton().onValue {
                 completion(.failure(PresentError.dismissed))
             }
 
