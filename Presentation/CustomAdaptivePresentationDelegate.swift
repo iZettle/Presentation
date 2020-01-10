@@ -91,4 +91,14 @@ public extension UIViewController {
     }
 }
 
+/// Use this protocol to configure swipe dismissal availability of modally presented view controllers.
+public protocol SwipeDismissConfigurable {
+    /// Whether the view controller should be able to be dismissed by swiping.
+    var isAllowingSwipeDismissal: Bool { get }
+}
+
+extension UINavigationController: SwipeDismissConfigurable {
+    public var isAllowingSwipeDismissal: Bool { return viewControllers.count <= 1 }
+}
+
 private var customAdaptivePresentationDelegateKey = false

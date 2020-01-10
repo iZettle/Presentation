@@ -109,12 +109,11 @@ public extension PresentationStyle {
                 bag.hold(delegate)
                 (customPresentationController ?? viewController.presentationController)?.delegate = delegate
 
-                bag += delegate.shouldDismiss.set { presentationController -> Bool in
-                    guard !options.contains(.allowSwipeDismissAlways),
-                    let nc = (presentationController.presentedViewController as? UINavigationController) else {
-                        return true
+                if !delegate.shouldDismiss.isSet {
+                    bag += delegate.shouldDismiss.set { presentationController -> Bool in
+                        guard !options.contains(.allowSwipeDismissAlways) else { return true }
+                        return (presentationController.presentedViewController as? SwipeDismissConfigurable)?.isAllowingSwipeDismissal ?? true
                     }
-                    return nc.viewControllers.count <= 1
                 }
 
                 bag += delegate.didDismissSignal.onValue { _ in
