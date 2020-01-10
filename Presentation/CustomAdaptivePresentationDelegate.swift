@@ -98,7 +98,7 @@ public protocol SwipeDismissConfigurable {
 }
 
 extension UINavigationController: SwipeDismissConfigurable {
-    public var isAllowingSwipeDismissal: Bool { viewControllers.count <= 1 }
+    public var isAllowingSwipeDismissal: Bool { return viewControllers.count <= 1 }
 }
 
 private var customAdaptivePresentationDelegateKey = false
