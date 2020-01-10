@@ -1,3 +1,6 @@
+# 1.12.0
+- [Addition] Make swipe-to-dismiss blockable through protocol conformance.
+
 # 1.11.0
 - [Addition] Extracted the modal dismiss setup to a separate function, to be able to supply a custom presentation controller if needed.
 
