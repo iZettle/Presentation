@@ -333,7 +333,7 @@ public extension UIWindow {
 
 public extension Presentation {
     /// Creates a new instance with an `.invisible` presentation style where `invisibleResult`'s result is used as result when `self` is being presented.
-    init<Result>(invisibleResult: @escaping () -> Result, _ noTrailingClosure: () = ()) where P == AnyPresentable<UIViewController, Result> {
+    init<Result>(invisibleResult: @escaping () -> Result) where P == AnyPresentable<UIViewController, Result> {
         self.init(InvisiblePresentable(result: invisibleResult), style: .invisible, options: [])
     }
 }
