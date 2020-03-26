@@ -203,7 +203,6 @@ public extension MasterDetailSelection {
 
 public extension SignalProvider where Value: BidirectionalCollection {
     /// Returns a signal that will signal when index before `element` is updated.
-    typealias Element = Value.Iterator.Element
     func index(before element: Element, isSame: @escaping (Element, Element) -> Bool) -> CoreSignal<Kind.DropWrite, Value.Index?> {
         return map { collection in
             guard let index = collection.firstIndex(where: { isSame(element, $0) }), index != collection.startIndex else { return nil }
@@ -214,6 +213,7 @@ public extension SignalProvider where Value: BidirectionalCollection {
 
 public extension SignalProvider where Value: Collection {
     /// Returns a signal that will signal when index after `element` is updated.
+    typealias Element = Value.Iterator.Element
     func index(after element: Element, isSame: @escaping (Element, Element) -> Bool) -> CoreSignal<Kind.DropWrite, Value.Index?> {
         return map { collection in
             guard let index = collection.firstIndex(where: { isSame(element, $0) }) else { return nil }

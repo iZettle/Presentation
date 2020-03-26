@@ -1,3 +1,8 @@
+# 1.13.0
+- [Change] Move to Flow version 1.8.4
+- [Bugfix] Fix compile time error in `public extension SignalProvider where Value: Collection {` for swift 5.2
+- [Change] Remove `noTrailingClosure: () = ()` from `init<Result>` for  `Presentation` to avoid `Ambiguous use of 'init' for Signals` compile time errors on call site
+
 # 1.12.0
 - [Addition] Make swipe-to-dismiss blockable through protocol conformance.
 
