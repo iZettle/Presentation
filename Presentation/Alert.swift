@@ -97,10 +97,7 @@ public extension PresentationStyle {
                 disposer = NilDisposer()
             }
 
-            if let presenter = vc.popoverPresentationController {
-                guard let view = sourceView else {
-                    fatalError("Sheet style requires a from view if presented in popover")
-                }
+            if let presenter = vc.popoverPresentationController, let view = sourceView {
                 presenter.sourceView = view
                 presenter.sourceRect = sourceRect ?? view.bounds
             }
