@@ -1,3 +1,6 @@
+# 1.13.1
+- [Bug fix] Prevent a crash in sheet presentation style when a source view is not provided. 
+
 # 1.13.0
 - [Change] Move to Flow version 1.8.4
 - [Bugfix] Fix compile time error in `public extension SignalProvider where Value: Collection {` for swift 5.2

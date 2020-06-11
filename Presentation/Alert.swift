@@ -90,24 +90,28 @@ public extension PresentationStyle {
                 fatalError("presented view controller must be an UIAlertController to be presented as a action sheet")
             }
 
-            var disposer: Disposable
+            let bag = DisposeBag()
             if let createSheet: () -> (UIAlertController, Disposable) = vc.associatedValue(forKey: &createSheetKey) {
+                var disposer: Disposable
                 (vc, disposer) = createSheet()
-            } else {
-                disposer = NilDisposer()
+                bag += disposer
             }
 
             if let presenter = vc.popoverPresentationController {
-                guard let view = sourceView else {
-                    fatalError("Sheet style requires a from view if presented in popover")
+                presenter.sourceView = sourceView ?? from.view
+
+                if let rect = sourceRect {
+                    presenter.sourceRect = rect
+                } else {
+                    bag += presenter.sourceView?.signal(for: \.bounds).atOnce().onValue { [weak presenter] bounds in
+                        presenter?.sourceRect = CGRect(x: floor(bounds.width / 2), y: floor(bounds.height / 2), width: 1, height: 1)
+                    }
                 }
-                presenter.sourceView = view
-                presenter.sourceRect = sourceRect ?? view.bounds
             }
 
             let (present, dismiss) = modal.present(vc, from: from, options: options)
 
-            return (present.always(disposer.dispose), dismiss)
+            return (present.always(bag.dispose), dismiss)
         }
     }
 }
