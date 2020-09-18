@@ -3,7 +3,7 @@
 //  Example
 //
 //  Created by Mayur Deshmukh on 23/10/18.
-//  Copyright © 2018 iZettle. All rights reserved.
+//  Copyright © 2018 PayPal Inc. All rights reserved.
 //
 
 import Foundation

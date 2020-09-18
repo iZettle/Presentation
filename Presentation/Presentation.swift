@@ -3,7 +3,7 @@
 //  Presentation
 //
 //  Created by Måns Bernhardt on 2017-04-21.
-//  Copyright © 2017 iZettle. All rights reserved.
+//  Copyright © 2017 PayPal Inc. All rights reserved.
 //
 
 import UIKit
