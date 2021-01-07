@@ -33,7 +33,7 @@ public struct PresentationStyle {
         do {
             return try _present(viewController, fromViewController, options)
         } catch {
-            return (dismisser: { Future() }, result: Future(error: error))
+            return (result: Future(error: error), dismisser: { Future() })
         }
     }
 }

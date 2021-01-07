@@ -13,7 +13,7 @@ import Presentation
 class MasterDetailSelectionTests: XCTestCase {
     func testPresentDetailsExpanded() {
         let items = ReadWriteSignal([1, 2, 3])
-        let isCollapsed = ReadWriteSignal(false)
+        let isCollapsed = ReadWriteSignal<Bool?>(false)
         var presentedIndex: Int?
 
         var presentCount = 0
@@ -49,7 +49,7 @@ class MasterDetailSelectionTests: XCTestCase {
 
     func testPresentDetailsCollpased() {
         let items = ReadWriteSignal([1, 2, 3])
-        let isCollapsed = ReadWriteSignal(true)
+        let isCollapsed = ReadWriteSignal<Bool?>(true)
         var presentedIndex: Int?
 
         var presentCount = 0
@@ -81,7 +81,7 @@ class MasterDetailSelectionTests: XCTestCase {
 
     func testExpandedToCollapsed() {
         let items = ReadWriteSignal([1, 2, 3])
-        let isCollapsed = ReadWriteSignal(true)
+        let isCollapsed = ReadWriteSignal<Bool?>(true)
         var presentedIndex: Int?
 
         var presentCount = 0
@@ -115,7 +115,7 @@ class MasterDetailSelectionTests: XCTestCase {
 
     func testExpandedStepBetween() {
         let items = ReadWriteSignal([1, 2, 3])
-        let isCollapsed = ReadWriteSignal(false)
+        let isCollapsed = ReadWriteSignal<Bool?>(false)
         var presentedIndex: Int?
 
         var presentCount = 0
@@ -143,7 +143,7 @@ class MasterDetailSelectionTests: XCTestCase {
 
     func testCollapsedStepBetween() {
         let items = ReadWriteSignal([1, 2, 3])
-        let isCollapsed = ReadWriteSignal(true)
+        let isCollapsed = ReadWriteSignal<Bool?>(true)
         var presentedIndex: Int?
 
         var presentCount = 0
