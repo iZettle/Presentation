@@ -1,3 +1,6 @@
+# 1.13.2
+- Update project settings for Xcode 12 and fix some deprecation warnings
+
 # 1.13.1
 - [Bug fix] Prevent a crash in sheet presentation style when a source view is not provided. 
 
