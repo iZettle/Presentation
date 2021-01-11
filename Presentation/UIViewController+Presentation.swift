@@ -28,7 +28,7 @@ public extension UIViewController {
         // iOS 13 temporary fix for issue #40: https://github.com/iZettle/Presentation/issues/40
         let shouldPresentImmediately: Bool
         if #available(iOS 13.0, *) {
-            shouldPresentImmediately = root is UISplitViewController || vc is UISplitViewController || root is UINavigationController
+            shouldPresentImmediately = root is UISplitViewController || vc is UISplitViewController || (root as? UINavigationController)?.viewControllers.isEmpty == true
         } else {
             shouldPresentImmediately = false
         }
