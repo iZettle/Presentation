@@ -124,7 +124,7 @@ public extension PresentationStyle {
             bag += viewController.installDismissButton().onValue {
                 completion(.failure(PresentError.dismissed))
             }
-            presented.installDismissButton().onValue {
+            bag += presented.installDismissButton().onValue {
                 completion(.failure(PresentError.dismissed))
             }
 
