@@ -1,3 +1,6 @@
+# 1.13.3
+- [Bug fix] Fix bug related to presenting a `UINavigationController` modally without an explicit root `UIViewController`, resulting in unexpected behaviour of `UITextField` input cursors.
+
 # 1.13.2
 - Update project settings for Xcode 12 and fix some deprecation warnings
 
