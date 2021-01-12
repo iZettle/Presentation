@@ -19,6 +19,7 @@ struct ChoosePresentationOptions { }
 extension PresentationOptions {
     static let navigationBarPreference = PresentationOptions()
     static let showAlertOnDidAttemptToDismiss = PresentationOptions()
+    static let modalNavigationControllerFlow = PresentationOptions()
 }
 
 extension PresentationOptions {
@@ -26,6 +27,7 @@ extension PresentationOptions {
         let presentationOptions: [(String, PresentationOptions)] = [
             ("Default", .defaults),
             ("Embed In Navigation Controller", .embedInNavigationController),
+            ("Modal Navigation Controller flow", .modalNavigationControllerFlow),
             ("Dont Wait For Dismiss Animation", .dontWaitForDismissAnimation),
             ("Unanimated", .unanimated),
             ("Restore first responder", .restoreFirstResponder),
