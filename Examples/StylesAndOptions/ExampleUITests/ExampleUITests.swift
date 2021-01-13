@@ -210,6 +210,27 @@ class ExampleUITests: XCTestCase {
 
         app.terminate()
     }
+
+    func testModalNavigationController() {
+        app.launch()
+
+        let navBar = app.navigationBars["UIView"]
+        let cancelButton = app.buttons["Cancel"]
+        let nextButton = app.buttons["Next"]
+        let backButton = navBar.buttons["Back"]
+
+        chooseStyleAndOption(style: "default", option: "Modal Navigation Controller flow")
+
+        XCTAssertTrue(navBar.exists)
+        cancelButton.waitForExistenceAndTap()
+
+        chooseStyleAndOption(style: "default", option: "Modal Navigation Controller flow")
+
+        nextButton.waitForExistenceAndTap()
+        backButton.waitForExistenceAndTap()
+        nextButton.waitForExistenceAndTap()
+        nextButton.waitForExistenceAndTap()
+    }
     
     // MARK: - Helpers
     func verifyForAllContainerConfigurations(_ verify: () -> ()) {

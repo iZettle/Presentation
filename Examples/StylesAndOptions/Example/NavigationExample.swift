@@ -12,9 +12,9 @@ import Flow
 
 struct NavigationExample { }
 
-struct TestNavigationBarHiding {
+struct TestNavigationBarHiding { }
 
-}
+struct TestNavigationControllerFlow { }
 
 extension TestNavigationBarHiding: Presentable {
     func materialize() -> (UIViewController, Disposable) {
@@ -49,6 +49,22 @@ extension NavigationExample: Presentable {
             return button.onValue {
                 callback(())
             }
+        })
+    }
+}
+
+extension TestNavigationControllerFlow: Presentable {
+    public func materialize() -> (UIViewController, Future<Void>) {
+        let nc = UINavigationController()
+
+        return (nc, Future { completion in
+            let bag = DisposeBag()
+
+            bag += nc.present(NavigationExample()).onValueDisposePrevious { _ in
+                nc.present(NavigationExample()).onValue { completion(.success)}
+            }
+
+            return bag
         })
     }
 }

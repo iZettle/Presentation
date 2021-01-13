@@ -63,6 +63,10 @@ extension AppFlow: Presentable {
                 return containerController.present(Presentation(TestNavigationBarHiding(), style: .modal)).toVoid()
             }
 
+            if options.contains(.modalNavigationControllerFlow) {
+                return containerController.present(Presentation(TestNavigationControllerFlow(), style: .modal, configure: withDismiss))
+            }
+
             if options.contains(.allowSwipeDismissAlways) {
                 struct NavigationStack: Presentable {
                     func materialize() -> (UIViewController, Disposable) {
