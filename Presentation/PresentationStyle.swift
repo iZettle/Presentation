@@ -94,11 +94,18 @@ public extension PresentationStyle {
         }
     }
 
-    /// Creates a future that will setup all dismiss functionality needed for modal presentations.
+    /// Creates a future that completes when `viewController` is dismissed.
+    /// Handles dismiss button configurations as well as swipe dismissal depending on the provided `options` and popover dismissal.
+    ///
     /// - Parameters:
     ///   - viewController: The presented view controller.
     ///   - customPresentationController: Optional custom presentation controller that will be used for the presentation. Defaults to `nil`.
     ///   - options: Presentation options.
+    ///
+    /// - Note: Special case when `viewController` is a `UINavigationController`: If it doesn't have its own `dismissBarItem` configured
+    /// but its presented view controller does, the presented view controller dismissal will be configured too. If both `viewController` and its presented one
+    /// have dismiss items configured, only the one for `viewController` will be used.
+    ///
     static func modalPresentationDismissalSetup(for viewController: UIViewController, customPresentationController: UIPresentationController? = nil, options: PresentationOptions) -> Future<Void> {
         return Future { completion in
             let bag = DisposeBag()
@@ -124,8 +131,11 @@ public extension PresentationStyle {
             bag += viewController.installDismissButton().onValue {
                 completion(.failure(PresentError.dismissed))
             }
-            bag += presented.installDismissButton().onValue {
-                completion(.failure(PresentError.dismissed))
+
+            if viewController.dismissBarItem == nil && presented.dismissBarItem != nil {
+                bag += presented.installDismissButton().onValue {
+                    completion(.failure(PresentError.dismissed))
+                }
             }
 
             if viewController.modalPresentationStyle == .popover, let popover = viewController.popoverPresentationController {
