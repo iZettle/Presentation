@@ -124,8 +124,11 @@ public extension PresentationStyle {
             bag += viewController.installDismissButton().onValue {
                 completion(.failure(PresentError.dismissed))
             }
-            bag += presented.installDismissButton().onValue {
-                completion(.failure(PresentError.dismissed))
+
+            if presented != viewController {
+                bag += presented.installDismissButton().onValue {
+                    completion(.failure(PresentError.dismissed))
+                }
             }
 
             if viewController.modalPresentationStyle == .popover, let popover = viewController.popoverPresentationController {
