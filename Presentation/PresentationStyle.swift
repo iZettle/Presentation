@@ -94,7 +94,9 @@ public extension PresentationStyle {
         }
     }
 
-    /// Creates a future that will setup all dismiss functionality needed for modal presentations.
+    /// Creates a future that completes when `viewController` is dismissed.
+    /// Handles dismiss button configurations as well as swipe dismissal depending on the provided `options` and popover dismissal.
+    ///
     /// - Parameters:
     ///   - viewController: The presented view controller.
     ///   - customPresentationController: Optional custom presentation controller that will be used for the presentation. Defaults to `nil`.
@@ -103,6 +105,7 @@ public extension PresentationStyle {
     /// - Note: Special case when `viewController` is a `UINavigationController`: If it doesn't have its own `dismissBarItem` configured
     /// but its presented view controller does, the presented view controller dismissal will be configured too. If both `viewController` and its presented one
     /// have dismiss items configured, only the one for `viewController` will be used.
+    ///
     static func modalPresentationDismissalSetup(for viewController: UIViewController, customPresentationController: UIPresentationController? = nil, options: PresentationOptions) -> Future<Void> {
         return Future { completion in
             let bag = DisposeBag()
