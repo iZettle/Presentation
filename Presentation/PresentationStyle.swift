@@ -99,6 +99,10 @@ public extension PresentationStyle {
     ///   - viewController: The presented view controller.
     ///   - customPresentationController: Optional custom presentation controller that will be used for the presentation. Defaults to `nil`.
     ///   - options: Presentation options.
+    ///
+    /// - Note: Special case when `viewController` is a `UINavigationController`: If it doesn't have its own `dismissBarItem` configured
+    /// but its presented view controller does, the presented view controller dismissal will be configured too. If both `viewController` and its presented one
+    /// have dismiss items configured, only the one for `viewController` will be used.
     static func modalPresentationDismissalSetup(for viewController: UIViewController, customPresentationController: UIPresentationController? = nil, options: PresentationOptions) -> Future<Void> {
         return Future { completion in
             let bag = DisposeBag()
@@ -125,7 +129,7 @@ public extension PresentationStyle {
                 completion(.failure(PresentError.dismissed))
             }
 
-            if presented != viewController {
+            if viewController.dismissBarItem == nil && presented.dismissBarItem != nil {
                 bag += presented.installDismissButton().onValue {
                     completion(.failure(PresentError.dismissed))
                 }
