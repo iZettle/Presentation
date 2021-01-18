@@ -1,3 +1,6 @@
+# 1.13.4
+- [Bug fix] Fix bug introduced in 1.13.3 where a view controller might be configured with dismiss twice when passed to `modalPresentationDismissalSetup`.
+
 # 1.13.3
 - [Bug fix] Fix bug related to presenting a `UINavigationController` modally without an explicit root `UIViewController`, resulting in unexpected behaviour of `UITextField` input cursors.
 
