@@ -13,6 +13,7 @@
 		5B5111792357143500128609 /* FlowIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5111782357143500128609 /* FlowIntegrationTests.swift */; };
 		722FE3B622EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */; };
 		728711A2229818B700A086DF /* PresentationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728711A1229818B700A086DF /* PresentationEvent.swift */; };
+		8737457225B58D3700F1AA0A /* PresentationStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8737457125B58D3700F1AA0A /* PresentationStyleTests.swift */; };
 		F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */; };
 		F646BEDB1C85CF5400AA7526 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F646BEDA1C85CF5400AA7526 /* Alert.swift */; };
 		F65D5DC11C58C421002B5D95 /* DualNavigationControllersSplitDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65D5DC01C58C421002B5D95 /* DualNavigationControllersSplitDelegate.swift */; };
@@ -50,6 +51,7 @@
 		5B5111782357143500128609 /* FlowIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowIntegrationTests.swift; sourceTree = "<group>"; };
 		722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAdaptivePresentationDelegate.swift; sourceTree = "<group>"; };
 		728711A1229818B700A086DF /* PresentationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationEvent.swift; sourceTree = "<group>"; };
+		8737457125B58D3700F1AA0A /* PresentationStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationStyleTests.swift; sourceTree = "<group>"; };
 		B38092B720A9B718009D8302 /* Flow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flow.framework; path = Carthage/Build/iOS/Flow.framework; sourceTree = "<group>"; };
 		F617E3751C197D5E00B567FB /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F617E37A1C197D5E00B567FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				F6CB32A01F2F399600CA56C2 /* Info.plist */,
 				1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */,
 				5B5111782357143500128609 /* FlowIntegrationTests.swift */,
+				8737457125B58D3700F1AA0A /* PresentationStyleTests.swift */,
 			);
 			path = PresentationTests;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 			files = (
 				5B5111792357143500128609 /* FlowIntegrationTests.swift in Sources */,
 				F6B3B74F1F39977000188409 /* KeepSelectionTests.swift in Sources */,
+				8737457225B58D3700F1AA0A /* PresentationStyleTests.swift in Sources */,
 				1C0656ED1F8393C100E60465 /* MemoryUtilsTests.swift in Sources */,
 				F6B3B7501F39977000188409 /* MasterDetailSelectionTests.swift in Sources */,
 			);
