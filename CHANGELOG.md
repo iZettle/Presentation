@@ -1,3 +1,7 @@
+# 1.14.0
+
+- Xcode 12.4 compatibility
+
 # 1.13.4
 - [Bug fix] Fix bug introduced in 1.13.3 where a view controller might be configured with dismiss twice when passed to `modalPresentationDismissalSetup`.
 
