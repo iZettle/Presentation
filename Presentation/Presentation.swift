@@ -161,17 +161,13 @@ public extension Presentation {
         return new
     }
 
-    /// Returns a new presentation where `callback` will be called with the value of a successful dismiss of `self`.
+    /// Returns a new presentation where `callback` will be called with the value of the result of `self`.
     func onValue<Value>(_ callback: @escaping (Value) -> ()) -> Presentation where P.Result == Future<Value> {
         let onDismiss = self.onDismiss
-        var value: Value?
-        var new = map { $0.onValue { value = $0 } }
+        var new = map { $0.onValue(callback) }
 
         new.onDismiss = { error in
             onDismiss(error)
-            if let value = value, error == nil {
-                callback(value)
-            }
         }
 
         return new
