@@ -154,7 +154,12 @@ class ExampleUITests: XCTestCase {
 
             func dragDownFromNavigationBar(to toElement: XCUIElement, afterExistenseOf requiredElement: XCUIElement) {
                 XCTAssertTrue(requiredElement.waitForExistence(timeout: 1.0))
-                navBar.press(forDuration: 0.5, thenDragTo: toElement)
+                navBar.press(
+                    forDuration: 0.5,
+                    thenDragTo: toElement,
+                    withVelocity: .fast,
+                    thenHoldForDuration: 0
+                )
             }
 
             verifyForAllContainerConfigurations {
