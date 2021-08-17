@@ -3,13 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1C0656EB1F8290CB00E60465 /* MemoryUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0656EA1F8290CB00E60465 /* MemoryUtils.swift */; };
 		1C0656ED1F8393C100E60465 /* MemoryUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */; };
 		2177C8F31D897360000DECA4 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177C8F21D897360000DECA4 /* Presentable.swift */; };
+		5B08548426CBBD5B0079B44B /* Flow.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B08548326CBBD5B0079B44B /* Flow.xcframework */; };
 		5B5111792357143500128609 /* FlowIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5111782357143500128609 /* FlowIntegrationTests.swift */; };
 		722FE3B622EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */; };
 		728711A2229818B700A086DF /* PresentationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728711A1229818B700A086DF /* PresentationEvent.swift */; };
@@ -48,11 +49,11 @@
 		1C0656EA1F8290CB00E60465 /* MemoryUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUtils.swift; sourceTree = "<group>"; };
 		1C0656EC1F8393C100E60465 /* MemoryUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryUtilsTests.swift; sourceTree = "<group>"; };
 		2177C8F21D897360000DECA4 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		5B08548326CBBD5B0079B44B /* Flow.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Flow.xcframework; path = Carthage/Build/Flow.xcframework; sourceTree = "<group>"; };
 		5B5111782357143500128609 /* FlowIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowIntegrationTests.swift; sourceTree = "<group>"; };
 		722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAdaptivePresentationDelegate.swift; sourceTree = "<group>"; };
 		728711A1229818B700A086DF /* PresentationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationEvent.swift; sourceTree = "<group>"; };
 		8737457125B58D3700F1AA0A /* PresentationStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationStyleTests.swift; sourceTree = "<group>"; };
-		B38092B720A9B718009D8302 /* Flow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flow.framework; path = Carthage/Build/iOS/Flow.framework; sourceTree = "<group>"; };
 		F617E3751C197D5E00B567FB /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F617E37A1C197D5E00B567FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; };
@@ -86,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B08548426CBBD5B0079B44B /* Flow.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,10 +102,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5B08548226CBBD5B0079B44B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5B08548326CBBD5B0079B44B /* Flow.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F617E36B1C197D5E00B567FB = {
 			isa = PBXGroup;
 			children = (
-				B38092B720A9B718009D8302 /* Flow.framework */,
 				F6C2E6121C6A0EE700453548 /* README.md */,
 				F6C208D6209B3CC00068A5F3 /* CHANGELOG.md */,
 				F6C208D9209B3CC00068A5F3 /* LICENSE.md */,
@@ -112,6 +121,7 @@
 				F617E3771C197D5E00B567FB /* Presentation */,
 				F6CB329D1F2F399600CA56C2 /* PresentationTests */,
 				F617E3761C197D5E00B567FB /* Products */,
+				5B08548226CBBD5B0079B44B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -203,7 +213,6 @@
 				F6CB32981F2F399600CA56C2 /* Sources */,
 				F6CB32991F2F399600CA56C2 /* Frameworks */,
 				F6CB329A1F2F399600CA56C2 /* Resources */,
-				F6E6FE3820A9C522001CBB2C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -291,21 +300,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		F6E6FE3820A9C522001CBB2C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Flow.framework",
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -478,7 +472,11 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = Presentation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iZettle.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -499,7 +497,11 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = Presentation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iZettle.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -522,7 +524,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = PresentationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.izettle.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -540,10 +546,15 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = PresentationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.izettle.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
