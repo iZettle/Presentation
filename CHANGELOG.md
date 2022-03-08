@@ -1,3 +1,6 @@
+# 1.15.2
+- Xcode 13.2 compatibility
+
 # 1.15.1
 - Move to xcframeworks
 
