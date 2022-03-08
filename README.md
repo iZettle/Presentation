@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/iZettle/Presentation.svg?branch=master)](https://travis-ci.org/iZettle/Presentation)
 [![Platforms](https://img.shields.io/badge/platform-%20iOS-gray.svg)](https://img.shields.io/badge/platform-%20iOS-gray.svg)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+![Xcode version](https://img.shields.io/badge/Xcode-13.2.0-green)
 
 Presentation is an iOS Swift library for working with UI presentations in a more structured way with a focus on:
 
