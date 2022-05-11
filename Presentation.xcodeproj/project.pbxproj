@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		5B5111792357143500128609 /* FlowIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5111782357143500128609 /* FlowIntegrationTests.swift */; };
 		722FE3B622EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */; };
 		728711A2229818B700A086DF /* PresentationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728711A1229818B700A086DF /* PresentationEvent.swift */; };
+		7592CA3A282BF8D300920278 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 7592CA39282BF8D300920278 /* Flow */; };
 		8737457225B58D3700F1AA0A /* PresentationStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8737457125B58D3700F1AA0A /* PresentationStyleTests.swift */; };
 		F617E3991C197D7600B567FB /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */; };
 		F646BEDB1C85CF5400AA7526 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F646BEDA1C85CF5400AA7526 /* Alert.swift */; };
@@ -52,7 +53,6 @@
 		722FE3B522EA357A00EB04A7 /* CustomAdaptivePresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAdaptivePresentationDelegate.swift; sourceTree = "<group>"; };
 		728711A1229818B700A086DF /* PresentationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationEvent.swift; sourceTree = "<group>"; };
 		8737457125B58D3700F1AA0A /* PresentationStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationStyleTests.swift; sourceTree = "<group>"; };
-		B38092B720A9B718009D8302 /* Flow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flow.framework; path = Carthage/Build/iOS/Flow.framework; sourceTree = "<group>"; };
 		F617E3751C197D5E00B567FB /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F617E37A1C197D5E00B567FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F617E3981C197D7600B567FB /* UIViewController+Presentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "UIViewController+Presentation.swift"; sourceTree = "<group>"; };
@@ -78,7 +78,6 @@
 		F6CB32A01F2F399600CA56C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6DCDD031EC83F9D00ED39F6 /* AnyPresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyPresentation.swift; sourceTree = "<group>"; };
 		F6EA2D241E72D73B0054C302 /* DismissInstallable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissInstallable.swift; sourceTree = "<group>"; };
-		F6F6796920A2CEC0004C7AA7 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7592CA3A282BF8D300920278 /* Flow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,12 +103,10 @@
 		F617E36B1C197D5E00B567FB = {
 			isa = PBXGroup;
 			children = (
-				B38092B720A9B718009D8302 /* Flow.framework */,
 				F6C2E6121C6A0EE700453548 /* README.md */,
 				F6C208D6209B3CC00068A5F3 /* CHANGELOG.md */,
 				F6C208D9209B3CC00068A5F3 /* LICENSE.md */,
 				F6C208DA209B3CC00068A5F3 /* PresentationFramework.podspec */,
-				F6F6796920A2CEC0004C7AA7 /* Cartfile */,
 				F617E3771C197D5E00B567FB /* Presentation */,
 				F6CB329D1F2F399600CA56C2 /* PresentationTests */,
 				F617E3761C197D5E00B567FB /* Products */,
@@ -192,6 +190,9 @@
 			dependencies = (
 			);
 			name = Presentation;
+			packageProductDependencies = (
+				7592CA39282BF8D300920278 /* Flow */,
+			);
 			productName = Presentation;
 			productReference = F617E3751C197D5E00B567FB /* Presentation.framework */;
 			productType = "com.apple.product-type.framework";
@@ -203,7 +204,6 @@
 				F6CB32981F2F399600CA56C2 /* Sources */,
 				F6CB32991F2F399600CA56C2 /* Frameworks */,
 				F6CB329A1F2F399600CA56C2 /* Resources */,
-				F6E6FE3820A9C522001CBB2C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -247,6 +247,9 @@
 				Base,
 			);
 			mainGroup = F617E36B1C197D5E00B567FB;
+			packageReferences = (
+				7592CA38282BF8D300920278 /* XCRemoteSwiftPackageReference "Flow" */,
+			);
 			productRefGroup = F617E3761C197D5E00B567FB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -291,21 +294,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		F6E6FE3820A9C522001CBB2C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Flow.framework",
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -478,7 +466,11 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = Presentation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iZettle.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -499,7 +491,11 @@
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = Presentation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.15.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iZettle.Presentation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -515,14 +511,17 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = PresentationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.izettle.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -538,12 +537,16 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
 				INFOPLIST_FILE = PresentationTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.izettle.PresentationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -579,6 +582,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7592CA38282BF8D300920278 /* XCRemoteSwiftPackageReference "Flow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iZettle/Flow.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.10.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7592CA39282BF8D300920278 /* Flow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7592CA38282BF8D300920278 /* XCRemoteSwiftPackageReference "Flow" */;
+			productName = Flow;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F617E36C1C197D5E00B567FB /* Project object */;
 }
