@@ -11,6 +11,7 @@ import Presentation
 import Flow
 
 class KeepSelectionTests: XCTestCase {
+
     func testExample() {
         let items = ReadWriteSignal([1, 2, 3])
         let selection = KeepSelection(elements: items.readOnly(), isSame: ==)
