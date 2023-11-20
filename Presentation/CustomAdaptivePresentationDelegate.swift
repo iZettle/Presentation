@@ -20,7 +20,9 @@ public final class CustomAdaptivePresentationDelegate: NSObject, UIAdaptivePrese
     private let didAttemptToDismissCallbacker = Callbacker<UIPresentationController>()
     private let didDismissCallbacker = Callbacker<UIPresentationController>()
 
+    // swiftlint:disable large_tuple
     public typealias WillPresentAdaptivelyInput = (UIPresentationController, UIModalPresentationStyle, UIViewControllerTransitionCoordinator?)
+    // swiftlint:enable large_tuple
 
     public var willPresentSignal: Signal<WillPresentAdaptivelyInput> {
         return Signal(callbacker: willPresentCallbacker)

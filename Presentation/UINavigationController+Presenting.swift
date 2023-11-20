@@ -220,8 +220,8 @@ private extension UINavigationController {
             pushPoper.vc.navigationItem.popCallbacker.callAll(with: ())
             pushPoper.onComplete(.success)
         }
-        pushPoper.bag += willPopViewControllerSignal.filter { $0 == pushPoper.vc }.onFirstValue { vc in
-            guard self.viewControllers.count > 1 else { return } //return because there is no previous PushPoper
+        pushPoper.bag += willPopViewControllerSignal.filter { $0 == pushPoper.vc }.onFirstValue { _ in
+            guard self.viewControllers.count > 1 else { return } // return because there is no previous PushPoper
 
             let previousPushPoper = self.popSignalPushPopers.compactMap { popSignalPushPoper -> PushPoper? in
                 guard let pushPoper = popSignalPushPoper.value, pushPoper.vc == self.viewControllers.last else {
