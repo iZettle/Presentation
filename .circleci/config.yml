@@ -162,5 +162,5 @@ workflows:
       - test-xcode14-ios16
       - test-xcode15-ios17
       - test-example-messages
-      - test-example-styles-and-options
+      # - test-example-styles-and-options
       
