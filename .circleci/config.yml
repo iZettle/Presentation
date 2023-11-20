@@ -162,5 +162,7 @@ workflows:
       - test-xcode14-ios16
       - test-xcode15-ios17
       - test-example-messages
+      # Temporary disabled need to be addressed, there are issues in Flow that might fix this thouh example failiure bellow
+      # https://app.circleci.com/pipelines/github/iZettle/Presentation/312/workflows/f408abd8-d1ec-46d9-af4d-63f2eb794869/jobs/1195
       # - test-example-styles-and-options
       
