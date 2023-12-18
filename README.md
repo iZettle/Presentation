@@ -68,7 +68,7 @@ presentingViewController.present(messages)
 
 - Xcode `9.3+`
 - Swift 4.1
-- iOS `9.0+`
+- iOS `10.0+`
 
 ## Installation
 
