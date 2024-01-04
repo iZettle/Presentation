@@ -1,3 +1,6 @@
+# 1.15.3
+- Support Xcode 15
+
 # 1.15.2
 - Xcode 13.2 compatibility
 - [Change] Replace `Carthage` with `SPM`
