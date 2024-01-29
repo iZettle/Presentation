@@ -255,6 +255,7 @@ extension UINavigationController {
             listenOnPop(for: pushPoper)
         }
         from.popSignalPushPopers.removeAll()
+        from.dismiss(animated: true)
     }
 }
 

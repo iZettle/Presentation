@@ -100,7 +100,7 @@ open class DualNavigationControllersSplitDelegate: NSObject, UISplitViewControll
             if let top = primary.topViewController, let item = customNavigationBackButtonWithTitle(top.title ?? "") {
                 top.navigationItem.backBarButtonItem = item
             }
-//            primary.transferViewControllers(from: secondary)
+            primary.transferViewControllers(from: secondary)
         }
 
         return true
