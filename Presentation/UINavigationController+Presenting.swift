@@ -245,6 +245,10 @@ private extension UINavigationController {
 extension UINavigationController {
     func transferViewControllers(from: UINavigationController) {
         viewControllers += from.viewControllers
+        /*
+         This line helps us prevent a crash that appeared with iOS 17. Explanation of the crash can
+         be found here https://stackoverflow.com/questions/77228311/nsinternalinconsistencyexception-reason-layout-requested-for-visible-naviga
+         */
         from.viewControllers = []
         for pushPoper in from.popSignalPushPopers.compactMap({ $0.value }) {
             let onComplete = pushPoper._onComplete
