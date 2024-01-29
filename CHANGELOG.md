@@ -1,3 +1,6 @@
+# 1.16.0
+- Fix split view crash for iOS 17
+
 # 1.15.3
 - Support Xcode 15
 
