@@ -245,6 +245,7 @@ private extension UINavigationController {
 extension UINavigationController {
     func transferViewControllers(from: UINavigationController) {
         viewControllers += from.viewControllers
+        from.dismiss(animated: true) { }
         for pushPoper in from.popSignalPushPopers.compactMap({ $0.value }) {
             let onComplete = pushPoper._onComplete
             pushPoper.bag.dispose()
@@ -255,7 +256,6 @@ extension UINavigationController {
             listenOnPop(for: pushPoper)
         }
         from.popSignalPushPopers.removeAll()
-        from.dismiss(animated: true)
     }
 }
 
