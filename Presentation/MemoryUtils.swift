@@ -34,6 +34,8 @@ public let enabledDisplayAlertOnMemoryLeaksKey = "enabledDisplayAlertOnMemoryLea
 
             func onLeak() {
                 log(.didLeak(.init(vcPresentationDescription), from: .init(presentationDescription)))
+                let memoryLeak = UIVCMemoryLeak(name: self.presentationTitle)
+                UIVCMemoryLeakFileWriter().write(memoryLeak: memoryLeak)
 
                 guard UserDefaults.standard.bool(forKey: enabledDisplayAlertOnMemoryLeaksKey) else { return }
 
@@ -75,3 +77,80 @@ extension NSObjectProtocol {
 }
 
 private var memoryLeakTrackingEnabledKey = false
+
+private struct UIVCMemoryLeak {
+
+    internal let name: String
+
+    internal func jsonRepresentation() -> [String: Any] {
+        return [
+            "name": self.name
+        ]
+    }
+}
+
+private class UIVCMemoryLeakFileWriter {
+
+    private let mlDirName = "presentation-memory-leaks"
+    private let tmpDir = "/tmp"
+
+    internal func write(memoryLeak: UIVCMemoryLeak) {
+        let mlDirPath = self.tmpDir.appending("/\(self.mlDirName)")
+        self.createMemoryLeaksDir(pathToDir: mlDirPath)
+        let fileName = UUID().uuidString + ".json"
+        let filePath = mlDirPath.appending("/\(fileName)")
+        let fileURL = URL(fileURLWithPath: filePath)
+        let jsonWriter = JSONWriter(jsonPath: fileURL)
+        do {
+            try jsonWriter.writeJSON(memoryLeak.jsonRepresentation())
+        } catch {
+            print("| Presentation >>> cannot write JSON file for memory leak ✗")
+        }
+    }
+
+    private func createMemoryLeaksDir(pathToDir: String) {
+        do {
+            let mlDirURL = URL(
+                fileURLWithPath: pathToDir
+            )
+            try FileManager.default.createDirectory(
+                at: mlDirURL,
+                withIntermediateDirectories: true
+            )
+        } catch {
+            print("| Presentation >>> cannot create dir ✗ : \(self.mlDirName)")
+            print(error)
+        }
+    }
+}
+
+private class JSONWriter {
+
+    private var jsonPath: URL
+
+    internal init(jsonPath: URL) {
+        self.jsonPath = jsonPath
+    }
+
+    internal func writeJSON(_ json: [String: Any]) throws {
+        let fileName =  self.jsonPath.lastPathComponent
+        let jsonData = try JSONSerialization.data(
+            withJSONObject: json,
+            options: [.prettyPrinted]
+        )
+        guard let jsonString = String(data: jsonData, encoding: .utf8) else {
+            print("| Presentation >>> write ✗ : \(fileName)")
+            throw JSONWriterError.cannotWriteGivenFileAsJSON
+        }
+        try jsonString.write(
+            to: self.jsonPath,
+            atomically: true,
+            encoding: .utf8
+        )
+        print("| Presentation >>> write ✓ : \(fileName)")
+    }
+}
+
+private enum JSONWriterError: Error {
+    case cannotWriteGivenFileAsJSON
+}
