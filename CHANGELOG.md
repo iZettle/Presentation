@@ -1,3 +1,6 @@
+# 1.17.0
+- Save `json` files with `UIViewController` memory leak name
+
 # 1.16.0
 - Fix split view crash for iOS 17
 
