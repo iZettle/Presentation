@@ -172,7 +172,7 @@ workflows:
     jobs:
       - swiftlint:
           version: 0.52.2
-      - test-xcode14-ios16
+      - test-xcode16-ios18
       - test-xcode15-ios17
       - test-example-messages
       # Temporary disabled need to be addressed, there are issues in Flow that might fix this thouh example failiure bellow
