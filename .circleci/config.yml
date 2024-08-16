@@ -112,7 +112,7 @@ commands:
           name: Run tests on iOS <<parameters.os_version>>
           command: |
             xcodebuild -scheme <<parameters.scheme>> \
-                        -project <<parameters.project>> \
+                        -workspace <<parameters.workspace>> \
                         -destination "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>" \
                         clean build test \
                         | xcpretty --report junit --output '<<parameters.path>>/<<parameters.test_output_folder>>/report.junit'
