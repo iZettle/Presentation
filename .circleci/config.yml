@@ -111,6 +111,7 @@ commands:
       - run:
           name: Run tests on iOS <<parameters.os_version>>
           command: |
+            cd <<parameters.path>>
             xcodebuild -scheme <<parameters.scheme>> \
                         -workspace <<parameters.workspace>> \
                         -destination "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>" \
