@@ -81,7 +81,7 @@ commands:
           environment:
               SCAN_PROJECT: <<parameters.project>>
               SCAN_SCHEME: <<parameters.scheme>>
-              SCAN_DEVICE: *test_device
+              SCAN_DESTINATION: "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>"
               SCAN_CLEAN: *clean_before_build
       - store_artifacts: # This will by default store an html and junit file as artifacts (See "Artifacts" tab in CircleCI report)
           path: *test_output_folder # test_output is the default temporary folder for fastlane scan output
@@ -114,7 +114,7 @@ commands:
           environment:
               SCAN_WORKSPACE: <<parameters.workspace>>
               SCAN_SCHEME: <<parameters.scheme>>
-              SCAN_DEVICE: <<parameters.simulator>>
+              SCAN_DESTINATION: "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>"
               SCAN_CLEAN: *clean_before_build
       - store_artifacts: # This will by default store an html and junit file as artifacts (See "Artifacts" tab in CircleCI report)
           path: <<parameters.path>>/<<parameters.test_output_folder>> # test_output is the default temporary folder for fastlane scan output
