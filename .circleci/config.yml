@@ -48,6 +48,12 @@ commands:
     parameters:
       path: # We need to pass a path here because the example projects are in a sub folder of the project
         type: string
+      simulator:
+        type: string
+        default: *test_device
+      os_version:
+        type: string
+        default: *test_device_os
     steps:
       - checkout
       - pod-install:
@@ -57,8 +63,8 @@ commands:
           scheme: "Example"
           path: <<parameters.path>>
           test_output_folder: *test_output_folder
-          simulator: *test_device
-          os_version: *test_device_os
+          simulator: <<parameters.simulator>>
+          os_version: <<parameters.os_version>>
 
   # We introduced two separate commands for projects and workspaces because we didnt find a generic and non-confusing way to introduce 
   # a condition to only pass either the project or the workspace environment argument to the fastlane scan
