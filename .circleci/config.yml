@@ -77,12 +77,13 @@ commands:
         default: *test_device_os
     steps:
       - run:
-          command: fastlane scan
-          environment:
-              SCAN_PROJECT: <<parameters.project>>
-              SCAN_SCHEME: <<parameters.scheme>>
-              SCAN_DESTINATION: "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>"
-              SCAN_CLEAN: *clean_before_build
+          name: Run tests on iOS <<parameters.os_version>>
+          command: |
+            xcodebuild -scheme <<parameters.scheme>> \
+                        -project <<parameters.project>> \
+                        -destination "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>" \
+                        clean build test \
+                        | xcpretty --report junit --output 'test_output/report.junit'
       - store_artifacts: # This will by default store an html and junit file as artifacts (See "Artifacts" tab in CircleCI report)
           path: *test_output_folder # test_output is the default temporary folder for fastlane scan output
           destination: *test_output_folder # This will create a sub structure in the artifacts section in CircleCI
@@ -108,14 +109,13 @@ commands:
         default: *test_device_os
     steps:
       - run:
-          command:  |
-            cd <<parameters.path>>
-            fastlane scan
-          environment:
-              SCAN_WORKSPACE: <<parameters.workspace>>
-              SCAN_SCHEME: <<parameters.scheme>>
-              SCAN_DESTINATION: "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>"
-              SCAN_CLEAN: *clean_before_build
+          name: Run tests on iOS <<parameters.os_version>>
+          command: |
+            xcodebuild -scheme <<parameters.scheme>> \
+                        -project <<parameters.project>> \
+                        -destination "platform=iOS Simulator,OS=<<parameters.os_version>>,name=<<parameters.simulator>>" \
+                        clean build test \
+                        | xcpretty --report junit --output '<<parameters.path>>/<<parameters.test_output_folder>>/report.junit'
       - store_artifacts: # This will by default store an html and junit file as artifacts (See "Artifacts" tab in CircleCI report)
           path: <<parameters.path>>/<<parameters.test_output_folder>> # test_output is the default temporary folder for fastlane scan output
           destination: <<parameters.test_output_folder>> # This will create a sub structure in the artifacts section in CircleCI
