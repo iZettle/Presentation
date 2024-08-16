@@ -5,7 +5,7 @@ version: 2.1
 
 anchors: 
   - &test_device "iPhone 15"
-  - &test_device_os "18.1"
+  - &test_device_os "18.0"
   - &clean_before_build true
   - &test_output_folder test_output
   - &default_executor
@@ -168,6 +168,8 @@ jobs:
     steps:
       - test_example_project:
           path: Examples/Messages
+          simulator: "iPhone 15"
+          os_version: "17.5"
 
   test-example-styles-and-options:
     macos:
@@ -175,6 +177,8 @@ jobs:
     steps:
       - test_example_project:
           path: Examples/StylesAndOptions
+          simulator: "iPhone 15"
+          os_version: "17.5"
 
 workflows:
   version: 2.1
