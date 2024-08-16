@@ -69,6 +69,12 @@ commands:
         type: string
       scheme:
         type: string
+      simulator:
+        type: string
+        default: *test_device
+      os_version:
+        type: string
+        default: *test_device_os
     steps:
       - run:
           command: fastlane scan
