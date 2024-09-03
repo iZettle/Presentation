@@ -1,11 +1,11 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.7
 
 import PackageDescription
 
 let package = Package(
     name: "Presentation",
     platforms: [
-        .iOS(.v10)
+        .iOS(.v12)
     ],
     products: [
         .library(
@@ -13,7 +13,7 @@ let package = Package(
             targets: ["Presentation"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/izettle/Flow.git", .upToNextMajor(from: "1.10.0"))
+        .package(url: "https://github.com/iZettle/Flow.git", revision:"fce5caed4500e490c8fadcd28893a7f207438bfe")
     ],
     targets: [
         .target(
