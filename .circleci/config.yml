@@ -4,7 +4,7 @@
 version: 2.1
 
 anchors: 
-  - &test_device "iPhone 15"
+  - &test_device "iPhone 16"
   - &test_device_os "18.0"
   - &clean_before_build true
   - &test_output_folder test_output
@@ -170,21 +170,21 @@ jobs:
   
   test-example-messages:
     macos:
-      xcode: "15.4.0"
+      xcode: "16.0.0"
     steps:
       - test_example_project:
           path: Examples/Messages
-          simulator: "iPhone 15"
-          os_version: "17.5"
+          simulator: "iPhone 16"
+          os_version: "18.0"
 
   test-example-styles-and-options:
     macos:
-      xcode: "15.4.0"
+      xcode: "16.0.0"
     steps:
       - test_example_project:
           path: Examples/StylesAndOptions
-          simulator: "iPhone 15"
-          os_version: "17.5"
+          simulator: "iPhone 16"
+          os_version: "18.0"
 
 workflows:
   version: 2.1
