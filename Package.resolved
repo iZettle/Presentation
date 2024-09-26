@@ -1,16 +1,14 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "Flow",
-        "repositoryURL": "https://github.com/izettle/Flow.git",
-        "state": {
-          "branch": null,
-          "revision": "ad38c734f16a404de8895236424bc4acc5355a3d",
-          "version": "1.10.1"
-        }
+  "pins" : [
+    {
+      "identity" : "flow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/iZettle/Flow.git",
+      "state" : {
+        "revision" : "c3e69f924f046207487948dcad55826343a122d5",
+        "version" : "1.12.1"
       }
-    ]
-  },
-  "version": 1
+    }
+  ],
+  "version" : 2
 }
