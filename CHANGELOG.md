@@ -1,3 +1,6 @@
+# 1.18.0
+- Support `Xcode 16`
+
 # 1.17.0
 - Save `json` files with `UIViewController` memory leak name
 
