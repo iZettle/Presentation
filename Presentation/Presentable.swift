@@ -46,12 +46,13 @@ import Flow
 ///     fromViewController.present(presentation)
 ///
 ///
+@MainActor
 public protocol Presentable {
     associatedtype Matter
     associatedtype Result
 
     /// Constructs a matter from `self` and returns it toghether with the result of presenting it.
-    func materialize() -> (Matter, Result)
+    @MainActor func materialize() -> (Matter, Result)
 }
 
 // MARK: - Conviniences

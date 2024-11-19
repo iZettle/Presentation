@@ -11,7 +11,7 @@ import Flow
 
 /// A type erased Presentable
 public struct AnyPresentable<Matter, Result> {
-    private let _materialize: () -> (Matter, Result)
+    private let _materialize: @MainActor () -> (Matter, Result)
 }
 
 extension AnyPresentable: Presentable {
